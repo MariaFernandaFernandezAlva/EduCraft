@@ -23,12 +23,11 @@ export const COMPANY_INFO = {
 };
 
 export const NAV_LINKS = [
-  { name: "How it works", href: "#como-funciona" },
-  { name: "Services", href: "/services" },
-  { name: "Portfolio", href: "/portfolio" },
-  { name: "Quotations", href: "/quotation" },
-  { name: "Community", href: "/community" },
-  { name: "Testimonials", href: "#testimonios" }
+  { name: "Inicio", href: "/" },
+  { name: "Servicios", href: "/services" },
+  { name: "Portafolio", href: "/portfolio" },
+  { name: "Cotización", href: "/quotation" },
+  { name: "Testimonios", href: "/community" }
 ];
 
 export const WHATSAPP_NUMBER = "51977962282";
