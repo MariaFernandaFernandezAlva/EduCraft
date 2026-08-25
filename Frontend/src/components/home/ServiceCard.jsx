@@ -1,9 +1,9 @@
-export default function ServiceCard({ icon, title, description }) {
+export default function ServiceCard({ icon, title, description, borderColor, iconColor }) {
   return (
-    <div className="bg-white rounded-xl p-8 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+    <div className={`bg-white rounded-xl p-8 shadow-md hover:shadow-xl transition-shadow duration-300 border-t-4 ${borderColor}`}>
       
       {/* Icon */}
-      <div className="text-5xl mb-6">
+      <div className={`w-fit p-4 text-5xl mb-6 rounded-lg ${iconColor}`}>
         {icon}
       </div>
 

@@ -15,20 +15,20 @@ export default function HeroSection() {
               Servicios Académicos Premium
             </span>
             
-            <h1 className="text-5xl md:text-6xl font-bold text-white leading-tight mb-6">
+            <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight mb-6">
               {COMPANY_INFO.tagline}
             </h1>
             
-            <p className="text-xl text-white/60 mb-8 leading-relaxed">
+            <p className="text-base md:text-xl text-white/60 mb-8 leading-relaxed">
               Soluciones personalizadas para estudiantes y educadores. Desde maquetas detalladas hasta cuadernos de trabajo profesionalizados.
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="primary" size="lg">
+            <div className="flex flex-row gap-4">
+              <Button variant="primary" size="md">
                 Pedir Cotización
               </Button>
-              <Button variant="secondary" size="lg">
+              <Button variant="secondary" size="md">
                 Ver Servicios
               </Button>
             </div>
@@ -36,8 +36,9 @@ export default function HeroSection() {
 
           {/* Right Image */}
           <div className="flex justify-center md:justify-end">
-            <div className="relative">
-              <img src={Image} alt="Imagen de una maqueta sobre el salon de clase" width={554} height={400} className="w-auto rounded-4xl rotate-3 hover:rotate-15 duration-150" />
+            <div className="relative ">
+              <div className="absolute inset-0 border-2 border-amarillo rounded-4xl -translate-x-2 -translate-y-2 md:-translate-x-4 md:-translate-y-4"></div>
+              <img src={Image} alt="Imagen de una maqueta sobre el salon de clase" width={554} height={400} className="relative z-10 w-86 md:w-full h-auto rounded-4xl" />
             </div>
           </div>
 

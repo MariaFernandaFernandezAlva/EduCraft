@@ -4,11 +4,12 @@ import { howItWorksData } from "../../data/howItWorks";
 
 export default function HowItWorks() {
   return (
-    <section id="como-funciona" className="bg-gray-50 py-20 md:py-32">
+    <section id="como-funciona" className="bg-[#eef0f8] py-20 md:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <SectionTitle
           badge="NUESTRO PROCESO"
+          badgeColor="azul"
           title="Cómo Funciona"
           subtitle="Un proceso simple y eficiente para tu tranquilidad"
         />

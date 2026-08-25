@@ -1,13 +1,18 @@
 export default function SectionTitle({ 
-  badge, 
+  badge, badgeColor,
   title, 
   subtitle, 
   centered = true 
 }) {
+  const badgeStyles = {
+    amarillo: "bg-[#fef3dc] text-marron",
+    azul: "bg-[#d9ddea] text-azul",
+  }
+
   return (
     <div className={`mb-12 ${centered ? "text-center" : ""}`}>
       {badge && (
-        <span className="inline-block mb-4 px-4 py-1 bg-amber-400 text-amber-900 text-sm font-bold rounded-full uppercase tracking-wide">
+        <span className={`inline-block mb-4 px-4 py-1  text-sm font-bold rounded-full uppercase tracking-wide ${badgeStyles[badgeColor]}`}>
           {badge}
         </span>
       )}

@@ -1,17 +1,14 @@
 export default function StepCard({ number, icon, title, description }) {
+
   return (
     <div className="text-center">
       
       {/* Number Circle */}
       <div className="mb-6 flex justify-center">
-        <div className="w-24 h-24 rounded-full bg-amber-400 text-amber-900 flex items-center justify-center">
-          <span className="text-3xl font-bold">{number}</span>
+        <div className=" w-24 h-24 rounded-full bg-azul text-white flex flex-col items-center justify-center">
+          <span className="text-xl font-bold">{number}</span>
+          <div className="w-8 h-8">{icon}</div>
         </div>
-      </div>
-
-      {/* Icon */}
-      <div className="text-5xl mb-4">
-        {icon}
       </div>
 
       {/* Title */}
