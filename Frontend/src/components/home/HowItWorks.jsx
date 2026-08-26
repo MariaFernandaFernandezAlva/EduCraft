@@ -1,6 +1,14 @@
 import SectionTitle from "../common/SectionTitle";
 import StepCard from "../home/StepCard";
 import { howItWorksData } from "../../data/howItWorks";
+import { ChatBubbleLeftRightIcon, DocumentTextIcon, CubeIcon   } from "@heroicons/react/24/outline"
+import Button from "../common/Button"
+
+const Icons = [
+  <ChatBubbleLeftRightIcon className="w-6 h-6" />, 
+  <DocumentTextIcon className="w-6 h-6" />, 
+  <CubeIcon className="w-6 h-6" />
+]
 
 export default function HowItWorks() {
   return (
@@ -20,11 +28,18 @@ export default function HowItWorks() {
             <StepCard
               key={step.id}
               number={step.number}
-              icon={step.icon}
+              icon={Icons[step.id - 1]}
               title={step.title}
               description={step.description}
             />
           ))}
+        </div>
+
+        {/*Boton*/}
+        <div className="flex justify-center mt-12 md:mt-16">
+          <Button variant="tertiary" size="md">
+            Comenzar ahora
+          </Button>
         </div>
 
       </div>

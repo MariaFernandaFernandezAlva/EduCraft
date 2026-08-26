@@ -42,7 +42,7 @@ export default function ServicesSection() {
         </div>
 
         {/* Ver mas */}
-        <div className="flex justify-end mt-8">
+        <div className="flex justify-end mt-12 md:mt-16">
           <Button variant="primary" size="md">
             Ver más
           </Button>

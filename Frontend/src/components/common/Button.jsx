@@ -7,10 +7,10 @@ export default function Button({
   className = "",
   ...props 
 }) {
-  const baseStyles = "inline-flex items-center justify-center gap-2 font-semibold rounded-full transition-all duration-300 cursor-pointer";
+  const baseStyles = "inline-flex items-center justify-center gap-2 font-bold rounded-full transition-all duration-300 cursor-pointer";
   
   const sizeStyles = {
-    sm: "px-4 py-2 text-sm",
+    sm: "px-5 py-3 text-xs",
     md: "px-6 py-3 text-sm",
     lg: "px-8 py-4 text-lg"
   };
@@ -18,7 +18,7 @@ export default function Button({
   const variantStyles = {
     primary: "group bg-amarillo text-azul hover:bg-amarillo/80 hover:shadow-lg",
     secondary: "text-white border border-white hover:bg-white/20",
-    tertiary: "bg-teal-500 text-white hover:bg-teal-600 hover:shadow-lg"
+    tertiary: "group bg-azul text-white hover:bg-azul/80 hover:shadow-lg"
   };
  
   const combinedStyles = `${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${className}`;
@@ -26,7 +26,7 @@ export default function Button({
   return (
     <button className={combinedStyles} {...props}>
       {children}
-      {variant === "primary" && (
+      {(variant === "primary" || variant === "tertiary")  && (
         <ArrowRightIcon className="w-5 h-5 transition-transform group-hover:translate-x-1" strokeWidth="2"/>
       )}
     </button>

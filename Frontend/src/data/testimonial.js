@@ -10,7 +10,7 @@ export const testimonialsData = [
     id: 2,
     name: "Javier Ruiz",
     role: "Estudiante de tercero",
-    rating: 5,
+    rating: 4,
     comment: "Los trípticos hicieron una calidad de diseño increíble. Se nota que un verdadero diseñador estuvo detrás. Mi presentación fue una sensación visual."
   },
   {

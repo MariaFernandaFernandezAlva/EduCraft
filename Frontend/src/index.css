@@ -22,7 +22,7 @@ h1, h2, h3, h4, h5, h6 {
 
   /* Colores Primarios */
   --color-gray: #f8f7f2;
-  --color-azul: #0e1d4f;
+  --color-azul: #1a2e6e;
   --color-amarillo: #f5a823;
 
   /* Colores Complementarios */
@@ -74,4 +74,11 @@ Una lámina con un estampado de lunares y, debajo de ella, una lámina con el de
     radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px), /*la textura de puntos*/
     linear-gradient(135deg, #0f1e51 30%, #1b337a 84%); /*Degradado de color azul*/
   background-size: 24px 24px, 100% 100%;
+}
+
+.panel2 {
+  background-image: 
+    radial-gradient(rgba(255, 255, 255, 0.35) 1px, transparent 1px), /*la textura de puntos*/
+    linear-gradient(135deg, #0e1c4d 50%, #192d6b 100%); /*Degradado de color azul*/
+  background-size: 30px 30px, 100% 100%;
 }

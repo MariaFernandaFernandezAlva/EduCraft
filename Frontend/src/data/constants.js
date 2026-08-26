@@ -19,7 +19,7 @@ export const FONTS = {
 export const COMPANY_INFO = {
   name: "EduCraft",
   tagline: "Transformamos tus ideas en proyectos escolares excepcionales",
-  description: "Soluciones personalizadas para estudiantes y educadores. Desde maquetas detalladas hasta cuadernos de trabajo profesionalizados."
+  description: "Servicios académicos profesionales para estudiantes y educadores. Maquetas, trípticos, cuadernos y más."
 };
 
 export const NAV_LINKS = [

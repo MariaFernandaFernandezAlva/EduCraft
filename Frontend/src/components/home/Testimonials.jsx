@@ -4,12 +4,13 @@ import { testimonialsData } from "../../data/testimonial";
 
 export default function Testimonials() {
   return (
-    <section id="testimonios" className="bg-white py-20 md:py-32">
+    <section id="testimonios" className="bg-gray py-20 md:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <SectionTitle
-          badge="LO QUE DICEN DE NOSOTROS"
-          title="Testimonios de Clientes"
+          badge="TESTIMONIOS"
+          badgeColor="amarillo"
+          title="Lo que dicen nuestros clientes"
           subtitle="Historias reales de estudiantes y familias satisfechas"
         />
 
@@ -18,6 +19,7 @@ export default function Testimonials() {
           {testimonialsData.map((testimonial) => (
             <TestimonialCard
               key={testimonial.id}
+              id={testimonial.id}
               name={testimonial.name}
               role={testimonial.role}
               rating={testimonial.rating}
