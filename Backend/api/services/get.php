@@ -3,8 +3,8 @@
 // GET /api/services → Obtener todos los servicios
 // GET /api/services?id=1 → Obtener un servicio por ID
 
-require_once __DIR__ . '/../../config/response.php';
-require_once __DIR__ . '/../../config/database.php';
+require_once dirname(dirname(dirname(__FILE__))) . '/config/response.php';
+require_once dirname(dirname(dirname(__FILE__))) . '/config/database.php';
 enableCORS();
 
 // Validar que sea GET

@@ -2,8 +2,8 @@
 // api/services/update.php
 // PUT /api/services → Actualizar un servicio
 
-require_once __DIR__ . '/../../config/response.php';
-require_once __DIR__ . '/../../config/database.php';
+require_once dirname(dirname(dirname(__FILE__))) . '/config/response.php';
+require_once dirname(dirname(dirname(__FILE__))) . '/config/database.php';
 enableCORS();
 
 // Validar sesión

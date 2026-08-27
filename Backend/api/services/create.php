@@ -2,8 +2,8 @@
 // api/services/create.php
 // POST /api/services → Crear nuevo servicio
 
-require_once __DIR__ . '/../../config/response.php';
-require_once __DIR__ . '/../../config/database.php';
+require_once dirname(dirname(dirname(__FILE__))) . '/config/response.php';
+require_once dirname(dirname(dirname(__FILE__))) . '/config/database.php';
 enableCORS();
 
 // Validar sesión del admin

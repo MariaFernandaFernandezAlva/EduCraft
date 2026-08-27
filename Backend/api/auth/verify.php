@@ -1,19 +1,24 @@
 <?php
 // api/auth/verify.php
-// Endpoint para verificar si el admin está logueado
 
-require_once __DIR__ . '/../../config/response.php';
+require_once dirname(dirname(dirname(__FILE__))) . '/config/response.php';
 enableCORS();
 
-// Verificar si hay sesión activa
-if (!isset($_SESSION['admin_id']) || !$_SESSION['logged_in']) {
-    sendError('No autorizado - Debes iniciar sesión', 401);
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
-// Sesión válida - Retornar datos del admin
+if (empty($_SESSION) || !isset($_SESSION['admin_id'])) {
+    sendError('No autorizado - No hay sesión activa', 401);
+}
+
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    sendError('No autorizado - Sesión inválida', 401);
+}
+
 sendSuccess([
     'id' => $_SESSION['admin_id'],
-    'email' => $_SESSION['admin_email'],
-    'full_name' => $_SESSION['admin_name']
+    'email' => $_SESSION['admin_email'] ?? '',
+    'full_name' => $_SESSION['admin_name'] ?? ''
 ], 'Sesión activa', 200);
 ?>
