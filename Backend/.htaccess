@@ -1,0 +1,28 @@
+# .htaccess
+# Este archivo configura el servidor Apache para nuestra API
+
+# Habilitar mod_rewrite (reescritura de URLs)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # No reescribir si es un archivo existente
+    RewriteCond %{REQUEST_FILENAME} !-f
+    # No reescribir si es una carpeta existente
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # Reescribir todas las solicitudes a index.php
+    RewriteRule ^(.*)$ index.php?request=$1 [QSA,L]
+</IfModule>
+
+# Encabezados de CORS
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>
+
+# Evitar que se listen archivos/carpetas
+<FilesMatch "\.(env|config|sql|txt)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
