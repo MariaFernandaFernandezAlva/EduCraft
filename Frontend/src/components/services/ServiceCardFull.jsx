@@ -32,12 +32,10 @@ ${service.includes.map(inc => `• ${inc}`).join("\n")}
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-100">
+    <div className="bg-white rounded-3xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-100">
       
       {/* Image Placeholder */}
-      <div className="h-48 bg-linear-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-        <div className="text-6xl">{service.image}</div>
-      </div>
+      <img src={service.image} alt={service.title} className="w-full h-64 object-cover object-center" />
 
       {/* Content */}
       <div className="p-6">
@@ -54,7 +52,7 @@ ${service.includes.map(inc => `• ${inc}`).join("\n")}
 
         {/* Includes Section */}
         <div className="mb-6">
-          <p className="text-xs font-semibold text-amber-600 mb-3 uppercase tracking-wide">
+          <p className="text-xs font-bold text-amber-600 mb-3 uppercase tracking-wide">
             Qué incluye
           </p>
           <ul className="space-y-2">
@@ -81,13 +79,13 @@ ${service.includes.map(inc => `• ${inc}`).join("\n")}
         <div className="flex gap-3">
           <button
             onClick={handleQuotation}
-            className="flex-1 px-4 py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-blue-800 transition-colors duration-200"
+            className="flex-1 px-4 py-3 bg-azul text-white font-semibold rounded-xl hover:bg-blue-900 transition-colors duration-200"
           >
             Cotizar {service.category}
           </button>
           <button
             onClick={handleWhatsApp}
-            className="flex-1 px-4 py-3 border-2 border-blue-900 text-blue-900 font-semibold rounded-lg hover:bg-blue-50 transition-colors duration-200"
+            className="flex-1 px-4 py-3 border-2 border-azul text-azul font-semibold rounded-xl hover:bg-blue-50 transition-colors duration-200"
           >
             WhatsApp
           </button>

@@ -1,7 +1,7 @@
 import SectionTitle from "../common/SectionTitle";
 import ServiceCard from "./ServiceCard";
 import { servicesData } from "../../data/services";
-import { CubeIcon, DocumentTextIcon, BookOpenIcon, PhotoIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import { CubeIcon, DocumentTextIcon, BookOpenIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import Button from "../common/Button";
 
 const borderColors = ["border-azul", "border-amarillo", "border-verde", "border-morado"];

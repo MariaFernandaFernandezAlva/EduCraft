@@ -95,11 +95,8 @@ ${project.includes.map(inc => `• ${inc}`).join("\n")}
               📋 Solicitar Similar
             </button>
           </div>
-
         </div>
-
       </div>
-
     </div>
   );
 }

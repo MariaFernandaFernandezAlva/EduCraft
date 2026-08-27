@@ -1,6 +1,7 @@
 import Button from "../common/Button";
 import { COMPANY_INFO } from "../../data/constants";
 import Image from "../../assets/projects/maquetaPrincipal.webp";
+import SectionTitle from "../common/SectionTitle";
 
 export default function HeroSection() {
   return (
@@ -11,17 +12,14 @@ export default function HeroSection() {
           
           {/* Left Content */}
           <div>
-            <span className="inline-block mb-6 px-4 py-2 bg-amber-400 text-azul text-sm font-bold rounded-full uppercase tracking-wide">
-              Servicios Académicos Premium
-            </span>
-            
-            <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight mb-6">
-              {COMPANY_INFO.tagline}
-            </h1>
-            
-            <p className="text-base md:text-xl text-white/60 mb-8 leading-relaxed">
-              Soluciones personalizadas para estudiantes y educadores. Desde maquetas detalladas hasta cuadernos de trabajo profesionalizados.
-            </p>
+            <SectionTitle 
+              variant="hero"
+              as="h1"
+              centered={false}
+              badgeColor="amber"
+              title={<>Transformamos tus ideas en proyectos <span className="text-amarillo italic"> excepcionales </span></>}
+              subtitle="Soluciones personalizadas para estudiantes y educadores. Desde maquetas detalladas hasta cuadernos de trabajo profesionalizados." 
+            />
 
             {/* CTA Buttons */}
             <div className="flex flex-row gap-4">

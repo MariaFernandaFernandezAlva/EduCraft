@@ -1,3 +1,8 @@
+import maqueta from "../assets/servicies/maqueta.webp"
+import triptico from "../assets/servicies/Triptico.webp"
+import cuaderno from "../assets/servicies/cuaderno.webp"
+import Trifolio from "../assets/servicies/Trifolio.webp"
+
 export const servicesData = [
   {
     id: 1,
@@ -12,7 +17,7 @@ export const servicesData = [
       "Entrega protegida a domicilio"
     ],
     deliveryTime: "5-8 días",
-    image: "🏛️"
+    image: maqueta
   },
   {
     id: 2,
@@ -27,7 +32,7 @@ export const servicesData = [
       "Revisiones ilimitadas"
     ],
     deliveryTime: "3-5 días",
-    image: "📋"
+    image: triptico
   },
   {
     id: 3,
@@ -42,7 +47,7 @@ export const servicesData = [
       "Encuadernación profesional"
     ],
     deliveryTime: "7-10 días",
-    image: "📖"
+    image: cuaderno
   },
   {
     id: 4,
@@ -57,6 +62,6 @@ export const servicesData = [
       "Estructura para exposición (opcional)"
     ],
     deliveryTime: "4-6 días",
-    image: "🖼️"
+    image: Trifolio
   }
 ];
