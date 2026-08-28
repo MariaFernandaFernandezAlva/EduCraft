@@ -82,3 +82,9 @@ Una lámina con un estampado de lunares y, debajo de ella, una lámina con el de
     linear-gradient(135deg, #0e1c4d 50%, #192d6b 100%); /*Degradado de color azul*/
   background-size: 30px 30px, 100% 100%;
 }
+
+/* Ocultar el ojo nativo de Chrome/Edge */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}

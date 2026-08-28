@@ -1,17 +1,16 @@
 <?php
 // api/auth/login.php
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once dirname(dirname(dirname(__FILE__))) . '/config/response.php';
 require_once dirname(dirname(dirname(__FILE__))) . '/config/database.php';
 enableCORS();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     sendError('Método no permitido', 405);
-}
-
-// Asegurar sesión iniciada
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
 }
 
 // Obtener datos
@@ -59,4 +58,3 @@ sendSuccess([
 ], 'Sesión iniciada exitosamente', 200);
 
 $stmt->close();
-?>

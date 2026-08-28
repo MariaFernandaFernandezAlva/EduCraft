@@ -1,7 +1,9 @@
 <?php
 // config/database.php
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
@@ -23,4 +25,3 @@ $conn->set_charset("utf8mb4");
 
 // ✅ IMPORTANTE: Retornar la conexión
 return $conn;
-?>

@@ -14,8 +14,7 @@ export function useAdminAuth() {
   const verifySession = async () => {
     try {
       setLoading(true);
-      
-      const response = await fetch('http://localhost/educraft-backend/api/auth/verify', {
+      const response = await fetch('http://localhost/educraft-backend/api/auth/verify.php', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -28,13 +27,16 @@ export function useAdminAuth() {
       if (data.success) {
         setAdmin(data.data);
         setError(null);
+        return true;
       } else {
         setAdmin(null);
+        return false;
       }
     } catch (err) {
       console.error('Error verificando sesión:', err);
       setAdmin(null);
       setError(err.message);
+      return false;
     } finally {
       setLoading(false);
     }
@@ -49,7 +51,7 @@ export function useAdminAuth() {
       formData.append('email', email);
       formData.append('password', password);
 
-      const response = await fetch('http://localhost/educraft-backend/api/auth/login', {
+      const response = await fetch('http://localhost/educraft-backend/api/auth/login.php', {
         method: 'POST',
         credentials: 'include',
         body: formData
@@ -60,6 +62,8 @@ export function useAdminAuth() {
       if (data.success) {
         setAdmin(data.data);
         setError(null);
+        await new Promise(resolve => setTimeout(resolve, 200));
+        
         return { success: true, message: data.message };
       } else {
         setError(data.message);
@@ -77,7 +81,7 @@ export function useAdminAuth() {
     try {
       setLoading(true);
 
-      const response = await fetch('http://localhost/educraft-backend/api/auth/logout', {
+      const response = await fetch('http://localhost/educraft-backend/api/auth/logout.php', {
         method: 'POST',
         credentials: 'include'
       });

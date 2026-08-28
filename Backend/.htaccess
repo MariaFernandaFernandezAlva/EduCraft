@@ -1,14 +1,19 @@
 # .htaccess
-# Configuración básica del servidor
+
+Options -Indexes
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    
+    # Permitir archivos y directorios reales
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # Reescribir TODO a index.php CON LA RUTA ORIGINAL
     RewriteRule ^(.*)$ index.php?request=$1 [QSA,L]
 </IfModule>
 
-# Evitar que se listen archivos/carpetas
+# Proteger archivos sensibles
 <FilesMatch "\.(env|config|sql|txt)$">
     Order allow,deny
     Deny from all

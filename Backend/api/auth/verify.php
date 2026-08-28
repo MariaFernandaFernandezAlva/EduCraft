@@ -1,12 +1,12 @@
 <?php
 // api/auth/verify.php
 
-require_once dirname(dirname(dirname(__FILE__))) . '/config/response.php';
-enableCORS();
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+require_once dirname(dirname(dirname(__FILE__))) . '/config/response.php';
+enableCORS();
 
 if (empty($_SESSION) || !isset($_SESSION['admin_id'])) {
     sendError('No autorizado - No hay sesión activa', 401);

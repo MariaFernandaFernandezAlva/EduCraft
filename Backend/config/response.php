@@ -68,4 +68,3 @@ function enableCORS() {
         exit();
     }
 }
-?>
