@@ -1,0 +1,234 @@
+{
+  "services": [
+    {
+      "id": "1",
+      "category": "Maquetas",
+      "icon": "📐",
+      "title": "Maquetas Profesionales :3",
+      "description": "Modelos tridimensionales a escala para historia, ciencias y geografía, con corte láser, impresión 3D y acabados a mano.",
+      "includes": [
+        "Investigación histórica y técnica previa",
+        "Materiales premium: madera, acrílico o resina",
+        "Rótulos impresos y opción de luces LED",
+        "Entrega protegida a domicilio",
+        "Luces que se encienden con un interruptor"
+      ],
+      "deliveryTime": "5-8 días",
+      "image": "/images/services/maqueta.webp",
+      "visible": true
+    },
+    {
+      "id": "2",
+      "category": "Trípticos",
+      "icon": "📄",
+      "title": "Trípticos Profesionales",
+      "description": "Diseños limpios, informativos y con diagramación editorial experta para presentaciones y campañas escolares.",
+      "includes": [
+        "Diseño editorial personalizado",
+        "Maquetación profesional con tipografía experta",
+        "Impresión en papel de calidad",
+        "Revisiones ilimitadas"
+      ],
+      "deliveryTime": "3-5 días",
+      "image": "/images/services/Triptico.webp",
+      "visible": true
+    },
+    {
+      "id": "3",
+      "category": "Cuadernos de trabajo",
+      "icon": "📚",
+      "title": "Cuadernos de Trabajo",
+      "description": "Material didáctico estructurado para el refuerzo escolar y guías de estudio personalizadas con actividades.",
+      "includes": [
+        "Contenido pedagógico especializado",
+        "Ejercicios prácticos y actividades interactivas",
+        "Diseño de páginas internas y portada",
+        "Encuadernación profesional"
+      ],
+      "deliveryTime": "7-10 días",
+      "image": "/images/services/cuaderno.webp",
+      "visible": true
+    },
+    {
+      "id": "4",
+      "category": "Láminas",
+      "icon": "🎨",
+      "title": "Láminas Educativas",
+      "description": "Gráficos de gran formato con ilustraciones detalladas para exposiciones y carteles escolares de alto impacto visual.",
+      "includes": [
+        "Ilustraciones de calidad profesional",
+        "Impresión en papel de gran formato",
+        "Diseño personalizado según el tema",
+        "Laminado protector opcional"
+      ],
+      "deliveryTime": "3-5 días",
+      "image": "/images/services/Trifolio.webp",
+      "visible": true
+    }
+  ],
+  "projects": [
+    {
+      "id": "1",
+      "image": "🧬",
+      "category": "Maqueta",
+      "categoryColor": "bg-teal-100 text-teal-700",
+      "title": "Maqueta ADN 3D",
+      "description": "Modelo tridimensional interactivo del ADN. Representación detallada de bases nitrogenadas para proyectos de biología.",
+      "includes": [
+        "Modelo tridimensional de 60cm de alto",
+        "Bases nitrogenadas en acrílico de colores",
+        "Estructura de doble hélice en alambre de cobre",
+        "Luces LED integradas"
+      ],
+      "visible": true
+    },
+    {
+      "id": "2",
+      "image": "🏭",
+      "category": "Tríptico",
+      "categoryColor": "bg-amber-100 text-amber-700",
+      "title": "Revolución Industrial",
+      "description": "Tríptico informativo con diseño atractivo y datos clave. Ideal para exposiciones sobre historia moderna.",
+      "includes": [
+        "Diseño editorial profesional",
+        "6 páginas de contenido informativo",
+        "Infografías históricas personalizadas",
+        "Impresión en papel de 300g"
+      ],
+      "visible": true
+    },
+    {
+      "id": "3",
+      "image": "🌌",
+      "category": "Lámina",
+      "categoryColor": "bg-blue-100 text-blue-700",
+      "title": "Exploración Espacial",
+      "description": "Lámina de gran formato con infografía sobre el espacio. Presentación visual de alta resolución e información interactiva.",
+      "includes": [
+        "Lámina 100x70cm en papel Matte",
+        "Infografía de sistema solar",
+        "Información de misiones espaciales",
+        "Laminado protector anti-UV"
+      ],
+      "visible": true
+    },
+    {
+      "id": "4",
+      "image": "🧪",
+      "category": "Cuaderno",
+      "categoryColor": "bg-purple-100 text-purple-700",
+      "title": "Bitácora de Biología",
+      "description": "Cuaderno personalizado con apuntes y ejercicios. Diseño estructurado para facilitación de aprendizaje por trimestres.",
+      "includes": [
+        "200 páginas de contenido estructurado",
+        "Ejercicios prácticos por tema",
+        "Espacios para anotaciones",
+        "Encuadernación con espiral de metal"
+      ],
+      "visible": true
+    },
+    {
+      "id": "5",
+      "image": "🏛️",
+      "category": "Maqueta",
+      "categoryColor": "bg-teal-100 text-teal-700",
+      "title": "Templo Maya",
+      "description": "Construcción modular con efectos de iluminación integrada. Modelo detallado para proyectos de historia antigua.",
+      "includes": [
+        "Modelo de 80x60cm construido en madera",
+        "Detalles arquitectónicos tallados",
+        "Sistema de iluminación LED",
+        "Base con información histórica"
+      ],
+      "visible": true
+    },
+    {
+      "id": "6",
+      "image": "📚",
+      "category": "Guía",
+      "categoryColor": "bg-green-100 text-green-700",
+      "title": "Pack Pre-Universitario",
+      "description": "Guía de ejercicios y material de apoyo estructurado. Contenido meticuloso con énfasis pedagógico riguroso.",
+      "includes": [
+        "3 libros temáticos (Matemática, Física, Química)",
+        "500+ ejercicios resueltos",
+        "Pruebas modelo de admisión",
+        "Guía de estrategias de estudio"
+      ],
+      "visible": true
+    }
+  ],
+  "quotations": [
+    {
+      "id": "1",
+      "fullName": "Elena Rodríguez",
+      "email": "elena.rodriguez@ejemplo.com",
+      "whatsapp": "987654321",
+      "projectType": "Maquetas",
+      "academicLevel": "Secundaria",
+      "description": "Maqueta del sistema solar con luces LED para la feria de ciencias.",
+      "deliveryDate": "2026-09-15",
+      "deliveryMethod": "Delivery a domicilio",
+      "address": "Av. Los Álamos 123, San Miguel",
+      "status": "pendiente",
+      "price": null,
+      "adminNotes": "",
+      "createdAt": "2026-08-20T14:30:00.000Z"
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "1",
+      "name": "Elena Rodríguez",
+      "role": "Madre de familia",
+      "rating": 5,
+      "comment": "EduCraft transformó por completo la forma en que mi hijo aborda sus proyectos de ciencias. ¡El diorama de la selva fue el mejor de la clase!",
+      "avatar": "ER",
+      "images": [],
+      "status": "aprobado",
+      "date": "2026-08-10T00:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "name": "María Ruiz",
+      "role": "Docente de historia",
+      "rating": 5,
+      "comment": "Excelente, valoro la estructura y el cuidado por los detalles. Mis alumnos quedaron asombrados.",
+      "avatar": "MR",
+      "images": [],
+      "status": "aprobado",
+      "date": "2026-08-05T00:00:00.000Z"
+    },
+    {
+      "id": "3",
+      "name": "Sofía Méndez",
+      "role": "Estudiante de primaria",
+      "rating": 4,
+      "comment": "Me ayudó a organizar mi tarea final de una manera que no imaginé.",
+      "avatar": "SM",
+      "images": [],
+      "status": "aprobado",
+      "date": "2026-07-28T00:00:00.000Z"
+    },
+    {
+      "id": "4",
+      "name": "Andrés Luna",
+      "role": "Jefe de tesis",
+      "rating": 5,
+      "comment": "Increíble. El detalle y el soporte por WhatsApp fue vital para terminar mi proyecto a tiempo.",
+      "avatar": "AL",
+      "images": [],
+      "status": "pendiente",
+      "date": "2026-07-15T00:00:00.000Z"
+    }
+  ],
+  "admins": [
+    {
+      "id": "1",
+      "name": "Administrador EduCraft",
+      "email": "admin@educraft.com",
+      "password": "Admin123"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

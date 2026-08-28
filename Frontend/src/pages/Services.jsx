@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-// ❌ Borramos la importación del archivo estático local
-// import { servicesData } from "../data/services"; 
-
+import { getServices } from "../services/api";
 import ServiceCardFull from "../components/services/ServiceCardFull";
 import SectionTitle from "../components/common/SectionTitle";
 import { AcademicCapIcon, DocumentTextIcon, BookOpenIcon } from "@heroicons/react/24/outline";
@@ -12,27 +10,19 @@ export default function Services() {
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("Todos");
 
-  // Llamar a la base de datos al cargar la página
   useEffect(() => {
     const fetchServices = async () => {
-      try {
-        const response = await fetch('http://localhost/educraft-backend/api/services/');
-        const result = await response.json();
+      const result = await getServices();
 
-        if (result.success) {
-          // Adaptamos los nombres de la base de datos a los que usa tu Tarjeta
-          const formattedServices = result.data.map(service => ({
-            ...service,
-            deliveryTime: service.delivery_time, // Tu DB usa delivery_time
-            image: service.image_path || 'https://via.placeholder.com/400x250?text=EduCraft' // Imagen por defecto si no hay
-          }));
-          setServicesData(formattedServices);
-        }
-      } catch (error) {
-        console.error("Error cargando los servicios:", error);
-      } finally {
-        setLoading(false);
+      if (result.success) {
+        // Ya no hace falta adaptar nombres: el db.json usa
+        // deliveryTime e image, igual que ServiceCardFull.
+        setServicesData(result.data.filter((s) => s.visible));
+      } else {
+        console.error(result.message);
       }
+
+      setLoading(false);
     };
 
     fetchServices();

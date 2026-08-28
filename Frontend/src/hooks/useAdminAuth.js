@@ -1,41 +1,43 @@
 // src/hooks/useAdminAuth.js
+// Antes: sesiones PHP ($_SESSION + credentials: 'include').
+// Ahora: json-server no tiene sesiones ni cookies, así que la "sesión"
+// vive en localStorage del navegador.
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
+// Clave con la que guardamos al admin logueado en el navegador.
+const SESSION_KEY = "educraft_admin";
 
 export function useAdminAuth() {
   const [admin, setAdmin] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Al montar, revisamos si ya había una sesión guardada.
   useEffect(() => {
     verifySession();
   }, []);
 
-  const verifySession = async () => {
+  const verifySession = () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost/educraft-backend/api/auth/verify.php', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+      const saved = localStorage.getItem(SESSION_KEY);
 
-      const data = await response.json();
-
-      if (data.success) {
-        setAdmin(data.data);
+      if (saved) {
+        setAdmin(JSON.parse(saved));
         setError(null);
         return true;
-      } else {
-        setAdmin(null);
-        return false;
       }
-    } catch (err) {
-      console.error('Error verificando sesión:', err);
+
       setAdmin(null);
-      setError(err.message);
+      return false;
+    } catch (err) {
+      // Si el JSON guardado está corrupto, limpiamos y seguimos.
+      console.error("Sesión inválida:", err);
+      localStorage.removeItem(SESSION_KEY);
+      setAdmin(null);
       return false;
     } finally {
       setLoading(false);
@@ -47,61 +49,43 @@ export function useAdminAuth() {
       setLoading(true);
       setError(null);
 
-      const formData = new FormData();
-      formData.append('email', email);
-      formData.append('password', password);
+      // json-server filtra por query string: /admins?email=X&password=Y
+      // Devuelve un ARRAY: vacío si no coincide, con 1 elemento si coincide.
+      const response = await fetch(
+        `${API_URL}/admins?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+      );
 
-      const response = await fetch('http://localhost/educraft-backend/api/auth/login.php', {
-        method: 'POST',
-        credentials: 'include',
-        body: formData
-      });
+      const results = await response.json();
 
-      const data = await response.json();
-
-      if (data.success) {
-        setAdmin(data.data);
-        setError(null);
-        await new Promise(resolve => setTimeout(resolve, 200));
-        
-        return { success: true, message: data.message };
-      } else {
-        setError(data.message);
-        return { success: false, message: data.message };
+      if (results.length === 0) {
+        const message = "Correo o contraseña incorrectos";
+        setError(message);
+        return { success: false, message };
       }
+
+      // Nunca guardamos la contraseña en localStorage.
+      const { password: _omitida, ...adminData } = results[0];
+
+      localStorage.setItem(SESSION_KEY, JSON.stringify(adminData));
+      setAdmin(adminData);
+      setError(null);
+
+      return { success: true, message: "Bienvenido" };
     } catch (err) {
-      setError(err.message);
-      return { success: false, message: err.message };
+      const message = "No se pudo conectar. ¿Está corriendo json-server?";
+      setError(message);
+      return { success: false, message };
     } finally {
       setLoading(false);
     }
   };
 
-  const logout = async () => {
-    try {
-      setLoading(true);
-
-      const response = await fetch('http://localhost/educraft-backend/api/auth/logout.php', {
-        method: 'POST',
-        credentials: 'include'
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        setAdmin(null);
-        setError(null);
-        return { success: true };
-      } else {
-        setError(data.message);
-        return { success: false };
-      }
-    } catch (err) {
-      setError(err.message);
-      return { success: false };
-    } finally {
-      setLoading(false);
-    }
+  const logout = () => {
+    // Cerrar sesión ahora es solo borrar la clave del navegador.
+    localStorage.removeItem(SESSION_KEY);
+    setAdmin(null);
+    setError(null);
+    return { success: true };
   };
 
   return {
@@ -110,6 +94,6 @@ export function useAdminAuth() {
     error,
     login,
     logout,
-    isAuthenticated: admin !== null
+    isAuthenticated: admin !== null,
   };
 }

@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createService } from '../../../utils/adminApi';
+import { createService } from '../../../services/api';
 import ServiceForm from './ServiceForm';
 
 export default function AddServicio() {
@@ -15,9 +15,10 @@ export default function AddServicio() {
     category: '',
     title: '',
     description: '',
-    delivery_time: '',
+    deliveryTime: '',
     includes: [],
-    image: null
+    image: '',
+    visible: true
   });
 
   const validateForm = () => {
@@ -32,14 +33,14 @@ export default function AddServicio() {
     if (!formData.description.trim()) {
       newErrors.description = 'La descripción es requerida';
     }
-    if (!formData.delivery_time.trim()) {
-      newErrors.delivery_time = 'El tiempo de entrega es requerido';
+    if (!formData.deliveryTime.trim()) {
+      newErrors.deliveryTime = 'El tiempo de entrega es requerido';
     }
     if (formData.includes.length === 0) {
       newErrors.includes = 'Agrega al menos un elemento al "Qué incluye"';
     }
-    if (!formData.image) {
-      newErrors.image = 'La imagen es obligatoria';
+    if (!formData.image.trim()) {
+      newErrors.image = 'La ruta de la imagen es obligatoria';
     }
 
     return newErrors;
@@ -57,15 +58,7 @@ export default function AddServicio() {
     setLoading(true);
 
     try {
-      const dataToSend = new FormData();
-      dataToSend.append('category', formData.category);
-      dataToSend.append('title', formData.title);
-      dataToSend.append('description', formData.description);
-      dataToSend.append('delivery_time', formData.delivery_time);
-      dataToSend.append('includes', JSON.stringify(formData.includes));
-      dataToSend.append('image', formData.image);
-
-      const result = await createService(dataToSend);
+      const result = await createService(formData);
 
       if (result.success) {
         alert('✅ Servicio creado exitosamente');

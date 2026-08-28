@@ -1,7 +1,7 @@
 // src/pages/Admin/Servicios/EditServicio.jsx
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getServiceById, updateService } from '../../../utils/adminApi';
+import { getServiceById, updateService } from '../../../services/api';
 import ServiceForm from "./ServiceForm";
 
 export default function EditServicio() {
@@ -15,9 +15,10 @@ export default function EditServicio() {
     category: '',
     title: '',
     description: '',
-    delivery_time: '',
+    deliveryTime: '',
     includes: [],
-    image: null
+    image: '',
+    visible: true
   });
 
   useEffect(() => {
@@ -33,9 +34,10 @@ export default function EditServicio() {
           category: result.data.category,
           title: result.data.title,
           description: result.data.description,
-          delivery_time: result.data.delivery_time,
+          deliveryTime: result.data.deliveryTime,
           includes: result.data.includes || [],
-          image: null
+          image: result.data.image || '',
+          visible: result.data.visible ?? true
         });
       } else {
         setErrors({ submit: result.message });
@@ -52,7 +54,7 @@ export default function EditServicio() {
     if (!formData.category.trim()) newErrors.category = 'La categoría es requerida';
     if (!formData.title.trim()) newErrors.title = 'El título es requerido';
     if (!formData.description.trim()) newErrors.description = 'La descripción es requerida';
-    if (!formData.delivery_time.trim()) newErrors.delivery_time = 'El tiempo de entrega es requerido';
+    if (!formData.deliveryTime.trim()) newErrors.deliveryTime = 'El tiempo de entrega es requerido';
     if (formData.includes.length === 0) newErrors.includes = 'Agrega al menos un elemento';
     return newErrors;
   };
@@ -67,22 +69,7 @@ export default function EditServicio() {
 
     setLoading(true);
     try {
-      const dataToSend = new FormData();
-      
-      // 👇 ¡ESTO ES LO QUE FALTABA! Enviar el ID para que PHP sepa qué servicio editar
-      dataToSend.append('id', id); 
-      
-      dataToSend.append('category', formData.category);
-      dataToSend.append('title', formData.title);
-      dataToSend.append('description', formData.description);
-      dataToSend.append('delivery_time', formData.delivery_time);
-      dataToSend.append('includes', JSON.stringify(formData.includes));
-      
-      if (formData.image instanceof File) {
-        dataToSend.append('image', formData.image);
-      }
-
-      const result = await updateService(id, dataToSend);
+      const result = await updateService(id, formData);
 
       if (result.success) {
         alert('✅ Servicio actualizado exitosamente');

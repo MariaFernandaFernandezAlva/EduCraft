@@ -1,6 +1,7 @@
 import SectionTitle from "../common/SectionTitle";
 import ServiceCard from "./ServiceCard";
-import { servicesData } from "../../data/services";
+import { useState, useEffect } from "react";
+import { getServices } from "../../services/api";
 import { CubeIcon, DocumentTextIcon, BookOpenIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import Button from "../common/Button";
 
@@ -16,6 +17,20 @@ const icons = [
 const iconColors = ["text-azul bg-azul/20", "text-amarillo bg-amarillo/20", "text-verde bg-verde/20", "text-morado bg-morado/20"];
 
 export default function ServicesSection() {
+  const [servicesData, setServicesData] = useState([]);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      const result = await getServices();
+      if (result.success) {
+        // Solo 4 en el home: el resto se ve en /services
+        setServicesData(result.data.filter((s) => s.visible).slice(0, 4));
+      }
+    };
+
+    fetchServices();
+  }, []);
+
   return (
     <section id="servicios" className="bg-gray py-20 md:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,14 +44,14 @@ export default function ServicesSection() {
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {servicesData.map((service) => (
+          {servicesData.map((service, index) => (
             <ServiceCard
               key={service.id}
-              icon={icons[service.id - 1]}
+              icon={icons[index % icons.length]}
               title={service.title}
               description={service.description}
-              borderColor={borderColors[service.id - 1]}
-              iconColor={iconColors[service.id - 1]}
+              borderColor={borderColors[index % borderColors.length]}
+              iconColor={iconColors[index % iconColors.length]}
             />
           ))}
         </div>

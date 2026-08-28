@@ -38,7 +38,7 @@ export default function AdminNavbar() {
           {/* Nombre del Admin */}
           <div className="text-right">
             <p className="text-sm font-semibold text-gray-900">
-              {admin?.full_name || 'Admin'}
+              {admin?.name || 'Admin'}
             </p>
             <p className="text-xs text-gray-500">{admin?.email}</p>
           </div>
@@ -46,7 +46,7 @@ export default function AdminNavbar() {
           {/* Avatar */}
           <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
             <span className="text-blue-900 font-bold">
-              {admin?.full_name?.charAt(0) || 'A'}
+              {admin?.name?.charAt(0) || 'A'}
             </span>
           </div>
 

@@ -1,5 +1,5 @@
 // src/App.jsx
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ToastProvider } from "./context/ToastContext";
 import ToastContainer from "./components/common/ToastContainer";
 import Header from "./components/layout/Header";
@@ -45,6 +45,7 @@ export default function App() {
               </ProtectedRoute>
             }
           >
+            <Route index element={<Navigate to="/admin/servicios" replace />} />
             <Route path="servicios" element={<ServiciosPage />} />
             <Route path="servicios/new" element={<AddServicio />} />
             <Route path="servicios/:id/edit" element={<EditServicio />} />

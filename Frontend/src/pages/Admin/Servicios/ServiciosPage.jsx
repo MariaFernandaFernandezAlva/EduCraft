@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getServices, deleteService } from '../../../utils/adminApi';
+import { getServices, deleteService } from '../../../services/api';
 
 export default function ServiciosPage() {
   const navigate = useNavigate();
@@ -40,7 +40,6 @@ export default function ServiciosPage() {
       const result = await deleteService(id);
 
       if (result.success) {
-        // Actualizar lista
         setServices(services.filter(s => s.id !== id));
         setDeleteConfirm(null);
         alert('Servicio eliminado exitosamente');
@@ -152,7 +151,7 @@ export default function ServiciosPage() {
                     </td>
 
                     <td className="px-6 py-4 text-sm text-gray-600">
-                      {service.delivery_time}
+                      {service.deliveryTime}
                     </td>
 
                     <td className="px-6 py-4 text-center">
