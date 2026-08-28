@@ -69,10 +69,13 @@
   "projects": [
     {
       "id": "1",
-      "image": "🧬",
+      "images": [
+        "/images/projects/maqueta.webp",
+        "/images/projects/cuaderno.webp",
+        "/images/projects/Triptico.webp"
+      ],
       "category": "Maqueta",
-      "categoryColor": "bg-teal-100 text-teal-700",
-      "title": "Maqueta ADN 3D",
+      "title": "Maqueta ADN 3D - muy bueno",
       "description": "Modelo tridimensional interactivo del ADN. Representación detallada de bases nitrogenadas para proyectos de biología.",
       "includes": [
         "Modelo tridimensional de 60cm de alto",
@@ -84,9 +87,12 @@
     },
     {
       "id": "2",
-      "image": "🏭",
+      "images": [
+        "/images/projects/maqueta.webp",
+        "/images/projects/cuaderno.webp",
+        "/images/projects/Triptico.webp"
+      ],
       "category": "Tríptico",
-      "categoryColor": "bg-amber-100 text-amber-700",
       "title": "Revolución Industrial",
       "description": "Tríptico informativo con diseño atractivo y datos clave. Ideal para exposiciones sobre historia moderna.",
       "includes": [
@@ -99,9 +105,12 @@
     },
     {
       "id": "3",
-      "image": "🌌",
+      "images": [
+        "/images/projects/maqueta.webp",
+        "/images/projects/cuaderno.webp",
+        "/images/projects/Triptico.webp"
+      ],
       "category": "Lámina",
-      "categoryColor": "bg-blue-100 text-blue-700",
       "title": "Exploración Espacial",
       "description": "Lámina de gran formato con infografía sobre el espacio. Presentación visual de alta resolución e información interactiva.",
       "includes": [
@@ -114,9 +123,12 @@
     },
     {
       "id": "4",
-      "image": "🧪",
+      "images": [
+        "/images/projects/maqueta.webp",
+        "/images/projects/cuaderno.webp",
+        "/images/projects/Triptico.webp"
+      ],
       "category": "Cuaderno",
-      "categoryColor": "bg-purple-100 text-purple-700",
       "title": "Bitácora de Biología",
       "description": "Cuaderno personalizado con apuntes y ejercicios. Diseño estructurado para facilitación de aprendizaje por trimestres.",
       "includes": [
@@ -129,9 +141,12 @@
     },
     {
       "id": "5",
-      "image": "🏛️",
+      "images": [
+        "/images/projects/maqueta.webp",
+        "/images/projects/cuaderno.webp",
+        "/images/projects/Triptico.webp"
+      ],
       "category": "Maqueta",
-      "categoryColor": "bg-teal-100 text-teal-700",
       "title": "Templo Maya",
       "description": "Construcción modular con efectos de iluminación integrada. Modelo detallado para proyectos de historia antigua.",
       "includes": [
@@ -144,9 +159,12 @@
     },
     {
       "id": "6",
-      "image": "📚",
+      "images": [
+        "/images/projects/maqueta.webp",
+        "/images/projects/cuaderno.webp",
+        "/images/projects/Triptico.webp"
+      ],
       "category": "Guía",
-      "categoryColor": "bg-green-100 text-green-700",
       "title": "Pack Pre-Universitario",
       "description": "Guía de ejercicios y material de apoyo estructurado. Contenido meticuloso con énfasis pedagógico riguroso.",
       "includes": [

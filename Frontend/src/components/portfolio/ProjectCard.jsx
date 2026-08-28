@@ -1,8 +1,13 @@
 import { useState } from "react";
 import { WHATSAPP_NUMBER } from "../../data/constants";
+import { getCategoryColor } from "../../data/categories";
 
 export default function ProjectCard({ project }) {
   const [showMore, setShowMore] = useState(false);
+  const [imagenActiva, setImagenActiva] = useState(0);
+
+  const imagenes = project.images;
+  const tieneImagenes = imagenes.length > 0;
 
   const handleWhatsApp = () => {
     const message = `Hola, me interesa el proyecto *${project.title}* que vi en tu portafolio.
@@ -25,11 +30,36 @@ ${project.includes.map(inc => `• ${inc}`).join("\n")}
       {/* Container Horizontal */}
       <div className="flex flex-col md:flex-row gap-6 p-6 md:p-8">
         
-        {/* Image Section */}
+        {/* Galería */}
         <div className="shrink-0 md:w-1/3">
-          <div className="h-48 md:h-64 bg-linear-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center">
-            <div className="text-7xl md:text-8xl">{project.image}</div>
+
+          {/* Imagen principal*/}
+          <div className="h-48 md:h-64 bg-linear-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
+            <img
+              src={imagenes[imagenActiva]}
+              alt={`${project.title} - imagen ${imagenActiva + 1}`}
+              className="w-full h-full object-cover"
+            />
           </div>
+
+          {/* Miniaturas: solo si hay más de una */}
+          {imagenes.length > 1 && (
+            <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
+              {imagenes.map((ruta, index) => (
+                <button
+                  key={ruta}
+                  onClick={() => setImagenActiva(index)}
+                  className={`shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-colors ${
+                    index === imagenActiva
+                      ? "border-blue-900"
+                      : "border-transparent hover:border-gray-300"
+                  }`}
+                >
+                  <img src={ruta} alt={`Miniatura ${index + 1}`} className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Content Section */}
@@ -38,7 +68,7 @@ ${project.includes.map(inc => `• ${inc}`).join("\n")}
           {/* Header */}
           <div className="mb-4">
             {/* Category Badge */}
-            <span className={`inline-block px-3 py-1 text-xs font-bold rounded-full ${project.categoryColor} mb-3`}>
+            <span className={`inline-block px-3 py-1 text-xs font-bold rounded-full ${getCategoryColor(project.category)} mb-3`}>
               {project.category}
             </span>
 

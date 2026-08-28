@@ -23,6 +23,11 @@ import ServiciosPage from './pages/Admin/Servicios/ServiciosPage';
 import AddServicio from './pages/Admin/Servicios/AddServicio';
 import EditServicio from './pages/Admin/Servicios/EditServicio';
 
+// Admin - Proyectos
+import ProyectosPage from './pages/Admin/Proyectos/ProyectosPage';
+import AddProyecto from './pages/Admin/Proyectos/AddProyecto';
+import EditProyecto from './pages/Admin/Proyectos/EditProyecto';
+
 export default function App() {
   const { isAuthenticated, loading } = useAdminAuth();
 
@@ -51,6 +56,10 @@ export default function App() {
             <Route path="servicios/:id/edit" element={<EditServicio />} />
             
             {/* Proyectos - Próximamente */}
+            <Route path="proyectos" element={<ProyectosPage />} />
+            <Route path="proyectos/new" element={<AddProyecto />} />
+            <Route path="proyectos/:id/edit" element={<EditProyecto />} />
+
             {/* <Route path="proyectos" element={<ProyectosPage />} /> */}
             
             {/* Cotizaciones - Próximamente */}

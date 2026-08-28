@@ -1,12 +1,5 @@
-// src/services/api.js
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
-/**
- * json-server devuelve los datos "pelados": un array o un objeto.
- * No devuelve { success, data, message } como hacía tu PHP.
- * Aquí envolvemos la respuesta para mantener ese mismo contrato
- * y que tus componentes sigan usando result.success / result.data.
- */
 async function request(path, { method = "GET", body = null } = {}) {
   try {
     const response = await fetch(`${API_URL}${path}`, {
@@ -39,11 +32,6 @@ async function request(path, { method = "GET", body = null } = {}) {
   }
 }
 
-/**
- * Fábrica de CRUD: recibe el nombre de la colección de db.json
- * y devuelve las 5 operaciones. Así no repetimos el mismo código
- * cuatro veces (servicios, proyectos, cotizaciones, testimonios).
- */
 function crud(resource) {
   return {
     getAll: (query = "") => request(`/${resource}${query}`),
@@ -66,3 +54,14 @@ export const getServiceById = (id) => servicesApi.getById(id);
 export const createService = (data) => servicesApi.create(data);
 export const updateService = (id, data) => servicesApi.update(id, data);
 export const deleteService = (id) => servicesApi.remove(id);
+
+// ===============================
+// PROYECTOS (portafolio)
+// ===============================
+const projectsApi = crud("projects");
+
+export const getProjects = () => projectsApi.getAll();
+export const getProjectById = (id) => projectsApi.getById(id);
+export const createProject = (data) => projectsApi.create(data);
+export const updateProject = (id, data) => projectsApi.update(id, data);
+export const deleteProject = (id) => projectsApi.remove(id);
