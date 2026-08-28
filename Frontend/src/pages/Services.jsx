@@ -1,26 +1,59 @@
-import { useState } from "react";
-import { servicesData } from "../data/services";
+import { useState, useEffect } from "react";
+// ❌ Borramos la importación del archivo estático local
+// import { servicesData } from "../data/services"; 
+
 import ServiceCardFull from "../components/services/ServiceCardFull";
 import SectionTitle from "../components/common/SectionTitle";
-import { AcademicCapIcon, DocumentTextIcon, BookOpenIcon, PhotoIcon } from "@heroicons/react/24/outline";
+import { AcademicCapIcon, DocumentTextIcon, BookOpenIcon } from "@heroicons/react/24/outline";
 
 export default function Services() {
-  // Obtener categorías únicas
-  const categories = ["Todos", ...new Set(servicesData.map(s => s.category))];
+  // Nuevos estados para manejar los datos de la base de datos
+  const [servicesData, setServicesData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("Todos");
 
-  // Filtrar servicios según categoría activa
+  // Llamar a la base de datos al cargar la página
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await fetch('http://localhost/educraft-backend/api/services/');
+        const result = await response.json();
+
+        if (result.success) {
+          // Adaptamos los nombres de la base de datos a los que usa tu Tarjeta
+          const formattedServices = result.data.map(service => ({
+            ...service,
+            deliveryTime: service.delivery_time, // Tu DB usa delivery_time
+            image: service.image_path || 'https://via.placeholder.com/400x250?text=EduCraft' // Imagen por defecto si no hay
+          }));
+          setServicesData(formattedServices);
+        }
+      } catch (error) {
+        console.error("Error cargando los servicios:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
+  // Obtener categorías únicas basadas en los datos reales
+  const categories = ["Todos", ...new Set(servicesData.map(s => s.category))];
+
+  // Filtrar servicios
   const filteredServices = activeCategory === "Todos" 
     ? servicesData 
     : servicesData.filter(service => service.category === activeCategory);
 
-  const borderColors = ["border-azul", "border-morado", "border-verde"];
-
-  const icons = [
-    <AcademicCapIcon className="w-6 h-6" />,
-    <DocumentTextIcon className="w-6 h-6" />,
-    <BookOpenIcon className="w-6 h-6" />,
-  ];
+  // Si está cargando, mostramos un mensaje
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-azul"></div>
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-gray">
@@ -83,20 +116,17 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Why Choose Us */}
+      {/* Why Choose Us (Se mantiene igual) */}
       <section className="bg-gray py-16 md:py-20">
         <div className="max-w-7xl mx-auto px-6">
-          
           <h2 className="text-3xl md:text-4xl font-bold text-azul text-center mb-12">
             ¿Por qué elegirnos?
           </h2>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
             {/* Card 1 */}
             <div className="flex flex-col items-center text-center">
               <div className="w-fit p-4 text-5xl mb-6 rounded-lg text-azul bg-azul/20 shadow-md shadow-azul/40">
-                <CubeIcon className="w-6 h-6" />
+                <AcademicCapIcon className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-blue-900 mb-3">
                 Alineación Pedagógica
@@ -127,9 +157,7 @@ export default function Services() {
                 Entendemos los tiempos escolares. Garantizamos entregas en las fechas acordadas, en todo.
               </p>
             </div>
-
           </div>
-
         </div>
       </section>
 

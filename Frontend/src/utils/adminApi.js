@@ -1,42 +1,32 @@
 // src/utils/adminApi.js
-// Funciones para hacer llamadas a la API del backend
 
 const API_BASE_URL = 'http://localhost/educraft-backend/api';
 
-/**
- * Función genérica para llamadas a API
- * 
- * @param {string} endpoint - Ruta del endpoint (ej: "services")
- * @param {string} method - GET, POST, PUT, DELETE
- * @param {object} data - Datos a enviar (para POST/PUT)
- * @returns {object} - Respuesta de la API
- */
 async function apiCall(endpoint, method = 'GET', data = null) {
   try {
     const url = `${API_BASE_URL}/${endpoint}`;
     const options = {
       method,
-      credentials: 'include', // Incluir cookies de sesión
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      credentials: 'include',
+      headers: {} // Empezamos sin headers fijos
     };
 
-    // Si hay datos, agregarlos al body
-    if (data && (method === 'POST' || method === 'PUT')) {
-      options.body = JSON.stringify(data);
+    if (data) {
+      if (data instanceof FormData) {
+        // Si es un archivo, el navegador pone el header de 'multipart' automáticamente
+        options.body = data;
+      } else if (method === 'POST' || method === 'PUT') {
+        // Si es texto normal, forzamos JSON
+        options.headers['Content-Type'] = 'application/json';
+        options.body = JSON.stringify(data);
+      }
     }
 
     const response = await fetch(url, options);
-    const result = await response.json();
-
-    return result;
+    return await response.json();
   } catch (error) {
     console.error('Error en apiCall:', error);
-    return {
-      success: false,
-      message: error.message
-    };
+    return { success: false, message: error.message };
   }
 }
 
@@ -48,39 +38,38 @@ async function apiCall(endpoint, method = 'GET', data = null) {
  * Obtener todos los servicios
  */
 export async function getServices() {
-  return apiCall('services', 'GET');
+  return apiCall('services/', 'GET');
 }
 
 /**
  * Obtener un servicio por ID
  */
 export async function getServiceById(id) {
-  return apiCall(`services?id=${id}`, 'GET');
+  return apiCall(`services/?id=${id}`, 'GET');
 }
 
 /**
  * Crear nuevo servicio
  */
 export async function createService(serviceData) {
-  return apiCall('services', 'POST', serviceData);
+  return apiCall('services/', 'POST', serviceData);
 }
 
 /**
  * Actualizar un servicio
  */
 export async function updateService(id, serviceData) {
-  const dataWithId = {
-    id,
-    ...serviceData
-  };
-  return apiCall('services', 'PUT', dataWithId);
+  if (serviceData instanceof FormData && !serviceData.has('id')) {
+    serviceData.append('id', id);
+  }
+  return apiCall(`services/?id=${id}`, 'POST', serviceData);
 }
 
 /**
  * Eliminar un servicio
  */
 export async function deleteService(id) {
-  return apiCall(`services?id=${id}`, 'DELETE');
+  return apiCall(`services/?id=${id}`, 'DELETE');
 }
 
 // ===============================

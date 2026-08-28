@@ -1,14 +1,7 @@
 <?php
-require_once dirname(dirname(dirname(__FILE__))) . '/config/response.php';
-require_once dirname(dirname(dirname(__FILE__))) . '/config/database.php';
-enableCORS();
 
 if (!isset($_SESSION['admin_id'])) {
     sendError('No autorizado', 401);
-}
-
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    sendError('Método no permitido', 405);
 }
 
 $category = getRequiredField('category');
@@ -27,7 +20,28 @@ if (is_string($includes)) {
     $includes = json_encode($includes);
 }
 
-$image_path = isset($_POST['image_path']) ? trim($_POST['image_path']) : null;
+$image_path = null;
+
+if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+    // Definir la carpeta donde se guardarán (fuera de api)
+    $uploadDir = dirname(dirname(dirname(__FILE__))) . '/uploads/services/';
+    
+    // Crear la carpeta automáticamente si no existe
+    if (!file_exists($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+
+    // Generar un nombre único para evitar que imágenes con el mismo nombre se chanquen
+    $fileName = uniqid() . '_' . basename($_FILES['image']['name']);
+    $destination = $uploadDir . $fileName;
+
+    if (move_uploaded_file($_FILES['image']['tmp_name'], $destination)) {
+        // Esta es la URL pública que se guardará en tu base de datos
+        $image_path = 'http://localhost/educraft-backend/uploads/services/' . $fileName;
+    } else {
+        sendError('Error al guardar la imagen en el servidor', 500);
+    }
+}
 
 $query = "INSERT INTO services (category, title, description, includes, delivery_time, image_path) 
           VALUES (?, ?, ?, ?, ?, ?)";
@@ -57,4 +71,3 @@ sendSuccess([
 ], 'Servicio creado exitosamente', 201);
 
 $stmt->close();
-?>

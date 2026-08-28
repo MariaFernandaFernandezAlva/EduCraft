@@ -1,14 +1,5 @@
 <?php
 // api/services/get.php
-// GET /api/services → Obtener todos los servicios
-
-require_once dirname(dirname(dirname(__FILE__))) . '/config/response.php';
-require_once dirname(dirname(dirname(__FILE__))) . '/config/database.php';
-enableCORS();
-
-if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
-    sendError('Método no permitido', 405);
-}
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : null;
 
@@ -54,4 +45,3 @@ if ($id) {
 }
 
 $conn->close();
-?>

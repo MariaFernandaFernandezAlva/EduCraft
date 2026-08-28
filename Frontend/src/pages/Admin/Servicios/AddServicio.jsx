@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createService } from '../../../utils/adminApi';
+import ServiceForm from './ServiceForm';
 
 export default function AddServicio() {
   const navigate = useNavigate();
@@ -16,40 +17,8 @@ export default function AddServicio() {
     description: '',
     delivery_time: '',
     includes: [],
-    image_path: ''
+    image: null
   });
-
-  const [newInclude, setNewInclude] = useState('');
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
-    }
-  };
-
-  // Agregar un nuevo "incluye" a la lista
-  const handleAddInclude = () => {
-    if (newInclude.trim() && !formData.includes.includes(newInclude)) {
-      setFormData(prev => ({
-        ...prev,
-        includes: [...prev.includes, newInclude]
-      }));
-      setNewInclude('');
-    }
-  };
-
-  // Remover un "incluye" de la lista
-  const handleRemoveInclude = (index) => {
-    setFormData(prev => ({
-      ...prev,
-      includes: prev.includes.filter((_, i) => i !== index)
-    }));
-  };
 
   const validateForm = () => {
     const newErrors = {};
@@ -69,6 +38,9 @@ export default function AddServicio() {
     if (formData.includes.length === 0) {
       newErrors.includes = 'Agrega al menos un elemento al "Qué incluye"';
     }
+    if (!formData.image) {
+      newErrors.image = 'La imagen es obligatoria';
+    }
 
     return newErrors;
   };
@@ -85,7 +57,15 @@ export default function AddServicio() {
     setLoading(true);
 
     try {
-      const result = await createService(formData);
+      const dataToSend = new FormData();
+      dataToSend.append('category', formData.category);
+      dataToSend.append('title', formData.title);
+      dataToSend.append('description', formData.description);
+      dataToSend.append('delivery_time', formData.delivery_time);
+      dataToSend.append('includes', JSON.stringify(formData.includes));
+      dataToSend.append('image', formData.image);
+
+      const result = await createService(dataToSend);
 
       if (result.success) {
         alert('✅ Servicio creado exitosamente');
@@ -123,184 +103,15 @@ export default function AddServicio() {
         </div>
       )}
 
-      {/* Formulario */}
-      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-8 space-y-6">
-        
-        {/* Categoría */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Categoría *
-          </label>
-          <input
-            type="text"
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            placeholder="Ej: Maquetas, Trípticos, Dioramas"
-            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent outline-none transition-colors ${
-              errors.category
-                ? 'border-red-400 focus:ring-red-300'
-                : 'border-gray-300 focus:ring-blue-900'
-            }`}
-          />
-          {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category}</p>}
-        </div>
-
-        {/* Título */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Título *
-          </label>
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            placeholder="Ej: Maquetas Profesionales"
-            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent outline-none transition-colors ${
-              errors.title
-                ? 'border-red-400 focus:ring-red-300'
-                : 'border-gray-300 focus:ring-blue-900'
-            }`}
-          />
-          {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
-        </div>
-
-        {/* Descripción */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Descripción *
-          </label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Describe detalladamente tu servicio..."
-            rows="4"
-            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent outline-none resize-none transition-colors ${
-              errors.description
-                ? 'border-red-400 focus:ring-red-300'
-                : 'border-gray-300 focus:ring-blue-900'
-            }`}
-          />
-          {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
-        </div>
-
-        {/* Tiempo de Entrega */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Tiempo de Entrega *
-          </label>
-          <input
-            type="text"
-            name="delivery_time"
-            value={formData.delivery_time}
-            onChange={handleChange}
-            placeholder="Ej: 5-8 días"
-            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent outline-none transition-colors ${
-              errors.delivery_time
-                ? 'border-red-400 focus:ring-red-300'
-                : 'border-gray-300 focus:ring-blue-900'
-            }`}
-          />
-          {errors.delivery_time && <p className="text-red-500 text-sm mt-1">{errors.delivery_time}</p>}
-        </div>
-
-        {/* Qué Incluye */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Qué Incluye * ({formData.includes.length} agregados)
-          </label>
-          
-          {/* Input para agregar */}
-          <div className="flex gap-2 mb-4">
-            <input
-              type="text"
-              value={newInclude}
-              onChange={(e) => setNewInclude(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddInclude())}
-              placeholder="Ej: Investigación histórica"
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent outline-none"
-            />
-            <button
-              type="button"
-              onClick={handleAddInclude}
-              className="px-4 py-3 bg-blue-100 text-blue-900 font-semibold rounded-lg hover:bg-blue-200 transition-colors"
-            >
-              ➕ Agregar
-            </button>
-          </div>
-
-          {/* Lista de elementos */}
-          {formData.includes.length > 0 ? (
-            <div className="space-y-2">
-              {formData.includes.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200"
-                >
-                  <span className="text-gray-900">✓ {item}</span>
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveInclude(index)}
-                    className="text-red-600 hover:text-red-800 font-semibold"
-                  >
-                    ✕
-                  </button>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-gray-500 italic">No hay elementos agregados aún</p>
-          )}
-
-          {errors.includes && <p className="text-red-500 text-sm mt-2">{errors.includes}</p>}
-        </div>
-
-        {/* Imagen Path (opcional) */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            URL de Imagen (Opcional)
-          </label>
-          <input
-            type="text"
-            name="image_path"
-            value={formData.image_path}
-            onChange={handleChange}
-            placeholder="Ej: /images/maqueta.jpg"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent outline-none"
-          />
-          <p className="text-xs text-gray-500 mt-1">
-            Por ahora solo URLs. Próximamente podrás subir archivos.
-          </p>
-        </div>
-
-        {/* Botones */}
-        <div className="flex gap-3 pt-4 border-t border-gray-200">
-          <button
-            type="button"
-            onClick={() => navigate('/admin/servicios')}
-            className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            Cancelar
-          </button>
-          <button
-            type="submit"
-            disabled={loading}
-            className="flex-1 px-6 py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-blue-800 disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
-          >
-            {loading ? (
-              <>
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                Creando...
-              </>
-            ) : (
-              '✅ Crear Servicio'
-            )}
-          </button>
-        </div>
-
-      </form>
+      {/* Formulario Reutilizable */}
+      <ServiceForm 
+        formData={formData}
+        setFormData={setFormData}
+        errors={errors}
+        onSubmit={handleSubmit}
+        loading={loading}
+        isEditing={false}
+      />
 
     </div>
   );
