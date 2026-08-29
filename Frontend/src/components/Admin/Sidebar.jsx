@@ -1,7 +1,6 @@
-// src/components/Admin/Sidebar.jsx
-// Sidebar con menú de navegación
-
 import { Link, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { getPendingQuotations } from '../../services/api';
 
 export default function Sidebar() {
   const location = useLocation();
@@ -27,7 +26,14 @@ export default function Sidebar() {
       label: 'Cotizaciones',
       icon: '💼',
       path: '/admin/cotizaciones',
-      description: 'Ver solicitudes'
+      description: 'Solicitudes nuevas'
+    },
+    {
+      id: 'historial',
+      label: 'Historial',
+      icon: '📂',
+      path: '/admin/historial',
+      description: 'Cotizaciones gestionadas'
     },
     {
       id: 'testimonios',
@@ -40,6 +46,25 @@ export default function Sidebar() {
 
   // Verificar si la ruta actual coincide
   const isActive = (path) => location.pathname === path;
+
+  const [pendientes, setPendientes] = useState(0);
+
+  useEffect(() => {
+    const contarPendientes = async () => {
+      const result = await getPendingQuotations();
+      if (result.success) setPendientes(result.data.length);
+    };
+
+    contarPendientes();
+
+    // Revisamos cada 30 segundos. Como json-server no puede
+    // avisarnos solo cuando llega algo nuevo, preguntamos cada cierto tiempo.
+    const intervalo = setInterval(contarPendientes, 30000);
+
+    // Limpieza: si no cancelamos el intervalo al desmontar,
+    // sigue corriendo para siempre y consume memoria.
+    return () => clearInterval(intervalo);
+  }, []);
 
   return (
     <aside className="w-64 bg-gray-900 text-white h-screen sticky top-0 flex flex-col overflow-y-auto">
@@ -69,6 +94,13 @@ export default function Sidebar() {
               <p className="font-semibold text-sm">{item.label}</p>
               <p className="text-xs text-gray-400">{item.description}</p>
             </div>
+            {/* Contador de pendientes */}
+            {item.id === 'cotizaciones' && pendientes > 0 && (
+              <span className="min-w-5.5 h-5.5 px-1.5 flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full">
+                {pendientes}
+              </span>
+            )}
+
             {isActive(item.path) && (
               <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
             )}

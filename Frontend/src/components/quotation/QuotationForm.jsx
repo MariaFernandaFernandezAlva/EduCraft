@@ -3,26 +3,39 @@ import { useToast } from "../../hooks/useToast";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
+import { createQuotation } from "../../services/api";
 
 export default function QuotationForm() {
   const { addToast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState(() => {
-    // Intentar cargar datos guardados en localStorage
-    const saved = localStorage.getItem("quotationFormData");
-    return saved ? JSON.parse(saved) : {
+    // Los valores por defecto son la forma "oficial" del formulario.
+    const valoresIniciales = {
       fullName: "",
       email: "",
       whatsapp: "",
       projectType: "",
       academicLevel: "",
       description: "",
-      referenceFile: null,
+      referenceLink: "",
       deliveryDate: "",
       deliveryMethod: "",
       address: "",
       acceptTerms: false
     };
+
+    const saved = localStorage.getItem("quotationFormData");
+    if (!saved) return valoresIniciales;
+
+    try {
+      // Fusionamos: partimos de los valores por defecto y encima
+      // ponemos lo guardado. Así un borrador viejo al que le falte
+      // un campo nuevo igual lo recibe con su valor inicial.
+      return { ...valoresIniciales, ...JSON.parse(saved) };
+    } catch {
+      // Si el JSON guardado está corrupto, empezamos limpio.
+      return valoresIniciales;
+    }
   });
 
   // Guardar datos en localStorage cada vez que cambien
@@ -52,20 +65,28 @@ export default function QuotationForm() {
   };
 
   const handleSubmitForm = async () => {
-    // Aquí irá la lógica para enviar datos al backend
-    console.log("Datos del formulario:", formData);
-    
-    // Mostrar notificación de éxito en esquina superior derecha
+
+    const { acceptTerms, ...datosAEnviar } = formData;
+
+    const result = await createQuotation(datosAEnviar);
+
+    if (!result.success) {
+      addToast(
+        "No pudimos enviar tu solicitud. Intenta de nuevo en un momento.",
+        "error",
+        4000
+      );
+      return;
+    }
+
     addToast(
       "¡Solicitud enviada! Nos contactaremos pronto con tu presupuesto.",
       "success",
       4000
     );
-    
-    // Limpiar localStorage
+
     localStorage.removeItem("quotationFormData");
-    
-    // Resetear formulario
+
     setCurrentStep(1);
     setFormData({
       fullName: "",
@@ -74,7 +95,7 @@ export default function QuotationForm() {
       projectType: "",
       academicLevel: "",
       description: "",
-      referenceFile: null,
+      referenceLink: "",
       deliveryDate: "",
       deliveryMethod: "",
       address: "",

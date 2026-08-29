@@ -9,7 +9,7 @@ export default function Step2({ formData, setFormData, onNext, onPrev }) {
     description: ""
   });
 
-  const [imagePreview, setImagePreview] = useState(null);
+  const [previewOk, setPreviewOk] = useState(null);
   
   const handleProjectTypeSelect = (typeName) => {
     setFormData(prev => ({
@@ -41,30 +41,14 @@ export default function Step2({ formData, setFormData, onNext, onPrev }) {
     }
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    
-    if (file) {
-      setFormData(prev => ({
-        ...prev,
-        referenceFile: file
-      }));
-
-      // Crear preview de la imagen
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleRemoveImage = () => {
+  const handleReferenceLinkChange = (e) => {
     setFormData(prev => ({
       ...prev,
-      referenceFile: null
+      referenceLink: e.target.value
     }));
-    setImagePreview(null);
+    // Cada vez que cambia el enlace, volvemos a "no sabemos"
+    // hasta que el navegador intente cargarlo de nuevo.
+    setPreviewOk(null);
   };
 
   const validateForm = () => {
@@ -170,77 +154,54 @@ export default function Step2({ formData, setFormData, onNext, onPrev }) {
         <FormError message={errors.description} />
       </div>
 
-      {/* Reference Image */}
+      {/* Reference Link */}
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Referencia de Trabajo (Opcional)
+          Enlace de Referencia (Opcional)
         </label>
-        
-        {imagePreview ? (
-          // Preview cuando hay imagen
-          <div className="border-2 border-green-300 rounded-lg p-6 bg-green-50">
-            <div className="mb-4">
-              <img
-                src={imagePreview}
-                alt="Preview"
-                className="w-full h-64 object-cover rounded-lg shadow-md"
-              />
-            </div>
-            
-            <div className="mb-4">
-              <p className="text-sm font-semibold text-gray-700 mb-2">
-                📎 {formData.referenceFile.name}
-              </p>
-              <p className="text-xs text-gray-600">
-                Tamaño: {(formData.referenceFile.size / 1024).toFixed(2)} KB
-              </p>
-            </div>
+        <input
+          type="url"
+          value={formData.referenceLink}
+          onChange={handleReferenceLinkChange}
+          placeholder="https://i.imgur.com/ejemplo.jpg"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent outline-none transition-colors duration-200"
+        />
 
-            <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={handleRemoveImage}
-                className="flex-1 px-4 py-2 border-2 border-red-300 text-red-600 font-semibold rounded-lg hover:bg-red-50 transition-colors"
-              >
-                ✕ Eliminar Imagen
-              </button>
-              <label htmlFor="referenceFile" className="flex-1">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="hidden"
-                  id="referenceFile"
-                />
-                <button
-                  type="button"
-                  onClick={() => document.getElementById('referenceFile').click()}
-                  className="w-full px-4 py-2 border-2 border-blue-900 text-blue-900 font-semibold rounded-lg hover:bg-blue-50 transition-colors"
-                >
-                  🔄 Cambiar Imagen
-                </button>
-              </label>
-            </div>
-          </div>
-        ) : (
-          // Área de carga cuando no hay imagen
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-900 hover:bg-blue-50 transition-colors cursor-pointer">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="hidden"
-              id="referenceFile"
+        {/* Vista previa: solo intentamos si hay algo escrito */}
+        {formData.referenceLink.trim() && (
+          <div className="mt-4">
+            <img
+              key={formData.referenceLink}
+              src={formData.referenceLink}
+              alt="Vista previa de la referencia"
+              onLoad={() => setPreviewOk(true)}
+              onError={() => setPreviewOk(false)}
+              className={`w-full max-h-64 object-contain rounded-lg border-2 border-green-300 bg-gray-50 ${
+                previewOk === true ? "block" : "hidden"
+              }`}
             />
-            <label htmlFor="referenceFile" className="cursor-pointer block">
-              <div className="text-4xl mb-2">📸</div>
-              <p className="text-sm font-semibold text-gray-700">
-                Sube una imagen de referencia
-              </p>
-              <p className="text-xs text-gray-500 mt-1">PNG, JPG o GIF (máx. 5MB)</p>
-            </label>
+
+            {previewOk === false && (
+              <div className="border-2 border-amber-300 bg-amber-50 rounded-lg p-4">
+                <p className="text-sm font-semibold text-amber-800">
+                  ⚠️ No pudimos mostrar esta imagen
+                </p>
+                <p className="text-xs text-amber-700 mt-1">
+                  El enlace debe apuntar directo a la imagen y terminar en
+                  .jpg, .png o .webp. Los enlaces de Google Drive o Dropbox
+                  no funcionan aquí, pero igual puedes enviarlo: nosotros lo
+                  abriremos por nuestra cuenta.
+                </p>
+              </div>
+            )}
           </div>
         )}
+
+        <p className="text-xs text-gray-500 mt-2">
+          ¿Tienes imágenes de referencia? Súbelas a un servicio como Imgur y pega
+          aquí el enlace. También puedes enviárnoslas por WhatsApp después de
+          solicitar tu cotización.
+        </p>
       </div>
 
       {/* Navigation Buttons */}
