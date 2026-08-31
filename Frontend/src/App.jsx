@@ -28,6 +28,12 @@ import ProyectosPage from './pages/Admin/Proyectos/ProyectosPage';
 import AddProyecto from './pages/Admin/Proyectos/AddProyecto';
 import EditProyecto from './pages/Admin/Proyectos/EditProyecto';
 
+// Admin - Cotizaciones
+import CotizacionesPage from './pages/Admin/Cotizaciones/CotizacionesPage';
+
+// Admin - Historial
+import HistorialPage from './pages/Admin/Historial/HistorialPage';
+
 export default function App() {
   const { isAuthenticated, loading } = useAdminAuth();
 
@@ -59,10 +65,10 @@ export default function App() {
             <Route path="proyectos" element={<ProyectosPage />} />
             <Route path="proyectos/new" element={<AddProyecto />} />
             <Route path="proyectos/:id/edit" element={<EditProyecto />} />
-
-            {/* <Route path="proyectos" element={<ProyectosPage />} /> */}
             
             {/* Cotizaciones - Próximamente */}
+            <Route path="cotizaciones" element={<CotizacionesPage />} />
+            <Route path="historial" element={<HistorialPage />} />
             {/* <Route path="cotizaciones" element={<CotizacionesPage />} /> */}
             
             {/* Testimonios - Próximamente */}

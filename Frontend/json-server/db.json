@@ -62,7 +62,7 @@
         "Laminado protector opcional"
       ],
       "deliveryTime": "3-5 días",
-      "image": "/images/services/Trifolio.webp",
+      "image": "https://i.pinimg.com/736x/02/cb/0e/02cb0ee39ad5d8d70b6d03b14f2e641f.jpg",
       "visible": true
     }
   ],
@@ -72,10 +72,11 @@
       "images": [
         "/images/projects/maqueta.webp",
         "/images/projects/cuaderno.webp",
-        "/images/projects/Triptico.webp"
+        "/images/projects/Triptico.webp",
+        "https://i.pinimg.com/736x/e0/63/1a/e0631a15414e3699cde2206f30a79513.jpg"
       ],
       "category": "Maqueta",
-      "title": "Maqueta ADN 3D - muy bueno",
+      "title": "Maqueta ADN 3D - EXCELENTE - magnific",
       "description": "Modelo tridimensional interactivo del ADN. Representación detallada de bases nitrogenadas para proyectos de biología.",
       "includes": [
         "Modelo tridimensional de 60cm de alto",
@@ -189,12 +190,21 @@
       "deliveryMethod": "Delivery a domicilio",
       "address": "Av. Los Álamos 123, San Miguel",
       "acceptTerms": true,
-      "status": "pendiente",
+      "status": "cotizada",
       "createdAt": "2026-08-20T14:30:00.000Z",
-      "items": [],
-      "shippingCost": 0,
+      "items": [
+        {
+          "concepto": "Maqueta de 30*60 de corrospum",
+          "precio": 15
+        },
+        {
+          "concepto": "Muñecos miniaturas",
+          "precio": 3
+        }
+      ],
+      "shippingCost": 10,
       "declineReason": "",
-      "quotedAt": null
+      "quotedAt": "2026-08-30T23:23:43.768Z"
     },
     {
       "fullName": "Maria Fernandez",
@@ -207,10 +217,10 @@
       "deliveryMethod": "Recojo en Persona",
       "address": "",
       "acceptTerms": true,
-      "status": "pendiente",
+      "status": "declinada",
       "items": [],
       "shippingCost": 0,
-      "declineReason": "",
+      "declineReason": "No hay suficientes datos del proyecto que quiere que se elabore, disculpe",
       "quotedAt": null,
       "createdAt": "2026-08-29T02:56:26.213Z",
       "id": "xk2FddpcIMo"
@@ -228,13 +238,37 @@
       "address": "urb: los naranjo mz x3 ",
       "acceptTerms": true,
       "referenceFile": null,
+      "status": "enviada",
+      "items": [
+        {
+          "concepto": "Tripticos a color unos 30",
+          "precio": 10
+        }
+      ],
+      "shippingCost": 15,
+      "declineReason": "",
+      "quotedAt": "2026-08-30T23:54:23.255Z",
+      "createdAt": "2026-08-29T03:21:51.996Z",
+      "id": "754IViPpk_k"
+    },
+    {
+      "fullName": "Rodrigo Fernandez",
+      "email": "rodrigo@gmail.com",
+      "whatsapp": "984576845",
+      "projectType": "Cuaderno",
+      "academicLevel": "Inicial",
+      "description": "Sobre la era de los dinosaurios , que sean como en 3D ,que salga del cuaderno",
+      "referenceLink": "https://i.pinimg.com/736x/22/d6/21/22d621b19a243f60675ff80cf4623536.jpg",
+      "deliveryDate": "2026-09-04",
+      "deliveryMethod": "Recojo en Persona",
+      "address": "",
       "status": "pendiente",
       "items": [],
       "shippingCost": 0,
       "declineReason": "",
       "quotedAt": null,
-      "createdAt": "2026-08-29T03:21:51.996Z",
-      "id": "754IViPpk_k"
+      "createdAt": "2026-08-31T00:39:53.292Z",
+      "id": "UMqsz2eLsMo"
     }
   ],
   "testimonials": [

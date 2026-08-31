@@ -1,25 +1,30 @@
-// src/pages/Admin/Cotizaciones/QuotationDetail.jsx
-// Modal de detalle + formulario de cotización.
-// Lo usan la bandeja de entrada y (más adelante) el historial.
+import { useState } from "react";
+import { formatearFecha, calcularTotal } from "../../../data/quotationStatus";
+import { generarCotizacionPDF } from "../../../utils/generarPDF";
+import {
+  enlaceEnvioCotizacion,
+  enlaceDeclinacion,
+} from "../../../utils/mensajes";
 
-import { useState } from 'react';
-import { formatearFecha, calcularTotal } from '../../../data/quotationStatus';
-
-export default function QuotationDetail({ quotation, onClose, onGuardar, onDeclinar }) {
-  // Copia local de los items: el admin edita aquí y solo
-  // al dar "Guardar" se manda al servidor. Así puede cancelar
-  // sin haber ensuciado el db.json.
+export default function QuotationDetail({
+  quotation,
+  onClose,
+  onGuardar,
+  onDeclinar,
+  onEnviado,
+  soloLectura = false,
+}) {
   const [items, setItems] = useState(quotation.items || []);
   const [shippingCost, setShippingCost] = useState(quotation.shippingCost || 0);
   const [guardando, setGuardando] = useState(false);
 
   // Campos del nuevo concepto que se está agregando.
-  const [nuevoConcepto, setNuevoConcepto] = useState('');
-  const [nuevoPrecio, setNuevoPrecio] = useState('');
+  const [nuevoConcepto, setNuevoConcepto] = useState("");
+  const [nuevoPrecio, setNuevoPrecio] = useState("");
 
   // Motivo de declinación (solo se usa si el admin declina).
   const [mostrarDeclinar, setMostrarDeclinar] = useState(false);
-  const [motivo, setMotivo] = useState('');
+  const [motivo, setMotivo] = useState("");
 
   const total = calcularTotal(items, shippingCost);
 
@@ -28,25 +33,23 @@ export default function QuotationDetail({ quotation, onClose, onGuardar, onDecli
     const precio = Number(nuevoPrecio);
 
     // El precio puede ser 0 (un item de cortesía), pero no vacío ni texto.
-    if (!concepto || nuevoPrecio === '' || isNaN(precio)) return;
+    if (!concepto || nuevoPrecio === "" || isNaN(precio)) return;
 
-    setItems(prev => [...prev, { concepto, precio }]);
-    setNuevoConcepto('');
-    setNuevoPrecio('');
+    setItems((prev) => [...prev, { concepto, precio }]);
+    setNuevoConcepto("");
+    setNuevoPrecio("");
   };
 
   const handleQuitarItem = (index) => {
-    setItems(prev => prev.filter((_, i) => i !== index));
+    setItems((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleGuardar = async () => {
     setGuardando(true);
     await onGuardar({
       items,
-      // Number() para que no se guarde como string:
-      // "15" + "180" daría "15180" al sumar.
       shippingCost: Number(shippingCost) || 0,
-      status: 'cotizada',
+      status: "cotizada",
       quotedAt: new Date().toISOString(),
     });
     setGuardando(false);
@@ -56,20 +59,34 @@ export default function QuotationDetail({ quotation, onClose, onGuardar, onDecli
     if (!motivo.trim()) return;
     setGuardando(true);
     await onDeclinar({
-      status: 'declinada',
+      status: "declinada",
       declineReason: motivo.trim(),
     });
     setGuardando(false);
   };
 
+  // Genera el PDF con lo que hay en pantalla ahora mismo,
+  // no con lo guardado en el servidor. Así el admin puede
+  // previsualizar antes de guardar.
+  const handleDescargarPDF = () => {
+    generarCotizacionPDF({
+      ...quotation,
+      items,
+      shippingCost: Number(shippingCost) || 0,
+    });
+  };
+
+  const [refPreviewOk, setRefPreviewOk] = useState(null);
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
-
         {/* Encabezado */}
         <div className="flex items-start justify-between p-6 border-b border-gray-200 sticky top-0 bg-white">
           <div>
-            <h3 className="text-xl font-bold text-gray-900">{quotation.fullName}</h3>
+            <h3 className="text-xl font-bold text-gray-900">
+              {quotation.fullName}
+            </h3>
             <p className="text-sm text-gray-500">
               Solicitado el {formatearFecha(quotation.createdAt)}
             </p>
@@ -83,7 +100,6 @@ export default function QuotationDetail({ quotation, onClose, onGuardar, onDecli
         </div>
 
         <div className="p-6 space-y-6">
-
           {/* Datos del cliente */}
           <div>
             <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3">
@@ -118,6 +134,14 @@ export default function QuotationDetail({ quotation, onClose, onGuardar, onDecli
                 <p className="text-xs font-semibold text-gray-500 uppercase mb-1">
                   Referencia enviada
                 </p>
+                {quotation.declineReason && (
+                  <div className="mt-4 border-2 border-amber-300 bg-amber-50 rounded-lg p-4">
+                    <p className="text-xs font-semibold text-amber-900 uppercase mb-1">
+                      Motivo de la declinación
+                    </p>
+                    <p className="text-amber-900">{quotation.declineReason}</p>
+                  </div>
+                )}
                 <a
                   href={quotation.referenceLink}
                   target="_blank"
@@ -126,6 +150,23 @@ export default function QuotationDetail({ quotation, onClose, onGuardar, onDecli
                 >
                   {quotation.referenceLink}
                 </a>
+                <img
+                  key={quotation.referenceLink}
+                  src={quotation.referenceLink}
+                  alt="Referencia enviada por el cliente"
+                  onLoad={() => setRefPreviewOk(true)}
+                  onError={() => setRefPreviewOk(false)}
+                  className={`mt-3 max-h-56 w-auto rounded-lg border border-gray-200 ${
+                    refPreviewOk === true ? "block" : "hidden"
+                  }`}
+                />
+
+                {refPreviewOk === false && (
+                  <p className="text-xs text-gray-500 mt-2">
+                    No se puede mostrar la miniatura de este enlace. Ábrelo en una
+                    pestaña nueva para verlo.
+                  </p>
+                )}
               </div>
             )}
           </div>
@@ -137,33 +178,35 @@ export default function QuotationDetail({ quotation, onClose, onGuardar, onDecli
             </h4>
 
             {/* Agregar concepto: dos inputs separados */}
-            <div className="flex flex-col sm:flex-row gap-2 mb-4">
-              <input
-                type="text"
-                value={nuevoConcepto}
-                onChange={(e) => setNuevoConcepto(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleAgregarItem()}
-                placeholder="Concepto — ej: Maqueta en madera 60x40cm"
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg outline-none"
-              />
-              <input
-                type="number"
-                value={nuevoPrecio}
-                onChange={(e) => setNuevoPrecio(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleAgregarItem()}
-                placeholder="0.00"
-                min="0"
-                step="0.01"
-                className="w-full sm:w-32 px-4 py-3 border border-gray-300 rounded-lg outline-none"
-              />
-              <button
-                type="button"
-                onClick={handleAgregarItem}
-                className="px-4 py-3 bg-blue-100 text-blue-900 font-semibold rounded-lg hover:bg-blue-200 whitespace-nowrap"
-              >
-                ➕ Agregar
-              </button>
-            </div>
+            {!soloLectura && (
+              <div className="flex flex-col sm:flex-row gap-2 mb-4">
+                <input
+                  type="text"
+                  value={nuevoConcepto}
+                  onChange={(e) => setNuevoConcepto(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleAgregarItem()}
+                  placeholder="Concepto — ej: Maqueta en madera 60x40cm"
+                  className="flex-1 px-4 py-3 border border-gray-300 rounded-lg outline-none"
+                />
+                <input
+                  type="number"
+                  value={nuevoPrecio}
+                  onChange={(e) => setNuevoPrecio(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleAgregarItem()}
+                  placeholder="0.00"
+                  min="0"
+                  step="0.01"
+                  className="w-full sm:w-32 px-4 py-3 border border-gray-300 rounded-lg outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={handleAgregarItem}
+                  className="px-4 py-3 bg-blue-100 text-blue-900 font-semibold rounded-lg hover:bg-blue-200 whitespace-nowrap"
+                >
+                  ➕ Agregar
+                </button>
+              </div>
+            )}
 
             {/* Lista de conceptos */}
             {items.length > 0 ? (
@@ -173,17 +216,21 @@ export default function QuotationDetail({ quotation, onClose, onGuardar, onDecli
                     key={index}
                     className="flex items-center justify-between px-4 py-3 border-b border-gray-100 last:border-b-0"
                   >
-                    <span className="text-gray-900 flex-1">{item.concepto}</span>
+                    <span className="text-gray-900 flex-1">
+                      {item.concepto}
+                    </span>
                     <span className="font-semibold text-gray-900 mx-4 whitespace-nowrap">
                       S/ {item.precio.toFixed(2)}
                     </span>
-                    <button
-                      type="button"
-                      onClick={() => handleQuitarItem(index)}
-                      className="text-red-600 font-semibold"
-                    >
-                      ✕
-                    </button>
+                    {!soloLectura && (
+                      <button
+                        type="button"
+                        onClick={() => handleQuitarItem(index)}
+                        className="text-red-600 font-semibold"
+                      >
+                        ✕
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
@@ -207,9 +254,10 @@ export default function QuotationDetail({ quotation, onClose, onGuardar, onDecli
                   type="number"
                   value={shippingCost}
                   onChange={(e) => setShippingCost(e.target.value)}
+                  disabled={soloLectura}
                   min="0"
                   step="0.01"
-                  className="w-28 px-3 py-2 border border-gray-300 rounded-lg outline-none text-right"
+                  className="w-28 px-3 py-2 border border-gray-300 rounded-lg outline-none text-right disabled:bg-gray-100"
                 />
               </div>
             </div>
@@ -237,11 +285,15 @@ export default function QuotationDetail({ quotation, onClose, onGuardar, onDecli
                 className="w-full px-4 py-3 border border-amber-300 rounded-lg outline-none resize-none"
               />
               <p className="text-xs text-amber-800">
-                Este texto se usará para armar el mensaje que le enviarás al cliente.
+                Este texto se usará para armar el mensaje que le enviarás al
+                cliente.
               </p>
               <div className="flex gap-2">
                 <button
-                  onClick={() => { setMostrarDeclinar(false); setMotivo(''); }}
+                  onClick={() => {
+                    setMostrarDeclinar(false);
+                    setMotivo("");
+                  }}
                   className="px-4 py-2 border border-gray-300 text-gray-700 font-semibold rounded-lg"
                 >
                   Cancelar
@@ -256,18 +308,24 @@ export default function QuotationDetail({ quotation, onClose, onGuardar, onDecli
               </div>
             </div>
           )}
-
         </div>
 
         {/* Botones de acción */}
-        {!mostrarDeclinar && (
+        {!mostrarDeclinar && !soloLectura && (
           <div className="flex flex-col sm:flex-row gap-3 p-6 border-t border-gray-200 bg-gray-50">
             <button
               onClick={handleGuardar}
               disabled={items.length === 0 || guardando}
               className="flex-1 px-6 py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-blue-800 disabled:opacity-50"
             >
-              {guardando ? 'Guardando...' : '💾 Guardar cotización'}
+              {guardando ? "Guardando..." : "💾 Guardar cotización"}
+            </button>
+            <button
+              onClick={handleDescargarPDF}
+              disabled={items.length === 0}
+              className="px-6 py-3 border-2 border-blue-900 text-blue-900 font-semibold rounded-lg hover:bg-blue-50 disabled:opacity-40"
+            >
+              📄 Ver PDF
             </button>
             <button
               onClick={() => setMostrarDeclinar(true)}
@@ -278,6 +336,42 @@ export default function QuotationDetail({ quotation, onClose, onGuardar, onDecli
           </div>
         )}
 
+        {/* Botones de acción (historial) */}
+        {soloLectura && (
+          <div className="flex flex-col sm:flex-row gap-3 p-6 border-t border-gray-200 bg-gray-50">
+            {items.length > 0 && (
+              <>
+                <button
+                  onClick={handleDescargarPDF}
+                  className="flex-1 px-6 py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-blue-800"
+                >
+                  📄 Descargar PDF
+                </button>
+
+                <a
+                  href={enlaceEnvioCotizacion(quotation)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => onEnviado && onEnviado()}
+                  className="flex-1 px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 text-center"
+                >
+                  💬 Enviar por WhatsApp
+                </a>
+              </>
+            )}
+
+            {quotation.status === "declinada" && (
+              <a
+                href={enlaceDeclinacion(quotation)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 px-6 py-3 bg-amber-600 text-white font-semibold rounded-lg hover:bg-amber-700 text-center"
+              >
+                💬 Avisar al cliente
+              </a>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -288,8 +382,10 @@ export default function QuotationDetail({ quotation, onClose, onGuardar, onDecli
 function Campo({ label, valor }) {
   return (
     <div>
-      <p className="text-xs font-semibold text-gray-500 uppercase mb-1">{label}</p>
-      <p className="text-gray-900">{valor || '—'}</p>
+      <p className="text-xs font-semibold text-gray-500 uppercase mb-1">
+        {label}
+      </p>
+      <p className="text-gray-900">{valor || "—"}</p>
     </div>
   );
 }
