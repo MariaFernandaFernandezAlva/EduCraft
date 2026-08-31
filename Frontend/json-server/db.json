@@ -84,6 +84,7 @@
         "Estructura de doble hélice en alambre de cobre",
         "Luces LED integradas"
       ],
+      "meta": ["Secundaria", "5 días", "Biología"],
       "visible": true
     },
     {
@@ -102,6 +103,7 @@
         "Infografías históricas personalizadas",
         "Impresión en papel de 300g"
       ],
+      "meta": ["Primaria", "6 días", "Comunicación"],
       "visible": true
     },
     {
@@ -120,6 +122,7 @@
         "Información de misiones espaciales",
         "Laminado protector anti-UV"
       ],
+      "meta": ["Secundaria", "3 días", "Ciencia y Tecnología"],
       "visible": true
     },
     {
@@ -138,6 +141,7 @@
         "Espacios para anotaciones",
         "Encuadernación con espiral de metal"
       ],
+      "meta": ["Inicial", "7 días", "Matemáticas"],
       "visible": true
     },
     {
@@ -156,6 +160,7 @@
         "Sistema de iluminación LED",
         "Base con información histórica"
       ],
+      "meta": ["Secundaria", "5 días", "Biología"],
       "visible": true
     },
     {
@@ -174,6 +179,7 @@
         "Pruebas modelo de admisión",
         "Guía de estrategias de estudio"
       ],
+      "meta": ["Secundaria", "5 días", "Biología"],
       "visible": true
     }
   ],

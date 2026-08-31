@@ -1,20 +1,21 @@
-// src/data/categories.js
-// Única fuente de verdad de las categorías del portafolio.
-// El db.json guarda SOLO el nombre; el color se resuelve aquí,
-// para que Tailwind pueda ver las clases y generarlas.
-
 export const PROJECT_CATEGORIES = [
-  { name: "Maqueta",  color: "bg-teal-100 text-teal-700" },
-  { name: "Tríptico", color: "bg-amber-100 text-amber-700" },
-  { name: "Lámina",   color: "bg-blue-100 text-blue-700" },
-  { name: "Cuaderno", color: "bg-purple-100 text-purple-700" },
-  { name: "Guía",     color: "bg-green-100 text-green-700" },
+  { name: "Maqueta",  color: "bg-verde/10 text-verde" },
+  { name: "Tríptico", color: "bg-amarillo/10 text-amarillo" },
+  { name: "Lámina",   color: "bg-azul/10 text-azul" },
+  { name: "Cuaderno", color: "bg-morado/10 text-morado" },
+  { name: "Guía",     color: "bg-marron/10 text-marron" },
 ];
 
-// Busca el color de una categoría. Si el nombre no existe
-// (por ejemplo si borraste una categoría que ya estaba en uso),
-// devuelve un gris neutro en vez de romper la tarjeta.
 export function getCategoryColor(categoryName) {
   const found = PROJECT_CATEGORIES.find((c) => c.name === categoryName);
   return found ? found.color : "bg-gray-100 text-gray-700";
 }
+
+const CATEGORY_ACCENTS = {
+  Maqueta: "from-verde/70 via-verde/90",
+  Lámina: "from-morado/70 via-morado/90",
+  Tríptico: "from-amarillo/70 via-amarillo/90",
+};
+
+export const getCategoryAccent = (category) =>
+  CATEGORY_ACCENTS[category] ?? "from-azul/70 via-azul/90";

@@ -17,6 +17,7 @@ export default function EditProyecto() {
     description: '',
     images: [],
     includes: [],
+    meta: [],
     visible: true
   });
 
@@ -36,6 +37,7 @@ export default function EditProyecto() {
           description: result.data.description || '',
           images: result.data.images || [],
           includes: result.data.includes || [],
+          meta: result.data.meta || [],
           visible: result.data.visible ?? true
         });
       } else {

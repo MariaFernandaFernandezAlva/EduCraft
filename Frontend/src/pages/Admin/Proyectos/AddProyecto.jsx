@@ -15,6 +15,7 @@ export default function AddProyecto() {
     description: '',
     images: [],
     includes: [],
+    meta: [],
     visible: true
   });
 

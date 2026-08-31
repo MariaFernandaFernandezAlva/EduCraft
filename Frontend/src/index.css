@@ -64,11 +64,6 @@ select:focus {
   @apply outline-none ring-2 ring-offset-2 ring-blue-900;
 }
 
-/*Son dos láminas transparentes superpuestas
-Una lámina con un estampado de lunares y, debajo de ella, una lámina con el degradado de color azul.
-
-*/
-
 .panel {
   background-image: 
     radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px), /*la textura de puntos*/
@@ -87,4 +82,25 @@ Una lámina con un estampado de lunares y, debajo de ella, una lámina con el de
 input::-ms-reveal,
 input::-ms-clear {
   display: none;
+}
+
+.card-proyecto__barra {
+  width: 100%;
+}
+
+/* Solo en desktop con puntero real: arranca en 0 y crece al pasar el mouse. */
+@media (hover: hover) and (min-width: 48rem) {
+  .card-proyecto__barra {
+    width: 0;
+    transition: width 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .card-proyecto:hover .card-proyecto__barra,
+  .card-proyecto:focus-within .card-proyecto__barra {
+    width: 100%;
+  }
+}
+
+.degradado {
+  background-image: linear-gradient(135deg, #0c184a 3%, #007a86 100%);
 }
