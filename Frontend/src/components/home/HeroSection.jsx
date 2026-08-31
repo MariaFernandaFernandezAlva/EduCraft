@@ -1,6 +1,5 @@
 import Button from "../common/Button";
-import { COMPANY_INFO } from "../../data/constants";
-import Image from "../../assets/projects/maquetaPrincipal.webp";
+import Image from "../../assets/maquetaPrincipal.webp";
 import SectionTitle from "../common/SectionTitle";
 
 export default function HeroSection() {

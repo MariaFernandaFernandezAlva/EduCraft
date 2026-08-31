@@ -1,93 +1,62 @@
 import { useState } from "react";
 import { useToast } from "../../hooks/useToast";
+import { createTestimonial } from "../../services/api";
 import FormError from "../common/FormError";
 import StarRating from "../common/StarRating";
 
 export default function TestimonialForm({ onAddTestimonial }) {
   const { addToast } = useToast();
-  
+
   const [formData, setFormData] = useState({
     name: "",
     role: "",
     rating: 5,
     comment: "",
-    projectPhotos: [] // Array de imágenes
+    images: []          // Rutas de texto, ya no archivos
   });
 
-  const [errors, setErrors] = useState({
-    name: "",
-    role: "",
-    comment: "",
-    projectPhotos: ""
-  });
+  const [errors, setErrors] = useState({});
+  const [enviando, setEnviando] = useState(false);
 
-  const [photoPreviews, setPhotoPreviews] = useState([]);
+  // Enlace que se está escribiendo antes de agregarlo a la lista.
+  const [nuevaFoto, setNuevaFoto] = useState("");
+  // null = aún no sabemos, true = cargó, false = el enlace falló
+  const [previewOk, setPreviewOk] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    
+    setFormData(prev => ({ ...prev, [name]: value }));
+
     if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ""
-      }));
+      setErrors(prev => ({ ...prev, [name]: "" }));
     }
   };
 
-  const handlePhotosChange = (e) => {
-    const files = Array.from(e.target.files || []);
-    
-    if (files.length > 0) {
-      // Agregar nuevas fotos a las existentes
-      const newPhotos = [...formData.projectPhotos, ...files];
-      
-      // Limitar a máximo 5 imágenes
-      if (newPhotos.length > 5) {
-        addToast("Máximo 5 imágenes permitidas", "error", 3000);
-        return;
-      }
+  const handleAgregarFoto = () => {
+    const ruta = nuevaFoto.trim();
+    if (!ruta) return;
 
-      setFormData(prev => ({
-        ...prev,
-        projectPhotos: newPhotos
-      }));
-
-      // Crear previews de todas las nuevas fotos
-      files.forEach(file => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setPhotoPreviews(prev => [...prev, reader.result]);
-        };
-        reader.readAsDataURL(file);
-      });
-      
-      if (errors.projectPhotos) {
-        setErrors(prev => ({
-          ...prev,
-          projectPhotos: ""
-        }));
-      }
+    if (formData.images.length >= 5) {
+      addToast("Máximo 5 imágenes permitidas", "error", 3000);
+      return;
     }
+
+    // El mismo enlace dos veces no aporta nada.
+    if (formData.images.includes(ruta)) {
+      addToast("Ese enlace ya está agregado", "error", 3000);
+      return;
+    }
+
+    setFormData(prev => ({ ...prev, images: [...prev.images, ruta] }));
+    setNuevaFoto("");
+    setPreviewOk(null);
   };
 
-  const handleRemovePhoto = (index) => {
+  const handleQuitarFoto = (index) => {
     setFormData(prev => ({
       ...prev,
-      projectPhotos: prev.projectPhotos.filter((_, i) => i !== index)
+      images: prev.images.filter((_, i) => i !== index)
     }));
-    setPhotoPreviews(prev => prev.filter((_, i) => i !== index));
-  };
-
-  const handleClearAllPhotos = () => {
-    setFormData(prev => ({
-      ...prev,
-      projectPhotos: []
-    }));
-    setPhotoPreviews([]);
   };
 
   const validateForm = () => {
@@ -112,53 +81,56 @@ export default function TestimonialForm({ onAddTestimonial }) {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const newErrors = validateForm();
-    
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
-    // Crear nuevo testimonio con todas las imágenes
-    const newTestimonial = {
-      id: Date.now(),
-      name: formData.name,
-      role: formData.role,
-      rating: formData.rating,
-      comment: formData.comment,
-      avatar: formData.name.split(" ").map(n => n[0]).join("").toUpperCase(),
-      date: new Date(),
-      images: photoPreviews // Array de todas las imágenes
-    };
+    setEnviando(true);
 
-    // Agregar el testimonio
-    onAddTestimonial(newTestimonial);
+    // El avatar son las iniciales del nombre. Lo calculamos aquí
+    // y lo guardamos, para que el panel y la landing muestren lo mismo.
+    const avatar = formData.name
+      .trim()
+      .split(" ")
+      .map(n => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);   // Máximo dos letras, si no se desborda el círculo
 
-    // Mostrar notificación
+    const result = await createTestimonial({ ...formData, avatar });
+
+    setEnviando(false);
+
+    if (!result.success) {
+      addToast("No pudimos enviar tu testimonio. Intenta de nuevo.", "error", 4000);
+      return;   // Sin limpiar: el usuario conserva lo que escribió.
+    }
+
+    // result.data es el testimonio ya guardado, con el id y la fecha
+    // que generó el servidor. Usamos ese y no formData, para que la
+    // tarjeta muestre exactamente lo que quedó en el db.json.
+    onAddTestimonial(result.data);
+
     addToast(
-      `¡Gracias ${formData.name}! Tu testimonio ha sido publicado exitosamente.`,
+      `¡Gracias ${formData.name}! Tu testimonio ya está publicado.`,
       "success",
       4000
     );
 
-    // Limpiar formulario
-    setFormData({
-      name: "",
-      role: "",
-      rating: 5,
-      comment: "",
-      projectPhotos: []
-    });
-    setPhotoPreviews([]);
+    setFormData({ name: "", role: "", rating: 5, comment: "", images: [] });
+    setNuevaFoto("");
     setErrors({});
   };
 
   return (
     <div className="bg-white rounded-lg p-8 shadow-md border border-gray-100">
-      
+
       <h3 className="text-2xl font-bold text-blue-900 mb-2">
         Comparte tu experiencia
       </h3>
@@ -167,22 +139,18 @@ export default function TestimonialForm({ onAddTestimonial }) {
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        
-        {/* Rating with StarRating Component */}
-        <StarRating 
-          value={formData.rating} 
-          onChange={(newRating) => 
-            setFormData(prev => ({
-              ...prev,
-              rating: newRating
-            }))
+
+        {/* Calificación */}
+        <StarRating
+          value={formData.rating}
+          onChange={(newRating) =>
+            setFormData(prev => ({ ...prev, rating: newRating }))
           }
         />
 
-        {/* Name and Role - Row */}
+        {/* Nombre y rol */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          
-          {/* Name */}
+
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Nombre completo
@@ -194,15 +162,14 @@ export default function TestimonialForm({ onAddTestimonial }) {
               onChange={handleChange}
               placeholder="Ej. Ani García"
               className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent outline-none transition-colors duration-200 ${
-                errors.name 
-                  ? "border-red-400 focus:ring-red-300" 
+                errors.name
+                  ? "border-red-400 focus:ring-red-300"
                   : "border-gray-300 focus:ring-blue-900"
               }`}
             />
             <FormError message={errors.name} />
           </div>
 
-          {/* Role */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Rol / Relación con Educraft
@@ -214,8 +181,8 @@ export default function TestimonialForm({ onAddTestimonial }) {
               onChange={handleChange}
               placeholder="Ej. Madre de familia"
               className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent outline-none transition-colors duration-200 ${
-                errors.role 
-                  ? "border-red-400 focus:ring-red-300" 
+                errors.role
+                  ? "border-red-400 focus:ring-red-300"
                   : "border-gray-300 focus:ring-blue-900"
               }`}
             />
@@ -224,7 +191,7 @@ export default function TestimonialForm({ onAddTestimonial }) {
 
         </div>
 
-        {/* Comment */}
+        {/* Comentario */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Tu testimonio
@@ -236,8 +203,8 @@ export default function TestimonialForm({ onAddTestimonial }) {
             placeholder="Cuéntanos sobre tu experiencia..."
             rows="5"
             className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent outline-none resize-none transition-colors duration-200 ${
-              errors.comment 
-                ? "border-red-400 focus:ring-red-300" 
+              errors.comment
+                ? "border-red-400 focus:ring-red-300"
                 : "border-gray-300 focus:ring-blue-900"
             }`}
           />
@@ -247,109 +214,87 @@ export default function TestimonialForm({ onAddTestimonial }) {
           </p>
         </div>
 
-        {/* Project Photos - MULTIPLE */}
+        {/* Fotos por enlace */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Fotos de tu proyecto (Opcional) - Máximo 5 imágenes
+            Fotos de tu proyecto (Opcional) — Máximo 5 enlaces
           </label>
-          
-          {/* Photo Previews */}
-          {photoPreviews.length > 0 && (
-            <div className="mb-6">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-4">
-                {photoPreviews.map((preview, index) => (
-                  <div
-                    key={index}
-                    className="relative group rounded-lg overflow-hidden shadow-md border border-gray-200"
-                  >
-                    <img
-                      src={preview}
-                      alt={`Preview ${index + 1}`}
-                      className="w-full h-32 object-cover"
-                    />
-                    
-                    {/* Delete Button */}
+
+          <div className="flex gap-2 mb-3">
+            <input
+              type="url"
+              value={nuevaFoto}
+              onChange={(e) => { setNuevaFoto(e.target.value); setPreviewOk(null); }}
+              onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAgregarFoto())}
+              placeholder="https://i.imgur.com/ejemplo.jpg"
+              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 outline-none"
+            />
+            <button
+              type="button"
+              onClick={handleAgregarFoto}
+              className="px-4 py-3 bg-blue-100 text-blue-900 font-semibold rounded-lg hover:bg-blue-200"
+            >
+              ➕
+            </button>
+          </div>
+
+          {/* Miniatura del enlace que se está escribiendo */}
+          {nuevaFoto.trim() && (
+            <div className="mb-3">
+              <img
+                key={nuevaFoto}
+                src={nuevaFoto}
+                alt="Vista previa"
+                onLoad={() => setPreviewOk(true)}
+                onError={() => setPreviewOk(false)}
+                className={`max-h-40 w-auto rounded-lg border-2 border-green-300 ${
+                  previewOk === true ? "block" : "hidden"
+                }`}
+              />
+              {previewOk === false && (
+                <p className="text-xs text-amber-700">
+                  ⚠️ No pudimos mostrar esta imagen. El enlace debe terminar en
+                  .jpg, .png o .webp.
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* Enlaces ya agregados */}
+          {formData.images.length > 0 && (
+            <>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-2">
+                {formData.images.map((ruta, index) => (
+                  <div key={ruta} className="relative rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
+                    <img src={ruta} alt={`Foto ${index + 1}`} className="w-full h-24 object-cover" />
                     <button
                       type="button"
-                      onClick={() => handleRemovePhoto(index)}
-                      className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-200"
+                      onClick={() => handleQuitarFoto(index)}
+                      className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full text-xs font-bold"
                     >
-                      <span className="bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold">
-                        ✕
-                      </span>
+                      ✕
                     </button>
-
-                    {/* Image Number */}
-                    <span className="absolute top-2 left-2 bg-blue-900 text-white text-xs font-bold px-2 py-1 rounded">
-                      {index + 1}
-                    </span>
                   </div>
                 ))}
               </div>
-
-              {/* Action Buttons */}
-              <div className="flex gap-3">
-                <label htmlFor="projectPhotos" className="flex-1">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handlePhotosChange}
-                    className="hidden"
-                    id="projectPhotos"
-                    multiple
-                  />
-                  <button
-                    type="button"
-                    onClick={() => document.getElementById('projectPhotos').click()}
-                    className="w-full px-4 py-2 border-2 border-blue-900 text-blue-900 font-semibold rounded-lg hover:bg-blue-50 transition-colors"
-                  >
-                    ➕ Agregar más fotos
-                  </button>
-                </label>
-                
-                <button
-                  type="button"
-                  onClick={handleClearAllPhotos}
-                  className="flex-1 px-4 py-2 border-2 border-red-300 text-red-600 font-semibold rounded-lg hover:bg-red-50 transition-colors"
-                >
-                  🗑️ Limpiar todo
-                </button>
-              </div>
-
-              <p className="text-xs text-gray-500 mt-3">
-                {photoPreviews.length} / 5 imágenes subidas
+              <p className="text-xs text-gray-500">
+                {formData.images.length} / 5 imágenes
               </p>
-            </div>
+            </>
           )}
 
-          {/* Upload Area */}
-          {photoPreviews.length === 0 && (
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-900 hover:bg-blue-50 transition-colors cursor-pointer">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handlePhotosChange}
-                className="hidden"
-                id="projectPhotos"
-                multiple
-              />
-              <label htmlFor="projectPhotos" className="cursor-pointer block">
-                <div className="text-3xl mb-2">📸</div>
-                <p className="text-sm font-semibold text-gray-700">
-                  Sube fotos o haz clic para subir
-                </p>
-                <p className="text-xs text-gray-500 mt-1">PNG, JPG o GIF (máx. 5 imágenes)</p>
-              </label>
-            </div>
-          )}
+          <p className="text-xs text-gray-500 mt-2">
+            Sube tus fotos a un servicio como Imgur y pega aquí los enlaces.
+          </p>
         </div>
 
-        {/* Submit Button */}
+        {/* Enviar */}
         <button
           type="submit"
-          className="w-full px-6 py-3 bg-amber-500 text-white font-semibold rounded-lg hover:bg-amber-600 transition-colors duration-300 flex items-center justify-center gap-2"
+          disabled={enviando}
+          className="w-full px-6 py-3 bg-amber-500 text-white font-semibold rounded-lg hover:bg-amber-600 disabled:opacity-50 transition-colors duration-300 flex items-center justify-center gap-2"
         >
-          ▶ Enviar Testimonio
+          {enviando ? "Enviando..." : "▶ Enviar Testimonio"}
         </button>
 
       </form>

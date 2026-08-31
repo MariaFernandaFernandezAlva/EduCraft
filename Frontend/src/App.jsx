@@ -34,6 +34,9 @@ import CotizacionesPage from './pages/Admin/Cotizaciones/CotizacionesPage';
 // Admin - Historial
 import HistorialPage from './pages/Admin/Historial/HistorialPage';
 
+// Admin - Testimonios
+import TestimoniosPage from './pages/Admin/Testimonios/TestimoniosPage';
+
 export default function App() {
   const { isAuthenticated, loading } = useAdminAuth();
 
@@ -72,7 +75,7 @@ export default function App() {
             {/* <Route path="cotizaciones" element={<CotizacionesPage />} /> */}
             
             {/* Testimonios - Próximamente */}
-            {/* <Route path="testimonios" element={<TestimoniosPage />} /> */}
+            <Route path="testimonios" element={<TestimoniosPage />} />
           </Route>
 
           {/* RUTAS DE LA LANDING - Con Header/Footer */}

@@ -81,3 +81,25 @@ export const createQuotation = (data) =>
     quotedAt: null,
     createdAt: new Date().toISOString(),
   });
+
+// ===============================
+// TESTIMONIOS
+// ===============================
+const testimonialsApi = crud("testimonials");
+
+export const getTestimonials = () => testimonialsApi.getAll();
+export const updateTestimonial = (id, data) => testimonialsApi.update(id, data);
+export const deleteTestimonial = (id) => testimonialsApi.remove(id);
+
+// La landing solo muestra los aprobados.
+export const getApprovedTestimonials = () =>
+  testimonialsApi.getAll("?status=aprobado");
+
+// Los testimonios se publican de inmediato.
+// El campo status existe para que el admin pueda ocultarlos después.
+export const createTestimonial = (data) =>
+  testimonialsApi.create({
+    ...data,
+    status: "aprobado",
+    date: new Date().toISOString(),
+  });

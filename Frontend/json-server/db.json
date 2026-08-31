@@ -313,8 +313,33 @@
       "comment": "Increíble. El detalle y el soporte por WhatsApp fue vital para terminar mi proyecto a tiempo.",
       "avatar": "AL",
       "images": [],
-      "status": "pendiente",
+      "status": "oculto",
       "date": "2026-07-15T00:00:00.000Z"
+    },
+    {
+      "name": "Maria Fernanda",
+      "role": "Madre de familia",
+      "rating": 5,
+      "comment": "Muy hermosos trabajos , sobre el experimento del jabón con sábila",
+      "images": [
+        "https://i.pinimg.com/1200x/5d/30/c9/5d30c9d93e5941f0e1848493b7d7b0f9.jpg",
+        "https://i.pinimg.com/736x/cb/1c/f9/cb1cf9987e01a3b70d129fd148c50b68.jpg"
+      ],
+      "avatar": "MF",
+      "status": "aprobado",
+      "date": "2026-08-31T01:23:21.147Z",
+      "id": "YrPJEkwvyOI"
+    },
+    {
+      "name": "Paolo Belleza",
+      "role": "Estudiante",
+      "rating": 5,
+      "comment": "Me ayudo mucho esta empresa, sin ellos no podria a ver terminado a tiempo con mi proyecto. Se los agradezco un monton !!! :3",
+      "images": [],
+      "avatar": "PB",
+      "status": "aprobado",
+      "date": "2026-08-31T01:42:12.659Z",
+      "id": "aVriSGOetQM"
     }
   ],
   "admins": [

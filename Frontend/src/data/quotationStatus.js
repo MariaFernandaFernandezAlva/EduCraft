@@ -3,7 +3,7 @@
 // "pendiente" es el único que vive en la bandeja de entrada;
 // el resto van al historial.
 
-export const QUOTATION_STATUS = [
+const QUOTATION_STATUS = [
   { valor: "pendiente",  label: "Pendiente",  color: "bg-amber-100 text-amber-700" },
   { valor: "cotizada",   label: "Cotizada",   color: "bg-blue-100 text-blue-700" },
   { valor: "enviada",    label: "PDF enviado", color: "bg-teal-100 text-teal-700" },

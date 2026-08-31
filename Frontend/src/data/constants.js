@@ -1,21 +1,3 @@
-export const COLORS = {
-  gray: "#E3E4DB",
-  cobalt: "#0A4AB0",
-  gold: "#DFA810",
-  verdigris: "#18A999",
-  naranja: "#f46f0b",
-  amarillo: "#fdb907",
-  rojo: "#ce0b19",
-  turquesa: "#41c4c0",
-  grisDark: "#a3a3a3",
-  blanco: "#ffffff"
-};
-
-export const FONTS = {
-  titles: "Winky Sans",
-  descriptions: "DM Sans"
-};
-
 export const COMPANY_INFO = {
   name: "EduCraft",
   tagline: "Transformamos tus ideas en proyectos escolares excepcionales",

@@ -40,7 +40,7 @@ export default function Sidebar() {
       label: 'Testimonios',
       icon: '⭐',
       path: '/admin/testimonios',
-      description: 'Moderar comentarios'
+      description: 'Modera los comentarios'
     }
   ];
 
