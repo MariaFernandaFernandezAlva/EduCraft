@@ -12,15 +12,12 @@ export default function TestimonialForm({ onAddTestimonial }) {
     role: "",
     rating: 5,
     comment: "",
-    images: []          // Rutas de texto, ya no archivos
+    images: []
   });
 
   const [errors, setErrors] = useState({});
   const [enviando, setEnviando] = useState(false);
-
-  // Enlace que se está escribiendo antes de agregarlo a la lista.
   const [nuevaFoto, setNuevaFoto] = useState("");
-  // null = aún no sabemos, true = cargó, false = el enlace falló
   const [previewOk, setPreviewOk] = useState(null);
 
   const handleChange = (e) => {
@@ -41,7 +38,6 @@ export default function TestimonialForm({ onAddTestimonial }) {
       return;
     }
 
-    // El mismo enlace dos veces no aporta nada.
     if (formData.images.includes(ruta)) {
       addToast("Ese enlace ya está agregado", "error", 3000);
       return;
@@ -69,7 +65,7 @@ export default function TestimonialForm({ onAddTestimonial }) {
     }
 
     if (!formData.role.trim()) {
-      newErrors.role = "La relación con EduCraft es requerida (ej: Madre de familia, Docente)";
+      newErrors.role = "La relación con EduCraft es requerida";
     }
 
     if (!formData.comment.trim()) {
@@ -85,7 +81,6 @@ export default function TestimonialForm({ onAddTestimonial }) {
     e.preventDefault();
 
     const newErrors = validateForm();
-
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -93,15 +88,13 @@ export default function TestimonialForm({ onAddTestimonial }) {
 
     setEnviando(true);
 
-    // El avatar son las iniciales del nombre. Lo calculamos aquí
-    // y lo guardamos, para que el panel y la landing muestren lo mismo.
     const avatar = formData.name
       .trim()
       .split(" ")
       .map(n => n[0])
       .join("")
       .toUpperCase()
-      .slice(0, 2);   // Máximo dos letras, si no se desborda el círculo
+      .slice(0, 2);
 
     const result = await createTestimonial({ ...formData, avatar });
 
@@ -109,12 +102,9 @@ export default function TestimonialForm({ onAddTestimonial }) {
 
     if (!result.success) {
       addToast("No pudimos enviar tu testimonio. Intenta de nuevo.", "error", 4000);
-      return;   // Sin limpiar: el usuario conserva lo que escribió.
+      return;
     }
 
-    // result.data es el testimonio ya guardado, con el id y la fecha
-    // que generó el servidor. Usamos ese y no formData, para que la
-    // tarjeta muestre exactamente lo que quedó en el db.json.
     onAddTestimonial(result.data);
 
     addToast(
@@ -129,30 +119,24 @@ export default function TestimonialForm({ onAddTestimonial }) {
   };
 
   return (
-    <div className="bg-white rounded-lg p-8 shadow-md border border-gray-100">
-
-      <h3 className="text-2xl font-bold text-blue-900 mb-2">
-        Comparte tu experiencia
-      </h3>
-      <p className="text-gray-600 mb-8">
-        ¿Has trabajado con nosotros recientemente? Nos encantaría saber cuál fue el proceso de creación de tu proyecto. Tu opinión ayuda a otros estudiantes y padres a confiar en nuestros servicios.
-      </p>
-
+    <div className="bg-white rounded-3xl p-8 md:p-10 shadow-xl border border-gray-100">
+      
       <form onSubmit={handleSubmit} className="space-y-6">
 
-        {/* Calificación */}
-        <StarRating
-          value={formData.rating}
-          onChange={(newRating) =>
-            setFormData(prev => ({ ...prev, rating: newRating }))
-          }
-        />
+        {/* Bloque de Calificación Destacado */}
+        <div className="bg-[#f5f4f0] rounded-2xl p-5 border border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <StarRating
+            value={formData.rating}
+            onChange={(newRating) =>
+              setFormData(prev => ({ ...prev, rating: newRating }))
+            }
+          />
+        </div>
 
-        {/* Nombre y rol */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
+        {/* Nombre y Rol */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-blue-900 mb-2">
               Nombre completo
             </label>
             <input
@@ -160,19 +144,19 @@ export default function TestimonialForm({ onAddTestimonial }) {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="Ej. Ani García"
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent outline-none transition-colors duration-200 ${
+              placeholder="Ej. Ana García"
+              className={`w-full px-4 py-3.5 bg-gray-50/50 border rounded-xl focus:bg-white focus:ring-2 focus:border-transparent outline-none transition-all duration-200 text-sm ${
                 errors.name
                   ? "border-red-400 focus:ring-red-300"
-                  : "border-gray-300 focus:ring-blue-900"
+                  : "border-gray-200 focus:ring-blue-900"
               }`}
             />
             <FormError message={errors.name} />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Rol / Relación con Educraft
+            <label className="block text-sm font-semibold text-blue-900 mb-2">
+              Rol / Relación con EduCraft
             </label>
             <input
               type="text"
@@ -180,121 +164,124 @@ export default function TestimonialForm({ onAddTestimonial }) {
               value={formData.role}
               onChange={handleChange}
               placeholder="Ej. Madre de familia"
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent outline-none transition-colors duration-200 ${
+              className={`w-full px-4 py-3.5 bg-gray-50/50 border rounded-xl focus:bg-white focus:ring-2 focus:border-transparent outline-none transition-all duration-200 text-sm ${
                 errors.role
                   ? "border-red-400 focus:ring-red-300"
-                  : "border-gray-300 focus:ring-blue-900"
+                  : "border-gray-200 focus:ring-blue-900"
               }`}
             />
             <FormError message={errors.role} />
           </div>
-
         </div>
 
         {/* Comentario */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-sm font-semibold text-blue-900 mb-2">
             Tu testimonio
           </label>
-          <textarea
-            name="comment"
-            value={formData.comment}
-            onChange={handleChange}
-            placeholder="Cuéntanos sobre tu experiencia..."
-            rows="5"
-            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent outline-none resize-none transition-colors duration-200 ${
-              errors.comment
-                ? "border-red-400 focus:ring-red-300"
-                : "border-gray-300 focus:ring-blue-900"
-            }`}
-          />
-          <FormError message={errors.comment} />
-          <p className="text-xs text-gray-500 mt-2">
-            {formData.comment.length}/300 caracteres
-          </p>
+          <div className="relative">
+            <textarea
+              name="comment"
+              value={formData.comment}
+              onChange={handleChange}
+              placeholder="Cuéntanos sobre tu experiencia..."
+              rows="4"
+              className={`w-full px-4 py-3.5 bg-gray-50/50 border rounded-xl focus:bg-white focus:ring-2 focus:border-transparent outline-none resize-none transition-all duration-200 text-sm ${
+                errors.comment
+                  ? "border-red-400 focus:ring-red-300"
+                  : "border-gray-200 focus:ring-blue-900"
+              }`}
+            />
+          </div>
+          <div className="flex justify-between items-center mt-1.5">
+            <FormError message={errors.comment} />
+            <span className="text-xs text-gray-400 ml-auto">
+              {formData.comment.length}/300 caracteres
+            </span>
+          </div>
         </div>
 
         {/* Fotos por enlace */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Fotos de tu proyecto (Opcional) — Máximo 5 enlaces
+        <div className="pt-2 border-t border-gray-100">
+          <label className="block text-sm font-semibold text-blue-900 mb-1">
+            Fotos de tu proyecto <span className="text-gray-400 font-normal">(opcional · máx. 5 enlaces)</span>
           </label>
 
-          <div className="flex gap-2 mb-3">
+          <div className="flex gap-2 mt-3">
             <input
               type="url"
               value={nuevaFoto}
               onChange={(e) => { setNuevaFoto(e.target.value); setPreviewOk(null); }}
               onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAgregarFoto())}
               placeholder="https://i.imgur.com/ejemplo.jpg"
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 outline-none"
+              className="flex-1 px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-900 outline-none text-sm transition-all"
             />
             <button
               type="button"
               onClick={handleAgregarFoto}
-              className="px-4 py-3 bg-blue-100 text-blue-900 font-semibold rounded-lg hover:bg-blue-200"
+              className="px-4 py-3 bg-blue-50 text-blue-900 font-semibold rounded-xl hover:bg-blue-100 transition-colors flex items-center justify-center shrink-0 text-2xl"
+              title="Agregar foto"
             >
-              ➕
+              +
             </button>
           </div>
 
-          {/* Miniatura del enlace que se está escribiendo */}
+          {/* Miniatura en tiempo real */}
           {nuevaFoto.trim() && (
-            <div className="mb-3">
+            <div className="mt-3">
               <img
                 key={nuevaFoto}
                 src={nuevaFoto}
                 alt="Vista previa"
                 onLoad={() => setPreviewOk(true)}
                 onError={() => setPreviewOk(false)}
-                className={`max-h-40 w-auto rounded-lg border-2 border-green-300 ${
+                className={`max-h-32 w-auto rounded-xl border border-green-200 ${
                   previewOk === true ? "block" : "hidden"
                 }`}
               />
               {previewOk === false && (
-                <p className="text-xs text-amber-700">
-                  ⚠️ No pudimos mostrar esta imagen. El enlace debe terminar en
-                  .jpg, .png o .webp.
+                <p className="text-xs text-amber-600 mt-1">
+                  ⚠️ No pudimos mostrar esta imagen. Verifica que el enlace termine en .jpg, .png o .webp.
                 </p>
               )}
             </div>
           )}
 
-          {/* Enlaces ya agregados */}
+          {/* Grilla de imágenes agregadas */}
           {formData.images.length > 0 && (
-            <>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-2">
+            <div className="mt-4">
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-2">
                 {formData.images.map((ruta, index) => (
-                  <div key={ruta} className="relative rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
-                    <img src={ruta} alt={`Foto ${index + 1}`} className="w-full h-24 object-cover" />
+                  <div key={ruta} className="relative rounded-xl overflow-hidden border border-gray-200 bg-gray-50 group">
+                    <img src={ruta} alt={`Foto ${index + 1}`} className="w-full h-20 object-cover" />
                     <button
                       type="button"
                       onClick={() => handleQuitarFoto(index)}
-                      className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full text-xs font-bold"
+                      className="absolute top-1.5 right-1.5 w-6 h-6 bg-red-500 text-white rounded-full text-xs font-bold flex items-center justify-center shadow-md hover:bg-red-600 transition-colors"
                     >
                       ✕
                     </button>
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-gray-500">
-                {formData.images.length} / 5 imágenes
+              <p className="text-xs text-gray-400">
+                {formData.images.length} / 5 imágenes agregadas
               </p>
-            </>
+            </div>
           )}
 
-          <p className="text-xs text-gray-500 mt-2">
-            Sube tus fotos a un servicio como Imgur y pega aquí los enlaces.
+          <p className="text-xs text-gray-400 mt-2">
+            Sube tus fotos a un servicio como Imgur y pega aquí los enlaces directos.
           </p>
         </div>
 
-        {/* Enviar */}
+        {/* Botón de Enviar */}
         <button
           type="submit"
           disabled={enviando}
-          className="w-full px-6 py-3 bg-amber-500 text-white font-semibold rounded-lg hover:bg-amber-600 disabled:opacity-50 transition-colors duration-300 flex items-center justify-center gap-2"
+          className="w-full mt-4 px-6 py-4 bg-amber-400 hover:bg-amber-500 text-blue-950 font-bold rounded-2xl shadow-lg shadow-amber-400/20 disabled:opacity-50 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
         >
-          {enviando ? "Enviando..." : "▶ Enviar Testimonio"}
+          {enviando ? "Enviando testimonio..." : "Enviar testimonio"}
         </button>
 
       </form>

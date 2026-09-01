@@ -20,8 +20,7 @@ import ProtectedRoute from './components/Admin/ProtectedRoute';
 
 // Admin - Servicios
 import ServiciosPage from './pages/Admin/Servicios/ServiciosPage';
-import AddServicio from './pages/Admin/Servicios/AddServicio';
-import EditServicio from './pages/Admin/Servicios/EditServicio';
+import ServicioDrawer from './pages/Admin/Servicios/ServicioDrawer';
 
 // Admin - Proyectos
 import ProyectosPage from './pages/Admin/Proyectos/ProyectosPage';
@@ -60,9 +59,10 @@ export default function App() {
             }
           >
             <Route index element={<Navigate to="/admin/servicios" replace />} />
-            <Route path="servicios" element={<ServiciosPage />} />
-            <Route path="servicios/new" element={<AddServicio />} />
-            <Route path="servicios/:id/edit" element={<EditServicio />} />
+            <Route path="servicios" element={<ServiciosPage />}>
+  <Route path="new" element={<ServicioDrawer />} />
+  <Route path=":id/edit" element={<ServicioDrawer />} />
+</Route>
             
             {/* Proyectos - Próximamente */}
             <Route path="proyectos" element={<ProyectosPage />} />
@@ -83,10 +83,8 @@ export default function App() {
             path="/*"
             element={
               <div className="flex flex-col min-h-screen">
-                
                 {/* Header Global */}
                 <Header />
-
                 {/* Main Content */}
                 <div className="grow">
                   <Routes>
@@ -97,19 +95,14 @@ export default function App() {
                     <Route path="/services" element={<Services />} />
                   </Routes>
                 </div>
-
                 {/* Footer Global */}
                 <Footer />
-
                 {/* Toast Container */}
                 <ToastContainer />
-
               </div>
             }
           />
-
         </Routes>
-
       </Router>
     </ToastProvider>
   );

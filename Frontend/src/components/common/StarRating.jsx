@@ -17,21 +17,32 @@ export default function StarRating({ value = 5, onChange }) {
 
   const displayRating = hoverRating || value;
 
+  const getMessage = (rating) => {
+    switch (rating) {
+      case 5: return "¡Excelente!";
+      case 4: return "Muy bueno";
+      case 3: return "Bueno";
+      case 2: return "Regular";
+      case 1: return "Necesita mejora";
+      default: return "";
+    }
+  };
+
   return (
     <div>
-      <label className="block text-sm font-semibold text-gray-700 mb-3">
+      <label className="block text-[11px] font-bold tracking-wider uppercase text-gray-700 mb-2">
         Calificación
       </label>
       
-      <div className="flex gap-2 items-center">
-        <div className="flex gap-3 cursor-pointer" onMouseLeave={handleMouseLeave}>
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+        <div className="flex gap-1.5 cursor-pointer items-center" onMouseLeave={handleMouseLeave}>
           {[1, 2, 3, 4, 5].map((star) => (
             <button
               key={star}
               type="button"
               onClick={() => handleStarClick(star)}
               onMouseEnter={() => handleStarHover(star)}
-              className={`text-4xl transition-all duration-200 transform hover:scale-110 ${
+              className={`text-2xl transition-all duration-150 transform hover:scale-110 focus:outline-none ${
                 star <= displayRating 
                   ? "text-amber-400" 
                   : "text-gray-300"
@@ -42,18 +53,15 @@ export default function StarRating({ value = 5, onChange }) {
           ))}
         </div>
 
-        <span className="text-sm font-semibold text-gray-700 ml-4">
-          {displayRating}/5
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-bold text-azul">
+            {displayRating}/5
+          </span>
+          <span className="text-sm font-semibold text-marron px-2.5 py-0.5 rounded-full border border-amber-100/60">
+            {getMessage(displayRating)}
+          </span>
+        </div>
       </div>
-
-      <p className="text-xs text-gray-500 mt-3">
-        {displayRating === 5 && "¡Excelente!"}
-        {displayRating === 4 && "Muy bueno"}
-        {displayRating === 3 && "Bueno"}
-        {displayRating === 2 && "Regular"}
-        {displayRating === 1 && "Necesita mejora"}
-      </p>
     </div>
   );
 }

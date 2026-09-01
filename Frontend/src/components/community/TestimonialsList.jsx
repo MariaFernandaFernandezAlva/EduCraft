@@ -1,99 +1,77 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import ImageGallery from "../common/ImageGallery";
+import TestimonialCard from "./Testimonialcard";
 
-export default function TestimonialsList({ testimonials }) {
+const ALL = "Todos";
+
+export default function TestimonialsList({ testimonials = [] }) {
+  const [activeRole, setActiveRole] = useState(ALL);
   const [galleryState, setGalleryState] = useState({
     isOpen: false,
     images: [],
   });
 
+  // Los filtros salen de los datos, no de una lista fija:
+  // si mañana agregas un rol nuevo, el chip aparece solo.
+  const roles = useMemo(() => {
+    const unique = new Set(
+      testimonials.map((t) => t.role).filter(Boolean)
+    );
+    return [ALL, ...unique];
+  }, [testimonials]);
+
+  const filtered = useMemo(() => {
+    if (activeRole === ALL) return testimonials;
+    return testimonials.filter((t) => t.role === activeRole);
+  }, [testimonials, activeRole]);
+
   const openGallery = (images) => {
-    if (images && images.length > 0) {
-      setGalleryState({
-        isOpen: true,
-        images: images,
-      });
-    }
+    if (images?.length) setGalleryState({ isOpen: true, images });
   };
 
-  const closeGallery = () => {
-    setGalleryState({ isOpen: false, images: [] });
-  };
-
-  const renderStars = (rating) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <span
-        key={i}
-        className={
-          i < rating ? "text-amber-400 text-lg" : "text-gray-300 text-lg"
-        }
-      >
-        ★
-      </span>
-    ));
-  };
-
-  const formatDate = (date) => {
-    return new Date(date).toLocaleDateString("es-ES", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
+  const closeGallery = () => setGalleryState({ isOpen: false, images: [] });
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {testimonials.map((testimonial) => (
-          <div
-            key={testimonial.id}
-            className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-100"
-          >
-            {/* Stars */}
-            <div className="flex gap-1 mb-4">
-              {renderStars(testimonial.rating)}
-            </div>
-
-            {/* Comment */}
-            <p className="text-gray-700 leading-relaxed mb-6 italic">
-              "{testimonial.comment}"
-            </p>
-
-            {/* User Info and Gallery Button */}
-            <div className="border-t border-gray-100 pt-4 flex items-center justify-between">
-              
-              <div className="flex items-center gap-3">
-                {/* Avatar */}
-                <div className="w-12 h-12 rounded-full bg-linear-to-br from-blue-900 to-teal-600 text-white flex items-center justify-center font-bold text-sm">
-                  {testimonial.avatar}
-                </div>
-
-                {/* Name and Role */}
-                <div>
-                  <p className="font-bold text-gray-900">{testimonial.name}</p>
-                  <p className="text-sm text-gray-600">{testimonial.role}</p>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {formatDate(testimonial.date)}
-                  </p>
-                </div>
-              </div>
-
-              {/* Gallery Button - Only show if testimonial has images */}
-              {testimonial.images && testimonial.images.length > 0 && (
-                <button
-                  onClick={() => openGallery(testimonial.images)}
-                  className="shrink-0 px-3 py-2 bg-blue-900 text-white text-sm font-semibold rounded-lg hover:bg-blue-800 transition-colors duration-200 whitespace-nowrap"
-                  title={`Ver ${testimonial.images.length} imagen${testimonial.images.length !== 1 ? 'es' : ''}`}
-                >
-                  📸 Ver foto
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
+      {/* Filtros */}
+      <div className="mb-10 flex flex-wrap justify-center gap-2">
+        {roles.map((role) => {
+          const isActive = role === activeRole;
+          return (
+            <button
+              key={role}
+              type="button"
+              onClick={() => setActiveRole(role)}
+              aria-pressed={isActive}
+              className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors duration-200 ${
+                isActive
+                  ? "bg-blue-900 text-white"
+                  : "bg-white text-slate-600 ring-1 ring-slate-200 hover:text-blue-900 hover:ring-blue-300"
+              }`}
+            >
+              {role}
+            </button>
+          );
+        })}
       </div>
 
-      {/* Image Gallery Modal - OUTSIDE the map */}
+      {/* Masonry: columnas CSS + break-inside-avoid en cada tarjeta */}
+      {filtered.length > 0 ? (
+        <div className="columns-1 gap-6 md:columns-2 lg:columns-3">
+          {filtered.map((testimonial) => (
+            <TestimonialCard
+              key={testimonial.id}
+              testimonial={testimonial}
+              onImageClick={openGallery}
+            />
+          ))}
+        </div>
+      ) : (
+        <p className="py-12 text-center text-sm text-slate-500">
+          Todavía no hay testimonios de {activeRole.toLowerCase()}.
+        </p>
+      )}
+
       <ImageGallery
         images={galleryState.images}
         isOpen={galleryState.isOpen}

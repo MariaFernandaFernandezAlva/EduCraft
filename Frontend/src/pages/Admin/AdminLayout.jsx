@@ -1,48 +1,32 @@
 // src/pages/Admin/AdminLayout.jsx
-// Layout principal del panel admin
 
-import { Outlet, Navigate } from 'react-router-dom';
-import AdminNavbar from '../../components/Admin/AdminNavbar';
-import Sidebar from '../../components/Admin/Sidebar';
-import { useAdminAuth } from '../../hooks/useAdminAuth';
+import { Outlet, Navigate } from "react-router-dom";
+import Sidebar from "../../components/Admin/Sidebar";
+import { useAdminAuth } from "../../hooks/useAdminAuth";
 
 export default function AdminLayout() {
   const { admin, loading } = useAdminAuth();
 
-  // 1. Mostrar pantalla de carga mientras verifica la cookie en el backend
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-900"></div>
+      <div className="flex h-screen items-center justify-center bg-slate-50">
+        <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-blue-900" />
       </div>
     );
   }
 
-  // 2. Si terminó de cargar y no hay sesión, expulsar al login inmediatamente
   if (!admin) {
     return <Navigate to="/admin/login" replace />;
   }
 
-  // 3. Si hay sesión activa, renderizar el panel completo
   return (
-    <div className="flex h-screen bg-gray-50">
-      
-      {/* Sidebar */}
+    <div className="flex h-screen bg-[#f6f7f9]">
       <Sidebar />
 
-      {/* Contenedor Principal */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        
-        {/* Navbar */}
-        <AdminNavbar />
-
-        {/* Área de Contenido */}
-        <main className="flex-1 overflow-y-auto p-6">
-          <Outlet />
-        </main>
-
-      </div>
-
+      {/* Ya no hay AdminNavbar: el encabezado vive dentro de cada página */}
+      <main className="flex-1 overflow-y-auto">
+        <Outlet />
+      </main>
     </div>
   );
 }

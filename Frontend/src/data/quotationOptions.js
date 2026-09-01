@@ -1,9 +1,12 @@
+import { RectangleGroupIcon ,ViewColumnsIcon, PuzzlePieceIcon, BookOpenIcon, StarIcon
+} from "@heroicons/react/24/outline";
+
 export const projectTypes = [
-  { id: 1, name: "Maqueta", icon: "📐" },
-  { id: 2, name: "Tríptico", icon: "📄" },
-  { id: 3, name: "Lámina", icon: "🎨" },
-  { id: 4, name: "Cuaderno", icon: "📚" },
-  { id: 5, name: "Otro", icon: "⭐" }
+  { id: 1, name: "Maqueta", icon: RectangleGroupIcon },
+  { id: 2, name: "Tríptico", icon: ViewColumnsIcon },
+  { id: 3, name: "Lámina", icon: PuzzlePieceIcon },
+  { id: 4, name: "Cuaderno", icon: BookOpenIcon },
+  { id: 5, name: "Otro", icon: StarIcon }
 ];
 
 export const academicLevels = [

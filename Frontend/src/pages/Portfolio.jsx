@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import SectionTitle from "../components/common/SectionTitle";
 import ProjectCard from "../components/portfolio/ProjectCard";
 import Button from "../components/common/Button";
 import { getProjects } from "../services/api";
@@ -63,7 +62,7 @@ export default function Portfolio() {
   return (
     <main className="bg-gray">
       {/* Hero Section */}
-      <section className="bg-[#FAF9F6] bg-[linear-gradient(to_right,#f0eee9_1px,transparent_1px),linear-gradient(to_bottom,#f0eee9_1px,transparent_1px)] bg-size-[2.5rem_2.5rem] py-16 md:py-24 text-slate-900">
+      <section className="bg-[#FAF9F6] bg-[linear-gradient(to_right,#f0eee9_1px,transparent_1px),linear-gradient(to_bottom,#f0eee9_1px,transparent_1px)] bg-size-[2.5rem_2.5rem] py-16 md:py-24 text-slate-900 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Cabecera del portafolio */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center mb-16">
@@ -164,7 +163,7 @@ export default function Portfolio() {
 
           {/* Pagination */}
           {filteredProjects.length > 0 && (
-            <div className="flex flex-col items-end gap-6">
+            <div className="flex flex-col items-center md:items-end gap-6">
               {/* Pagination Info */}
               <p className="text-sm text-gray-600">
                 Mostrando <span className="font-bold">{startIndex + 1}</span> -{" "}
@@ -226,16 +225,16 @@ export default function Portfolio() {
       </section>
 
       {/* CTA Section */}
-      <section className="pb-20 md:pb-32">
+      <section className="pb-20 md:pb-32 mx-5">
         <div className="degradado max-w-7xl mx-auto py-8 md:py-10 text-center rounded-4xl">
-          <h2 className="text-3xl font-bold text-white mb-6">
+          <h2 className="text-lg md:text-3xl font-bold text-white mb-6">
             ¿Tienes un proyecto en mente?
           </h2>
-          <p className="text-sm text-white/60 mb-8">
+          <p className="text-xs md:text-sm text-white/60 mb-8 mx-8">
             Cuéntanos qué necesitas y preparamos una propuesta con referencias visuales, <br></br>
             tiempos y costo en menos de 24 horas.
           </p>
-          <Button variant="secondary" size="md">
+          <Button variant="primary" size="md" className="text-black">
             Solicitar Cotización
           </Button>
         </div>

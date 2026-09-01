@@ -10,7 +10,7 @@ export default function FAQ() {
   };
 
   return (
-    <section className="bg-white py-16 md:py-20">
+    <section className="bg-[#fafbf8] py-16 md:py-20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <SectionTitle
@@ -24,7 +24,7 @@ export default function FAQ() {
           {faqData.map(item => (
             <div
               key={item.id}
-              className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300"
+              className="border border-gray-200 bg-white rounded-3xl overflow-hidden hover:shadow-md transition-shadow duration-300"
             >
               
               {/* Question Button */}
@@ -32,10 +32,10 @@ export default function FAQ() {
                 onClick={() => toggleExpand(item.id)}
                 className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
               >
-                <h3 className="text-left font-semibold text-gray-900">
+                <h3 className="text-left font-semibold text-azul">
                   {item.question}
                 </h3>
-                <span className={`text-2xl text-blue-900 transition-transform duration-300 ${
+                <span className={`text-2xl text-azul transition-transform duration-300 ${
                   expandedId === item.id ? "rotate-45" : ""
                 }`}>
                   +

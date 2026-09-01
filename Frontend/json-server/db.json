@@ -296,7 +296,7 @@
       "rating": 5,
       "comment": "Excelente, valoro la estructura y el cuidado por los detalles. Mis alumnos quedaron asombrados.",
       "avatar": "MR",
-      "images": [],
+      "images": ["https://i.pinimg.com/1200x/6a/88/b3/6a88b3e9b8e464f3e53635c8f84004c6.jpg"],
       "status": "aprobado",
       "date": "2026-08-05T00:00:00.000Z"
     },
@@ -307,18 +307,18 @@
       "rating": 4,
       "comment": "Me ayudó a organizar mi tarea final de una manera que no imaginé.",
       "avatar": "SM",
-      "images": [],
+      "images": ["https://i.pinimg.com/1200x/6a/88/b3/6a88b3e9b8e464f3e53635c8f84004c6.jpg"],
       "status": "aprobado",
       "date": "2026-07-28T00:00:00.000Z"
     },
     {
       "id": "4",
       "name": "Andrés Luna",
-      "role": "Jefe de tesis",
+      "role": "Estudiante",
       "rating": 5,
       "comment": "Increíble. El detalle y el soporte por WhatsApp fue vital para terminar mi proyecto a tiempo.",
       "avatar": "AL",
-      "images": [],
+      "images": ["https://i.pinimg.com/1200x/6a/88/b3/6a88b3e9b8e464f3e53635c8f84004c6.jpg","https://i.pinimg.com/736x/ef/02/14/ef02148abb7ff19cdc96d3e73dd78353.jpg","https://i.pinimg.com/736x/ae/96/12/ae96123ac9d684fdd8a7cce5096f73e5.jpg"],
       "status": "oculto",
       "date": "2026-07-15T00:00:00.000Z"
     },
@@ -327,10 +327,7 @@
       "role": "Madre de familia",
       "rating": 5,
       "comment": "Muy hermosos trabajos , sobre el experimento del jabón con sábila",
-      "images": [
-        "https://i.pinimg.com/1200x/5d/30/c9/5d30c9d93e5941f0e1848493b7d7b0f9.jpg",
-        "https://i.pinimg.com/736x/cb/1c/f9/cb1cf9987e01a3b70d129fd148c50b68.jpg"
-      ],
+      "images": ["https://i.pinimg.com/1200x/6a/88/b3/6a88b3e9b8e464f3e53635c8f84004c6.jpg","https://i.pinimg.com/736x/ef/02/14/ef02148abb7ff19cdc96d3e73dd78353.jpg","https://i.pinimg.com/736x/ae/96/12/ae96123ac9d684fdd8a7cce5096f73e5.jpg"],
       "avatar": "MF",
       "status": "aprobado",
       "date": "2026-08-31T01:23:21.147Z",
@@ -341,7 +338,7 @@
       "role": "Estudiante",
       "rating": 5,
       "comment": "Me ayudo mucho esta empresa, sin ellos no podria a ver terminado a tiempo con mi proyecto. Se los agradezco un monton !!! :3",
-      "images": [],
+      "images": ["https://i.pinimg.com/1200x/6a/88/b3/6a88b3e9b8e464f3e53635c8f84004c6.jpg"],
       "avatar": "PB",
       "status": "aprobado",
       "date": "2026-08-31T01:42:12.659Z",

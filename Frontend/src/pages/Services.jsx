@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { getServices } from "../services/api";
 import ServiceCardFull from "../components/services/ServiceCardFull";
 import SectionTitle from "../components/common/SectionTitle";
-import { AcademicCapIcon, DocumentTextIcon, BookOpenIcon } from "@heroicons/react/24/outline";
+import { AcademicCapIcon, TrophyIcon, TruckIcon } from "@heroicons/react/24/outline";
 
 export default function Services() {
   // Nuevos estados para manejar los datos de la base de datos
@@ -15,8 +15,6 @@ export default function Services() {
       const result = await getServices();
 
       if (result.success) {
-        // Ya no hace falta adaptar nombres: el db.json usa
-        // deliveryTime e image, igual que ServiceCardFull.
         setServicesData(result.data.filter((s) => s.visible));
       } else {
         console.error(result.message);
@@ -28,7 +26,6 @@ export default function Services() {
     fetchServices();
   }, []);
 
-  // Obtener categorías únicas basadas en los datos reales
   const categories = ["Todos", ...new Set(servicesData.map(s => s.category))];
 
   // Filtrar servicios
@@ -115,7 +112,7 @@ export default function Services() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Card 1 */}
             <div className="flex flex-col items-center text-center">
-              <div className="w-fit p-4 text-5xl mb-6 rounded-lg text-azul bg-azul/20 shadow-md shadow-azul/40">
+              <div className="w-fit p-4 text-5xl mb-6 rounded-lg text-verde bg-verde/20 shadow-md shadow-verde/40">
                 <AcademicCapIcon className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-blue-900 mb-3">
@@ -127,8 +124,10 @@ export default function Services() {
             </div>
 
             {/* Card 2 */}
-            <div className="text-center">
-              <div className="text-5xl mb-4">🎨</div>
+            <div className="flex flex-col items-center text-center">
+              <div className="w-fit p-4 text-5xl mb-6 rounded-lg text-amarillo bg-amarillo/20 shadow-md shadow-amarillo/40">
+                <TrophyIcon className="w-6 h-6" />
+              </div>
               <h3 className="text-xl font-bold text-blue-900 mb-3">
                 Calidad Artesanal
               </h3>
@@ -138,8 +137,10 @@ export default function Services() {
             </div>
 
             {/* Card 3 */}
-            <div className="text-center">
-              <div className="text-5xl mb-4">⏱️</div>
+            <div className="flex flex-col items-center text-center">
+              <div className="w-fit p-4 text-5xl mb-6 rounded-lg text-morado bg-morado/20 shadow-md shadow-morado/40">
+                <TruckIcon className="w-6 h-6" />
+              </div>
               <h3 className="text-xl font-bold text-blue-900 mb-3">
                 Puntualidad
               </h3>
