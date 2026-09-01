@@ -69,7 +69,7 @@ export default function App() {
               <Route path=":id/edit" element={<ServicioDrawer />} />
             </Route>
 
-            {/* Proyectos - Próximamente */}
+            {/* Proyectos*/}
             <Route path="proyectos" element={<ProyectosPage />}>
               <Route path="new" element={<ProyectoDrawer />} />
               <Route path=":id/edit" element={<ProyectoDrawer />} />

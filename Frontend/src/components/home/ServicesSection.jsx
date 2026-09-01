@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { getServices } from "../../services/api";
 import { CubeIcon, DocumentTextIcon, BookOpenIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import Button from "../common/Button";
+import { useNavigate } from "react-router-dom";
 
 const borderColors = ["border-azul", "border-amarillo", "border-verde", "border-morado"];
 
@@ -30,6 +31,12 @@ export default function ServicesSection() {
 
     fetchServices();
   }, []);
+
+  const navigate = useNavigate();
+  const handleNavigate = (path) => {
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <section id="servicios" className="bg-gray py-20 md:py-32">
@@ -58,7 +65,7 @@ export default function ServicesSection() {
 
         {/* Ver mas */}
         <div className="flex justify-end mt-12 md:mt-16">
-          <Button variant="primary" size="md">
+          <Button variant="primary" size="md" onClick={() => handleNavigate("/services")}>
             Ver más
           </Button>
         </div>

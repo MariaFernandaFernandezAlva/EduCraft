@@ -5,6 +5,10 @@ import { getApprovedTestimonials } from "../services/api";
 import { ArrowRightIcon, CheckBadgeIcon } from "@heroicons/react/24/outline";
 import Button from "../components/common/Button";
 import { ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline"
+import { useNavigate } from "react-router-dom";
+import image1 from "../assets/cuaderno.webp";
+import image2 from "../assets/maqueta.webp";
+import image3 from "../assets/Triptico.webp";
 
 export default function Community() {
   const [testimonials, setTestimonials] = useState([]);
@@ -47,6 +51,13 @@ export default function Community() {
     comment:
       "Me ayudó muchísimo esta empresa, sin ellos no podría haber terminado a tiempo con mi proyecto...",
     project: "Maqueta ADN 3D",
+  };
+
+  const navigate = useNavigate();
+
+  const handleNavigate = (path) => {
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -164,7 +175,7 @@ export default function Community() {
               </div>
 
               {/* Badge flotante inferior */}
-              <div className="absolute -bottom-8 -left-6 bg-white rounded-2xl p-4 shadow-xl border border-gray-100 flex flex-col items-center gap-1">
+              <div className="absolute -bottom-8 left-5 md:-bottom-8 md:left-3 bg-white rounded-2xl p-4 shadow-xl border border-gray-100 flex flex-col items-center gap-1">
                 <span className="text-xs font-bold tracking-wider text-gray-400 block uppercase">
                   ENTREGADO A TIEMPO
                 </span>
@@ -265,17 +276,17 @@ export default function Community() {
               {/* Mini galería decorativa de proyectos */}
               <div className="grid grid-cols-3 gap-3 pt-2">
                 <img
-                  src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=300&q=80"
+                  src={image1}
                   alt="Proyecto 1"
                   className="rounded-xl h-24 w-full object-cover shadow-sm"
                 />
                 <img
-                  src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=300&q=80"
+                  src={image2}
                   alt="Proyecto 2"
                   className="rounded-xl h-24 w-full object-cover shadow-sm"
                 />
                 <img
-                  src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=300&q=80"
+                  src={image3}
                   alt="Proyecto 3"
                   className="rounded-xl h-24 w-full object-cover shadow-sm"
                 />
@@ -300,7 +311,7 @@ export default function Community() {
                   Cuéntanos qué necesitas y te enviamos una propuesta con fotos de <br></br>
                   referenci el mismo día.
                 </p>
-                <Button variant="primary" size="md" className="text-black">
+                <Button variant="primary" size="md" onClick={() => handleNavigate("/quotation")} className="text-black">
                   <ChatBubbleLeftRightIcon className="w-4 h-4" strokeWidth={2}/>
                   Solicitar mi cotización
                 </Button>

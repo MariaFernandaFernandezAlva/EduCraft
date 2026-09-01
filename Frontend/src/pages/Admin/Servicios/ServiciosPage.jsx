@@ -5,6 +5,15 @@ import EmptyState from "../../../components/common/Admin/EmptyState";
 import ConfirmDialog from "../../../components/common/Admin/ConfirmDialog";
 import { getAccent } from "../../../data/categories";
 import useIsDesktop from "../../../hooks/useIsDesktop";
+import {
+  PlusIcon,
+  SquaresPlusIcon,
+  CheckBadgeIcon,
+  EyeSlashIcon,
+  ClockIcon,
+} from "@heroicons/react/24/outline";
+import Toolbar from "../../../components/common/Admin/Toolbar";
+import StatsRow from "../../../components/common/Admin/StatsRow";
 
 // "5–8 días" -> [5, 8]
 const parseDays = (text = "") => (text.match(/\d+/g) || []).map(Number);
@@ -22,7 +31,7 @@ export default function ServiciosPage() {
   const [view, setView] = useState("table");
   const isDesktop = useIsDesktop();
   const effectiveView = isDesktop ? view : "grid";
-  
+
   const loadServices = useCallback(async () => {
     try {
       setLoading(true);
@@ -60,19 +69,28 @@ export default function ServiciosPage() {
   }, [services]);
 
   const categories = useMemo(
-    () => ["Todos", ...new Set(services.map((s) => s.category).filter(Boolean))],
-    [services]
+    () => [
+      "Todos",
+      ...new Set(services.map((s) => s.category).filter(Boolean)),
+    ],
+    [services],
   );
 
   const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
+    const q = search
+      .trim()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
     return services.filter((s) => {
       const matchCategory = category === "Todos" || s.category === category;
-      const matchSearch =
-        !q ||
-        [s.title, s.category, s.description]
-          .filter(Boolean)
-          .some((field) => field.toLowerCase().includes(q));
+      const titleNormalized = s.title
+        ? s.title
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+        : "";
+      const matchSearch = !q || titleNormalized.includes(q);
       return matchCategory && matchSearch;
     });
   }, [services, search, category]);
@@ -88,59 +106,65 @@ export default function ServiciosPage() {
   };
 
   const statCards = [
-    { label: "Servicios totales", value: stats.total, tone: "bg-slate-100 text-slate-600" },
-    { label: "Publicados", value: stats.publicados, tone: "bg-emerald-100 text-emerald-600" },
-    { label: "Ocultos", value: stats.ocultos, tone: "bg-amber-100 text-amber-600" },
-    { label: "Entrega promedio", value: `${stats.promedio} días`, tone: "bg-violet-100 text-violet-600" },
+    {
+      label: "Servicios totales",
+      value: stats.total,
+      tone: "bg-slate-100 text-slate-600",
+      icon: SquaresPlusIcon,
+    },
+    {
+      label: "Publicados",
+      value: stats.publicados,
+      tone: "bg-emerald-100 text-emerald-600",
+      icon: CheckBadgeIcon,
+    },
+    {
+      label: "Ocultos",
+      value: stats.ocultos,
+      tone: "bg-amber-100 text-amber-600",
+      icon: EyeSlashIcon,
+    },
+    {
+      label: "Entrega promedio",
+      value: `${stats.promedio} días`,
+      tone: "bg-violet-100 text-violet-600",
+      icon: ClockIcon,
+    },
   ];
 
   return (
-    <div className="pb-12">
+    <div>
       {/* Cabecera */}
-      <div className="border-b border-slate-200 bg-white px-8 pt-8 pb-6">
-        <span className="inline-block rounded-full bg-amber-100 px-2.5 py-0.5 text-[11px] font-semibold text-amber-700">
-          Catálogo
-        </span>
-
-        <div className="mt-3 flex items-start justify-between gap-4">
-          <div>
-            <h1 className="font-serif text-3xl font-bold text-blue-950">
-              Servicios
-            </h1>
-            <p className="mt-1 text-sm text-slate-500">
-              Crea, ordena y publica los servicios que aparecen en tu landing.
-            </p>
+      <div className="bg-[#FAF9F6] bg-[linear-gradient(to_right,#f0eee9_1px,transparent_1px),linear-gradient(to_bottom,#f0eee9_1px,transparent_1px)] bg-size-[2.5rem_2.5rem] py-5 md:py-10 text-slate-900 border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-0.5 bg-amber-500"></div>
+            <span className="text-xs font-semibold tracking-widest text-amber-800 uppercase">
+              Catálogo
+            </span>
           </div>
 
-          <button
-            onClick={() => navigate("/admin/servicios/new")}
-            className="flex shrink-0 items-center gap-2 rounded-xl bg-blue-950 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-900"
-          >
-            <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <path d="M10 4v12M4 10h12" />
-            </svg>
-            Nuevo servicio
-          </button>
-        </div>
-
-        {/* Métricas */}
-        <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {statCards.map((card) => (
-            <div
-              key={card.label}
-              className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3"
-            >
-              <span className={`flex h-9 w-9 items-center justify-center rounded-lg text-xs font-bold ${card.tone}`}>
-                {String(card.value).charAt(0)}
-              </span>
-              <div>
-                <p className="font-serif text-lg font-bold text-slate-900">
-                  {card.value}
-                </p>
-                <p className="text-[11px] text-slate-500">{card.label}</p>
-              </div>
+          <div className="mt-3 flex items-start justify-between gap-4">
+            <div>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold bg-clip-text text-transparent bg-[linear-gradient(135deg,#0c184a_3%,#007a86_100%)] leading-tight">
+                Servicios
+              </h2>
+              <p className="mt-1 text-sm text-slate-500">
+                Crea, ordena y publica los servicios que aparecen en tu landing.
+              </p>
             </div>
-          ))}
+
+            <button
+              onClick={() => navigate("/admin/servicios/new")}
+              className="flex shrink-0 items-center gap-2 rounded-full bg-blue-950 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-900"
+            >
+              <PlusIcon className="h-4 w-4" strokeWidth={4} />
+              Nuevo servicio
+            </button>
+          </div>
+
+          {/* Métricas */}
+          <StatsRow items={statCards} />
         </div>
       </div>
 
@@ -152,60 +176,16 @@ export default function ServiciosPage() {
         )}
 
         {/* Barra de herramientas */}
-        <div className="mb-5 flex flex-wrap items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3">
-          <div className="relative min-w-56 flex-1">
-            <svg className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="9" cy="9" r="6" />
-              <path d="m14 14 4 4" strokeLinecap="round" />
-            </svg>
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Buscar servicio, categoría o descripción..."
-              className="w-full rounded-lg border border-slate-200 py-2 pr-3 pl-9 text-sm outline-hidden focus:border-blue-400"
-            />
-          </div>
-
-          <div className="flex flex-wrap gap-1.5">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setCategory(cat)}
-                className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
-                  cat === category
-                    ? "bg-blue-950 text-white"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          <div className="hidden overflow-hidden rounded-lg border border-slate-200 lg:flex">
-            {[
-              { id: "table", label: "Vista de tabla", path: <path d="M3 6h14M3 10h14M3 14h14" /> },
-              { id: "grid", label: "Vista de tarjetas", path: <><rect x="3" y="3" width="6" height="6" rx="1" /><rect x="11" y="3" width="6" height="6" rx="1" /><rect x="3" y="11" width="6" height="6" rx="1" /><rect x="11" y="11" width="6" height="6" rx="1" /></> },
-            ].map((option) => (
-              <button
-                key={option.id}
-                onClick={() => setView(option.id)}
-                aria-label={option.label}
-                aria-pressed={view === option.id}
-                className={`p-2 transition-colors ${
-                  view === option.id
-                    ? "bg-blue-950 text-white"
-                    : "bg-white text-slate-500 hover:bg-slate-50"
-                }`}
-              >
-                <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-                  {option.path}
-                </svg>
-              </button>
-            ))}
-          </div>
-        </div>
+        <Toolbar
+          search={search}
+          onSearchChange={setSearch}
+          searchPlaceholder="Buscar servicio, categoría o descripción..."
+          options={categories}
+          activeOption={category}
+          onOptionChange={setCategory}
+          view={view}
+          onViewChange={setView}
+        />
 
         {/* Contenido */}
         {loading ? (
@@ -250,10 +230,15 @@ export default function ServiciosPage() {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filtered.map((service) => (
-                  <tr key={service.id} className="transition-colors hover:bg-slate-50/60">
+                  <tr
+                    key={service.id}
+                    className="transition-colors hover:bg-slate-50/60"
+                  >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-linear-to-br text-xs font-bold text-white ${getAccent(service.category).header}`}>
+                        <span
+                          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-linear-to-br text-xs font-bold text-white ${getAccent(service.category).header}`}
+                        >
                           {service.title?.charAt(0)}
                         </span>
                         <div>
@@ -273,7 +258,10 @@ export default function ServiciosPage() {
                       </p>
                       <div className="mt-1.5 flex flex-wrap gap-1">
                         {(service.includes || []).slice(0, 3).map((item) => (
-                          <span key={item} className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] text-slate-500">
+                          <span
+                            key={item}
+                            className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] text-slate-500"
+                          >
                             {item}
                           </span>
                         ))}
@@ -285,18 +273,22 @@ export default function ServiciosPage() {
                     </td>
 
                     <td className="px-6 py-4">
-                      <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${
-                        service.visible !== false
-                          ? "bg-emerald-100 text-emerald-700"
-                          : "bg-slate-100 text-slate-500"
-                      }`}>
+                      <span
+                        className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${
+                          service.visible !== false
+                            ? "bg-emerald-100 text-emerald-700"
+                            : "bg-slate-100 text-slate-500"
+                        }`}
+                      >
                         {service.visible !== false ? "Público" : "Oculto"}
                       </span>
                     </td>
 
                     <td className="px-6 py-4">
                       <RowActions
-                        onEdit={() => navigate(`/admin/servicios/${service.id}/edit`)}
+                        onEdit={() =>
+                          navigate(`/admin/servicios/${service.id}/edit`)
+                        }
                         onDelete={() => setDeleteConfirm(service)}
                       />
                     </td>
@@ -308,8 +300,13 @@ export default function ServiciosPage() {
         ) : (
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
             {filtered.map((service) => (
-              <article key={service.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
-                <div className={`relative h-24 bg-linear-to-br ${getAccent(service.category).header}`}>
+              <article
+                key={service.id}
+                className="overflow-hidden rounded-2xl border border-slate-200 bg-white"
+              >
+                <div
+                  className={`relative h-24 bg-linear-to-br ${getAccent(service.category).header}`}
+                >
                   {service.image && (
                     <img
                       src={service.image}
@@ -335,7 +332,10 @@ export default function ServiciosPage() {
 
                   <div className="mt-3 flex flex-wrap gap-1.5">
                     {(service.includes || []).map((item) => (
-                      <span key={item} className="rounded bg-slate-100 px-2 py-0.5 text-[10px] text-slate-500">
+                      <span
+                        key={item}
+                        className="rounded bg-slate-100 px-2 py-0.5 text-[10px] text-slate-500"
+                      >
                         {item}
                       </span>
                     ))}
@@ -346,7 +346,9 @@ export default function ServiciosPage() {
                       {service.deliveryTime}
                     </span>
                     <RowActions
-                      onEdit={() => navigate(`/admin/servicios/${service.id}/edit`)}
+                      onEdit={() =>
+                        navigate(`/admin/servicios/${service.id}/edit`)
+                      }
                       onDelete={() => setDeleteConfirm(service)}
                     />
                   </div>
@@ -381,7 +383,15 @@ function RowActions({ onEdit, onDelete }) {
         title="Editar"
         className="rounded-lg bg-amber-50 p-2 text-amber-600 transition-colors hover:bg-amber-100"
       >
-        <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          className="h-4 w-4"
+          viewBox="0 0 20 20"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <path d="M14 3.5a1.8 1.8 0 0 1 2.5 2.5L7 15.5l-3.5 1 1-3.5Z" />
         </svg>
       </button>
@@ -392,7 +402,15 @@ function RowActions({ onEdit, onDelete }) {
         title="Eliminar"
         className="rounded-lg bg-red-50 p-2 text-red-500 transition-colors hover:bg-red-100"
       >
-        <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          className="h-4 w-4"
+          viewBox="0 0 20 20"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <path d="M4 6h12M8 6V4h4v2M6.5 6l.6 10h5.8l.6-10" />
         </svg>
       </button>

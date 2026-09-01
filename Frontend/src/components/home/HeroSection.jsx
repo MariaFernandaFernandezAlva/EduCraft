@@ -1,8 +1,14 @@
 import Button from "../common/Button";
 import Image from "../../assets/maquetaPrincipal.webp";
 import SectionTitle from "../common/SectionTitle";
+import { useNavigate } from "react-router-dom";
 
 export default function HeroSection() {
+  const navigate = useNavigate();
+  const handleNavigate = (path) => {
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   return (
     <section className="panel relative overflow-hidden pt-20 pb-16 md:pt-32 md:pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -22,10 +28,10 @@ export default function HeroSection() {
 
             {/* CTA Buttons */}
             <div className="flex flex-row gap-4">
-              <Button variant="primary" size="md">
+              <Button variant="primary" size="md" onClick={() => handleNavigate("/quotation")}>
                 Pedir Cotización
               </Button>
-              <Button variant="secondary" size="md">
+              <Button variant="secondary" size="md" onClick={() => handleNavigate("/services")}>
                 Ver Servicios
               </Button>
             </div>

@@ -76,7 +76,7 @@ ${service.includes.map(inc => `• ${inc}`).join("\n")}
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-3">
+        <div className="flex flex-col md:flex-row gap-3">
           <button
             onClick={handleQuotation}
             className="flex-1 px-4 py-3 bg-azul text-white font-semibold rounded-xl hover:bg-blue-900 transition-colors duration-200"

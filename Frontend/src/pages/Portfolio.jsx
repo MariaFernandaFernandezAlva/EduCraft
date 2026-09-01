@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import ProjectCard from "../components/portfolio/ProjectCard";
 import Button from "../components/common/Button";
 import { getProjects } from "../services/api";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 const PROJECTS_PER_PAGE = 3;
 
@@ -58,6 +58,13 @@ export default function Portfolio() {
   const handleNextPage = () => irAPagina(currentPage + 1);
   const handlePrevPage = () => irAPagina(currentPage - 1);
   const handlePageClick = (page) => irAPagina(page);
+
+  const navigate = useNavigate();
+
+  const handleNavigate = (path) => {
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <main className="bg-gray">
@@ -234,7 +241,7 @@ export default function Portfolio() {
             Cuéntanos qué necesitas y preparamos una propuesta con referencias visuales, <br></br>
             tiempos y costo en menos de 24 horas.
           </p>
-          <Button variant="primary" size="md" className="text-black">
+          <Button variant="primary" size="md" onClick={() => handleNavigate("/quotation")} className="text-black">
             Solicitar Cotización
           </Button>
         </div>

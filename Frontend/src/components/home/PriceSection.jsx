@@ -1,7 +1,14 @@
 import SectionTitle from "../common/SectionTitle";
 import Button from "../common/Button";
+import { useNavigate } from "react-router-dom";
 
 export default function PriceSection() {
+  const navigate = useNavigate();
+  const handleNavigate = (path) => {
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <section id="cotizacion" className="panel2 py-20 md:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -15,14 +22,14 @@ export default function PriceSection() {
         </div>
         {/* CTA Buttons */}
         <div className="flex flex-row items-center justify-center gap-4">
-          <Button variant="primary" size="sm">
+          <Button variant="primary" size="sm" onClick={() => handleNavigate("/quotation")}>
             Pedir Cotización gratis
           </Button>
-          <Button variant="secondary" size="sm">
+          <Button variant="secondary" size="sm" onClick={() => handleNavigate("/portfolio")}>
             Ver portafolio
           </Button>
         </div>
-      </div>
+      </div>  
     </section>
   );
 }

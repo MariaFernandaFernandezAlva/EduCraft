@@ -8,20 +8,23 @@ export default function TestimonialCard({ id, name, role, rating, comment }) {
   ));
 
   return (
-    <div className={`rounded-xl p-8 shadow-md hover:shadow-lg transition-shadow duration-300 ${id === 2 ? "bg-azul" : "bg-white"}`}>
+    <div className={`rounded-xl p-8 shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col h-full ${id === 2 ? "bg-azul" : "bg-white"}`}>
       
-      {/* Stars */}
-      <div className="flex gap-1 mb-4">
-        {stars}
+      {/* Contenedor superior (Estrellas + Comentario) */}
+      <div className="flex-1">
+        {/* Stars */}
+        <div className="flex gap-1 mb-4">
+          {stars}
+        </div>
+
+        {/* Comment */}
+        <p className={`leading-relaxed mb-6 ${id === 2 ? "text-white" : "text-gray-500"}`}>
+          "{comment}"
+        </p>
       </div>
 
-      {/* Comment */}
-      <p className={`leading-relaxed mb-6 ${id === 2 ? "text-white" : "text-gray-500"}`}>
-        "{comment}"
-      </p>
-
-      {/*Logo + Info*/}
-      <div className="flex flex-row gap-3 pt-4">
+      {/* Logo + Info (Se empuja siempre hacia abajo gracias a flex-1 arriba) */}
+      <div className="flex flex-row gap-3 pt-4 border-t border-gray-100/10">
         {/*Avatar*/}
         <div className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center shrink-0">
           <span className="text-azul font-bold text-lg">
@@ -39,7 +42,6 @@ export default function TestimonialCard({ id, name, role, rating, comment }) {
         </div>
       </div>
       
-
     </div>
   );
 }

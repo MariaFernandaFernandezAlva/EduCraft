@@ -11,7 +11,7 @@ export default function SlideOver({
   title,
   subtitle,
   children,
-  footer,
+  footer, size = "default"
 }) {
   // false = fuera de pantalla (a la derecha) | true = en su sitio
   const [entered, setEntered] = useState(false);
@@ -61,7 +61,7 @@ export default function SlideOver({
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className={`relative flex h-full w-full max-w-lg flex-col bg-white shadow-2xl transition-transform duration-200 ease-out motion-reduce:transition-none ${
+        className={`relative flex h-full w-full ${size === "wide" ? "max-w-2xl" : "max-w-lg"} flex-col bg-white shadow-2xl transition-transform duration-200 ease-out motion-reduce:transition-none ${
           entered ? "translate-x-0" : "translate-x-full"
         }`}
       >
