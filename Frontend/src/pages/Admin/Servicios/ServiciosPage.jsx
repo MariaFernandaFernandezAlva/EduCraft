@@ -4,6 +4,7 @@ import { getServices, deleteService } from "../../../services/api";
 import EmptyState from "../../../components/common/Admin/EmptyState";
 import ConfirmDialog from "../../../components/common/Admin/ConfirmDialog";
 import { getAccent } from "../../../data/categories";
+import useIsDesktop from "../../../hooks/useIsDesktop";
 
 // "5–8 días" -> [5, 8]
 const parseDays = (text = "") => (text.match(/\d+/g) || []).map(Number);
@@ -19,9 +20,9 @@ export default function ServiciosPage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("Todos");
   const [view, setView] = useState("table");
-
-  // useCallback: el drawer la recibe por contexto y no queremos
-  // que cambie de identidad en cada render del padre.
+  const isDesktop = useIsDesktop();
+  const effectiveView = isDesktop ? view : "grid";
+  
   const loadServices = useCallback(async () => {
     try {
       setLoading(true);
@@ -182,7 +183,7 @@ export default function ServiciosPage() {
             ))}
           </div>
 
-          <div className="flex overflow-hidden rounded-lg border border-slate-200">
+          <div className="hidden overflow-hidden rounded-lg border border-slate-200 lg:flex">
             {[
               { id: "table", label: "Vista de tabla", path: <path d="M3 6h14M3 10h14M3 14h14" /> },
               { id: "grid", label: "Vista de tarjetas", path: <><rect x="3" y="3" width="6" height="6" rx="1" /><rect x="11" y="3" width="6" height="6" rx="1" /><rect x="3" y="11" width="6" height="6" rx="1" /><rect x="11" y="11" width="6" height="6" rx="1" /></> },
@@ -235,7 +236,7 @@ export default function ServiciosPage() {
               )
             }
           />
-        ) : view === "table" ? (
+        ) : effectiveView === "table" ? (
           <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
             <table className="w-full">
               <thead className="border-b border-slate-200 bg-slate-50/70">

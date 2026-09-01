@@ -1,5 +1,10 @@
 // src/App.jsx
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { ToastProvider } from "./context/ToastContext";
 import ToastContainer from "./components/common/ToastContainer";
 import Header from "./components/layout/Header";
@@ -13,28 +18,27 @@ import Community from "./pages/Community";
 import Services from "./pages/Services";
 
 // Admin - Autenticación
-import { useAdminAuth } from './hooks/useAdminAuth';
-import AdminLogin from './pages/Admin/AdminLogin';
-import AdminLayout from './pages/Admin/AdminLayout';
-import ProtectedRoute from './components/Admin/ProtectedRoute';
+import { useAdminAuth } from "./hooks/useAdminAuth";
+import AdminLogin from "./pages/Admin/AdminLogin";
+import AdminLayout from "./pages/Admin/AdminLayout";
+import ProtectedRoute from "./components/Admin/ProtectedRoute";
 
 // Admin - Servicios
-import ServiciosPage from './pages/Admin/Servicios/ServiciosPage';
-import ServicioDrawer from './pages/Admin/Servicios/ServicioDrawer';
+import ServiciosPage from "./pages/Admin/Servicios/ServiciosPage";
+import ServicioDrawer from "./pages/Admin/Servicios/ServicioDrawer";
 
 // Admin - Proyectos
-import ProyectosPage from './pages/Admin/Proyectos/ProyectosPage';
-import AddProyecto from './pages/Admin/Proyectos/AddProyecto';
-import EditProyecto from './pages/Admin/Proyectos/EditProyecto';
+import ProyectosPage from "./pages/Admin/Proyectos/ProyectosPage";
+import ProyectoDrawer from "./pages/Admin/Proyectos/ProyectoDrawer";
 
 // Admin - Cotizaciones
-import CotizacionesPage from './pages/Admin/Cotizaciones/CotizacionesPage';
+import CotizacionesPage from "./pages/Admin/Cotizaciones/CotizacionesPage";
 
 // Admin - Historial
-import HistorialPage from './pages/Admin/Historial/HistorialPage';
+import HistorialPage from "./pages/Admin/Historial/HistorialPage";
 
 // Admin - Testimonios
-import TestimoniosPage from './pages/Admin/Testimonios/TestimoniosPage';
+import TestimoniosPage from "./pages/Admin/Testimonios/TestimoniosPage";
 
 export default function App() {
   const { isAuthenticated, loading } = useAdminAuth();
@@ -42,38 +46,40 @@ export default function App() {
   return (
     <ToastProvider>
       <Router>
-        
         {/* RUTAS DEL ADMIN - Sin Header/Footer */}
         <Routes>
-          
           {/* Login Admin */}
           <Route path="/admin/login" element={<AdminLogin />} />
-          
+
           {/* Panel Admin Protegido */}
           <Route
             path="/admin/*"
             element={
-              <ProtectedRoute isAuthenticated={isAuthenticated} loading={loading}>
+              <ProtectedRoute
+                isAuthenticated={isAuthenticated}
+                loading={loading}
+              >
                 <AdminLayout />
               </ProtectedRoute>
             }
           >
             <Route index element={<Navigate to="/admin/servicios" replace />} />
             <Route path="servicios" element={<ServiciosPage />}>
-  <Route path="new" element={<ServicioDrawer />} />
-  <Route path=":id/edit" element={<ServicioDrawer />} />
-</Route>
-            
+              <Route path="new" element={<ServicioDrawer />} />
+              <Route path=":id/edit" element={<ServicioDrawer />} />
+            </Route>
+
             {/* Proyectos - Próximamente */}
-            <Route path="proyectos" element={<ProyectosPage />} />
-            <Route path="proyectos/new" element={<AddProyecto />} />
-            <Route path="proyectos/:id/edit" element={<EditProyecto />} />
-            
+            <Route path="proyectos" element={<ProyectosPage />}>
+              <Route path="new" element={<ProyectoDrawer />} />
+              <Route path=":id/edit" element={<ProyectoDrawer />} />
+            </Route>
+
             {/* Cotizaciones - Próximamente */}
             <Route path="cotizaciones" element={<CotizacionesPage />} />
             <Route path="historial" element={<HistorialPage />} />
             {/* <Route path="cotizaciones" element={<CotizacionesPage />} /> */}
-            
+
             {/* Testimonios - Próximamente */}
             <Route path="testimonios" element={<TestimoniosPage />} />
           </Route>
