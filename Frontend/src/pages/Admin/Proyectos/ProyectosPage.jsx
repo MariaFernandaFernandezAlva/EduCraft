@@ -7,6 +7,7 @@ import RowActions from "../../../components/common/Admin/RowActions";
 import useIsDesktop from "../../../hooks/useIsDesktop";
 import Toolbar from "../../../components/common/Admin/Toolbar";
 import StatsRow from "../../../components/common/Admin/StatsRow";
+import { PlusIcon, SquaresPlusIcon, CheckBadgeIcon, EyeSlashIcon, PhotoIcon } from "@heroicons/react/24/outline";
 
 export default function ProyectosPage() {
   const navigate = useNavigate();
@@ -89,45 +90,47 @@ export default function ProyectosPage() {
   };
 
   const statCards = [
-    { label: "Proyectos totales", value: stats.total, tone: "bg-slate-100 text-slate-600" },
-    { label: "Publicados", value: stats.publicados, tone: "bg-emerald-100 text-emerald-600" },
-    { label: "Ocultos", value: stats.ocultos, tone: "bg-amber-100 text-amber-600" },
-    { label: "Fotos en galería", value: stats.fotos, tone: "bg-violet-100 text-violet-600" },
+    { label: "Proyectos totales", value: stats.total, tone: "bg-slate-100 text-slate-600", icon: SquaresPlusIcon },
+    { label: "Publicados", value: stats.publicados, tone: "bg-emerald-100 text-emerald-600", icon: CheckBadgeIcon },
+    { label: "Ocultos", value: stats.ocultos, tone: "bg-amber-100 text-amber-600", icon: EyeSlashIcon },
+    { label: "Fotos en galería", value: stats.fotos, tone: "bg-violet-100 text-violet-600", icon: PhotoIcon },
   ];
 
   return (
-    <div className="pb-12">
+    <div>
       {/* Cabecera */}
-      <div className="border-b border-slate-200 bg-white px-8 pt-8 pb-6">
-        <span className="inline-block rounded-full bg-amber-100 px-2.5 py-0.5 text-[11px] font-semibold text-amber-700">
-          Portafolio
-        </span>
-
-        <div className="mt-3 flex items-start justify-between gap-4">
-          <div>
-            <h1 className="font-serif text-3xl font-bold text-blue-950">
-              Proyectos
-            </h1>
-            <p className="mt-1 max-w-md text-sm text-slate-500">
-              Gestiona el portafolio: cada proyecto admite varias fotos, portada
-              destacada y datos rápidos.
-            </p>
-          </div>
-
-          <button
-            onClick={() => navigate("/admin/proyectos/new")}
-            className="flex shrink-0 items-center gap-2 rounded-xl bg-blue-950 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-900"
-          >
-            <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <path d="M10 4v12M4 10h12" />
-            </svg>
-            Nuevo proyecto
-          </button>
-        </div>
-
-        {/*Metricas */}
-        <StatsRow items={statCards} />
-      </div>
+      <div className="bg-[#FAF9F6] bg-[linear-gradient(to_right,#f0eee9_1px,transparent_1px),linear-gradient(to_bottom,#f0eee9_1px,transparent_1px)] bg-size-[2.5rem_2.5rem] py-5 md:py-10 text-slate-900 border-b border-gray-200">
+              <div className="mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-0.5 bg-amber-500"></div>
+                  <span className="text-xs font-semibold tracking-widest text-amber-800 uppercase">
+                    Portafolio
+                  </span>
+                </div>
+      
+                <div className="mt-3 flex items-start justify-between gap-4">
+                  <div>
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold bg-clip-text text-transparent bg-[linear-gradient(135deg,#0c184a_3%,#007a86_100%)] leading-tight">
+                      Proyectos
+                    </h2>
+                    <p className="mt-1 text-sm text-slate-500">
+                      Gestiona los proyectos que se muestran en el portafolio público. Puedes crear, editar, eliminar y cambiar su visibilidad.
+                    </p>
+                  </div>
+      
+                  <button
+                    onClick={() => navigate("/admin/proyectos/new")}
+                    className="flex shrink-0 items-center gap-2 rounded-full bg-blue-950 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-900"
+                  >
+                    <PlusIcon className="h-4 w-4" strokeWidth={4} />
+                    Nuevo proyecto
+                  </button>
+                </div>
+      
+                {/* Métricas */}
+                <StatsRow items={statCards} />
+              </div>
+            </div>
 
       <div className="px-8 pt-6">
         {error && (
@@ -299,16 +302,6 @@ export default function ProyectosPage() {
   );
 }
 
-/* --- Piezas pequeñas, locales a esta página --- */
-
-function PhotoIcon() {
-  return (
-    <svg className="h-3 w-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <rect x="5" y="3" width="12" height="10" rx="1.5" />
-      <path d="M3 6v9a2 2 0 0 0 2 2h9" />
-    </svg>
-  );
-}
 
 function Cover({ project }) {
   return (

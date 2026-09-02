@@ -5,13 +5,7 @@ import EmptyState from "../../../components/common/Admin/EmptyState";
 import ConfirmDialog from "../../../components/common/Admin/ConfirmDialog";
 import { getAccent } from "../../../data/categories";
 import useIsDesktop from "../../../hooks/useIsDesktop";
-import {
-  PlusIcon,
-  SquaresPlusIcon,
-  CheckBadgeIcon,
-  EyeSlashIcon,
-  ClockIcon,
-} from "@heroicons/react/24/outline";
+import { PlusIcon, SquaresPlusIcon, CheckBadgeIcon, EyeSlashIcon, ClockIcon } from "@heroicons/react/24/outline";
 import Toolbar from "../../../components/common/Admin/Toolbar";
 import StatsRow from "../../../components/common/Admin/StatsRow";
 
@@ -136,7 +130,7 @@ export default function ServiciosPage() {
     <div>
       {/* Cabecera */}
       <div className="bg-[#FAF9F6] bg-[linear-gradient(to_right,#f0eee9_1px,transparent_1px),linear-gradient(to_bottom,#f0eee9_1px,transparent_1px)] bg-size-[2.5rem_2.5rem] py-5 md:py-10 text-slate-900 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 mb-3">
             <div className="w-8 h-0.5 bg-amber-500"></div>
             <span className="text-xs font-semibold tracking-widest text-amber-800 uppercase">
@@ -150,7 +144,7 @@ export default function ServiciosPage() {
                 Servicios
               </h2>
               <p className="mt-1 text-sm text-slate-500">
-                Crea, ordena y publica los servicios que aparecen en tu landing.
+                Gestiona los servicios que se muestran en tu landing page. Puedes crear, editar o eliminar servicios, así como activar o desactivar su visibilidad.
               </p>
             </div>
 

@@ -84,7 +84,11 @@
         "Estructura de doble hélice en alambre de cobre",
         "Luces LED integradas"
       ],
-      "meta": ["Secundaria", "5 días", "Biología"],
+      "meta": [
+        "Secundaria",
+        "5 días",
+        "Biología"
+      ],
       "visible": true
     },
     {
@@ -103,7 +107,11 @@
         "Infografías históricas personalizadas",
         "Impresión en papel de 300g"
       ],
-      "meta": ["Primaria", "6 días", "Comunicación"],
+      "meta": [
+        "Primaria",
+        "6 días",
+        "Comunicación"
+      ],
       "visible": true
     },
     {
@@ -122,7 +130,11 @@
         "Información de misiones espaciales",
         "Laminado protector anti-UV"
       ],
-      "meta": ["Secundaria", "3 días", "Ciencia y Tecnología"],
+      "meta": [
+        "Secundaria",
+        "3 días",
+        "Ciencia y Tecnología"
+      ],
       "visible": true
     },
     {
@@ -141,7 +153,11 @@
         "Espacios para anotaciones",
         "Encuadernación con espiral de metal"
       ],
-      "meta": ["Inicial", "7 días", "Matemáticas"],
+      "meta": [
+        "Inicial",
+        "7 días",
+        "Matemáticas"
+      ],
       "visible": true
     },
     {
@@ -160,7 +176,11 @@
         "Sistema de iluminación LED",
         "Base con información histórica"
       ],
-      "meta": ["Secundaria", "5 días", "Biología"],
+      "meta": [
+        "Secundaria",
+        "5 días",
+        "Biología"
+      ],
       "visible": true
     },
     {
@@ -179,7 +199,11 @@
         "Pruebas modelo de admisión",
         "Guía de estrategias de estudio"
       ],
-      "meta": ["Secundaria", "5 días", "Biología"],
+      "meta": [
+        "Secundaria",
+        "5 días",
+        "Biología"
+      ],
       "visible": true
     }
   ],
@@ -275,6 +299,25 @@
       "quotedAt": null,
       "createdAt": "2026-08-31T00:39:53.292Z",
       "id": "UMqsz2eLsMo"
+    },
+    {
+      "fullName": "Gia Misuki",
+      "email": "gia@gmail.com",
+      "whatsapp": "987987987",
+      "projectType": "Maqueta",
+      "academicLevel": "Primaria",
+      "description": "Me gustarua que me hagan una maqueta del sistema solar por favor, ahi le paso una maqueta de referencia.\nQue sea de 50 cm * 100 cm ",
+      "referenceLink": "https://i.pinimg.com/736x/3d/8c/d3/3d8cd32e18a88dc33092d145e413fe43.jpg",
+      "deliveryDate": "2026-09-25",
+      "deliveryMethod": "Recojo en Persona",
+      "address": "",
+      "status": "pendiente",
+      "items": [],
+      "shippingCost": 0,
+      "declineReason": "",
+      "quotedAt": null,
+      "createdAt": "2026-09-02T03:06:57.457Z",
+      "id": "Vz29gMbkIJg"
     }
   ],
   "testimonials": [
@@ -296,7 +339,9 @@
       "rating": 5,
       "comment": "Excelente, valoro la estructura y el cuidado por los detalles. Mis alumnos quedaron asombrados.",
       "avatar": "MR",
-      "images": ["https://i.pinimg.com/1200x/6a/88/b3/6a88b3e9b8e464f3e53635c8f84004c6.jpg"],
+      "images": [
+        "https://i.pinimg.com/1200x/6a/88/b3/6a88b3e9b8e464f3e53635c8f84004c6.jpg"
+      ],
       "status": "aprobado",
       "date": "2026-08-05T00:00:00.000Z"
     },
@@ -307,7 +352,9 @@
       "rating": 4,
       "comment": "Me ayudó a organizar mi tarea final de una manera que no imaginé.",
       "avatar": "SM",
-      "images": ["https://i.pinimg.com/1200x/6a/88/b3/6a88b3e9b8e464f3e53635c8f84004c6.jpg"],
+      "images": [
+        "https://i.pinimg.com/1200x/6a/88/b3/6a88b3e9b8e464f3e53635c8f84004c6.jpg"
+      ],
       "status": "aprobado",
       "date": "2026-07-28T00:00:00.000Z"
     },
@@ -318,7 +365,11 @@
       "rating": 5,
       "comment": "Increíble. El detalle y el soporte por WhatsApp fue vital para terminar mi proyecto a tiempo.",
       "avatar": "AL",
-      "images": ["https://i.pinimg.com/1200x/6a/88/b3/6a88b3e9b8e464f3e53635c8f84004c6.jpg","https://i.pinimg.com/736x/ef/02/14/ef02148abb7ff19cdc96d3e73dd78353.jpg","https://i.pinimg.com/736x/ae/96/12/ae96123ac9d684fdd8a7cce5096f73e5.jpg"],
+      "images": [
+        "https://i.pinimg.com/1200x/6a/88/b3/6a88b3e9b8e464f3e53635c8f84004c6.jpg",
+        "https://i.pinimg.com/736x/ef/02/14/ef02148abb7ff19cdc96d3e73dd78353.jpg",
+        "https://i.pinimg.com/736x/ae/96/12/ae96123ac9d684fdd8a7cce5096f73e5.jpg"
+      ],
       "status": "oculto",
       "date": "2026-07-15T00:00:00.000Z"
     },
@@ -327,7 +378,11 @@
       "role": "Madre de familia",
       "rating": 5,
       "comment": "Muy hermosos trabajos , sobre el experimento del jabón con sábila",
-      "images": ["https://i.pinimg.com/1200x/6a/88/b3/6a88b3e9b8e464f3e53635c8f84004c6.jpg","https://i.pinimg.com/736x/ef/02/14/ef02148abb7ff19cdc96d3e73dd78353.jpg","https://i.pinimg.com/736x/ae/96/12/ae96123ac9d684fdd8a7cce5096f73e5.jpg"],
+      "images": [
+        "https://i.pinimg.com/1200x/6a/88/b3/6a88b3e9b8e464f3e53635c8f84004c6.jpg",
+        "https://i.pinimg.com/736x/ef/02/14/ef02148abb7ff19cdc96d3e73dd78353.jpg",
+        "https://i.pinimg.com/736x/ae/96/12/ae96123ac9d684fdd8a7cce5096f73e5.jpg"
+      ],
       "avatar": "MF",
       "status": "aprobado",
       "date": "2026-08-31T01:23:21.147Z",
@@ -338,11 +393,27 @@
       "role": "Estudiante",
       "rating": 5,
       "comment": "Me ayudo mucho esta empresa, sin ellos no podria a ver terminado a tiempo con mi proyecto. Se los agradezco un monton !!! :3",
-      "images": ["https://i.pinimg.com/1200x/6a/88/b3/6a88b3e9b8e464f3e53635c8f84004c6.jpg"],
+      "images": [
+        "https://i.pinimg.com/1200x/6a/88/b3/6a88b3e9b8e464f3e53635c8f84004c6.jpg"
+      ],
       "avatar": "PB",
       "status": "aprobado",
       "date": "2026-08-31T01:42:12.659Z",
       "id": "aVriSGOetQM"
+    },
+    {
+      "name": "Joaquin Tello",
+      "role": "Estudiante",
+      "rating": 5,
+      "comment": "Me encanto el trabajo que hicieron con mi maqueta del ecosistema. Era tan hermoso que lo puse en mi cuarto como decoracion :3",
+      "images": [
+        "https://i.pinimg.com/1200x/61/b3/c2/61b3c24668f614c5f95f332e7adf414d.jpg",
+        "https://i.pinimg.com/736x/7c/aa/5a/7caa5a8610b8e14f472af3c66ee48a8a.jpg"
+      ],
+      "avatar": "JT",
+      "status": "aprobado",
+      "date": "2026-09-02T03:09:35.166Z",
+      "id": "9_RPYq6s_2Y"
     }
   ],
   "admins": [

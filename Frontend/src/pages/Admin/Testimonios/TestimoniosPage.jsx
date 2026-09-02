@@ -14,6 +14,7 @@ import Toolbar from "../../../components/common/Admin/Toolbar";
 import StatsRow from "../../../components/common/Admin/StatsRow";
 import useIsDesktop from "../../../hooks/useIsDesktop";
 import TestimonioDetail, { Stars } from "./TestimonioDetail";
+import { SquaresPlusIcon, EyeIcon, EyeSlashIcon, PhotoIcon } from "@heroicons/react/24/outline";
 
 const ESTADOS = [
   { valor: "aprobado", label: "Visible", color: "bg-emerald-100 text-emerald-700" },
@@ -124,31 +125,39 @@ export default function TestimoniosPage() {
   }, [testimonials, filtro, search]);
 
   const statCards = [
-    { label: "Testimonios", value: stats.total, tone: "bg-slate-100 text-slate-600" },
-    { label: "Visibles", value: stats.visibles, tone: "bg-emerald-100 text-emerald-600" },
-    { label: "Ocultos", value: stats.ocultos, tone: "bg-amber-100 text-amber-600" },
-    { label: "Con fotos", value: stats.conFotos, tone: "bg-violet-100 text-violet-600" },
+    { label: "Testimonios", value: stats.total, tone: "bg-slate-100 text-slate-600", icon: SquaresPlusIcon },
+    { label: "Visibles", value: stats.visibles, tone: "bg-emerald-100 text-emerald-600", icon: EyeIcon },
+    { label: "Ocultos", value: stats.ocultos, tone: "bg-amber-100 text-amber-600", icon: EyeSlashIcon },
+    { label: "Con fotos", value: stats.conFotos, tone: "bg-violet-100 text-violet-600", icon: PhotoIcon },
   ];
 
   return (
-    <div className="pb-12">
-      <div className="border-b border-slate-200 bg-white px-4 pt-6 pb-5 lg:px-8 lg:pt-8 lg:pb-6">
-        <span className="inline-block rounded-full bg-amber-100 px-2.5 py-0.5 text-[11px] font-semibold text-amber-700">
-          Moderación
-        </span>
-
-        <div className="mt-3">
-          <h1 className="font-serif text-3xl font-bold text-blue-950">
-            Testimonios
-          </h1>
-          <p className="mt-1 max-w-md text-sm text-slate-500">
-            Se publican al instante. Aquí puedes ocultar los que no
-            correspondan.
-          </p>
-        </div>
-
-        <StatsRow items={statCards} />
-      </div>
+    <div>
+      {/* Cabecera */}
+            <div className="bg-[#FAF9F6] bg-[linear-gradient(to_right,#f0eee9_1px,transparent_1px),linear-gradient(to_bottom,#f0eee9_1px,transparent_1px)] bg-size-[2.5rem_2.5rem] py-5 md:py-10 text-slate-900 border-b border-gray-200">
+              <div className="mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-0.5 bg-amber-500"></div>
+                  <span className="text-xs font-semibold tracking-widest text-amber-800 uppercase">
+                    Moderación
+                  </span>
+                </div>
+      
+                <div className="mt-3 flex items-start justify-between gap-4">
+                  <div>
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold bg-clip-text text-transparent bg-[linear-gradient(135deg,#0c184a_3%,#007a86_100%)] leading-tight">
+                      Testimonios
+                    </h2>
+                    <p className="mt-1 text-sm text-slate-500">
+                      Gestiona los testimonios que dejan los usuarios en tu landing page. Puedes aprobarlos para que se muestren, ocultarlos o eliminarlos.
+                    </p>
+                  </div>
+                </div>
+      
+                {/* Métricas */}
+                <StatsRow items={statCards} />
+              </div>
+            </div>
 
       <div className="px-4 pt-5 lg:px-8 lg:pt-6">
         {error && (

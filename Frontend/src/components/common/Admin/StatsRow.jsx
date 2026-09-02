@@ -17,7 +17,7 @@ export default function StatsRow({ items = [] }) {
             }`}
           >
             {/* Por defecto el primer carácter del valor; se puede pasar un icono propio */}
-            {card.icon || String(card.value).charAt(0)}
+            {card.icon ? <card.icon className="h-4.5 w-4.5" /> : String(card.value).charAt(0)}
           </span>
 
           <div className="min-w-0">
