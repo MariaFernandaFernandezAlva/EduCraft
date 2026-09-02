@@ -2,12 +2,10 @@
 // Componente que bloquea acceso a rutas si no está logueado
 
 import { Navigate } from 'react-router-dom';
+import { useAdminAuth } from '../../hooks/useAdminAuth';
 
-export default function ProtectedRoute({ 
-  isAuthenticated, 
-  loading, 
-  children 
-}) {
+export default function ProtectedRoute({ children }) {
+  const { isAuthenticated, loading } = useAdminAuth();
   // Si aún está cargando, mostrar loading
   if (loading) {
     return (

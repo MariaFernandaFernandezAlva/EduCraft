@@ -65,7 +65,7 @@ export default function AdminLogin() {
 
     if (result.success) {
       // navigate en vez de window.location: no recarga la app entera
-      navigate("/admin", { replace: true });
+      navigate("/admin/servicios", { replace: true });
     } else {
       setErrors({ submit: result.message });
     }

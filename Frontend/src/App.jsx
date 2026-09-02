@@ -22,6 +22,7 @@ import { useAdminAuth } from "./hooks/useAdminAuth";
 import AdminLogin from "./pages/Admin/AdminLogin";
 import AdminLayout from "./pages/Admin/AdminLayout";
 import ProtectedRoute from "./components/Admin/ProtectedRoute";
+import { AdminAuthProvider } from "./context/AdminAuthContext";
 
 // Admin - Servicios
 import ServiciosPage from "./pages/Admin/Servicios/ServiciosPage";
@@ -41,75 +42,75 @@ import HistorialPage from "./pages/Admin/Historial/HistorialPage";
 import TestimoniosPage from "./pages/Admin/Testimonios/TestimoniosPage";
 
 export default function App() {
-  const { isAuthenticated, loading } = useAdminAuth();
-
   return (
-    <ToastProvider>
-      <Router>
-        {/* RUTAS DEL ADMIN - Sin Header/Footer */}
-        <Routes>
-          {/* Login Admin */}
-          <Route path="/admin/login" element={<AdminLogin />} />
+    <AdminAuthProvider>
+      <ToastProvider>
+        <Router>
+          {/* RUTAS DEL ADMIN - Sin Header/Footer */}
+          <Routes>
+            {/* Login Admin */}
+            <Route path="/admin/login" element={<AdminLogin />} />
 
-          {/* Panel Admin Protegido */}
-          <Route
-            path="/admin/*"
-            element={
-              <ProtectedRoute
-                isAuthenticated={isAuthenticated}
-                loading={loading}
-              >
-                <AdminLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<Navigate to="/admin/servicios" replace />} />
-            <Route path="servicios" element={<ServiciosPage />}>
-              <Route path="new" element={<ServicioDrawer />} />
-              <Route path=":id/edit" element={<ServicioDrawer />} />
+            {/* Panel Admin Protegido */}
+            <Route
+              path="/admin/*"
+              element={
+                <ProtectedRoute>
+                  <AdminLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route
+                index
+                element={<Navigate to="/admin/servicios" replace />}
+              />
+              <Route path="servicios" element={<ServiciosPage />}>
+                <Route path="new" element={<ServicioDrawer />} />
+                <Route path=":id/edit" element={<ServicioDrawer />} />
+              </Route>
+
+              {/* Proyectos*/}
+              <Route path="proyectos" element={<ProyectosPage />}>
+                <Route path="new" element={<ProyectoDrawer />} />
+                <Route path=":id/edit" element={<ProyectoDrawer />} />
+              </Route>
+
+              {/* Cotizaciones - Próximamente */}
+              <Route path="cotizaciones" element={<CotizacionesPage />} />
+              <Route path="historial" element={<HistorialPage />} />
+              {/* <Route path="cotizaciones" element={<CotizacionesPage />} /> */}
+
+              {/* Testimonios - Próximamente */}
+              <Route path="testimonios" element={<TestimoniosPage />} />
             </Route>
 
-            {/* Proyectos*/}
-            <Route path="proyectos" element={<ProyectosPage />}>
-              <Route path="new" element={<ProyectoDrawer />} />
-              <Route path=":id/edit" element={<ProyectoDrawer />} />
-            </Route>
-
-            {/* Cotizaciones - Próximamente */}
-            <Route path="cotizaciones" element={<CotizacionesPage />} />
-            <Route path="historial" element={<HistorialPage />} />
-            {/* <Route path="cotizaciones" element={<CotizacionesPage />} /> */}
-
-            {/* Testimonios - Próximamente */}
-            <Route path="testimonios" element={<TestimoniosPage />} />
-          </Route>
-
-          {/* RUTAS DE LA LANDING - Con Header/Footer */}
-          <Route
-            path="/*"
-            element={
-              <div className="flex flex-col min-h-screen">
-                {/* Header Global */}
-                <Header />
-                {/* Main Content */}
-                <div className="grow">
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/portfolio" element={<Portfolio />} />
-                    <Route path="/quotation" element={<Quotation />} />
-                    <Route path="/community" element={<Community />} />
-                    <Route path="/services" element={<Services />} />
-                  </Routes>
+            {/* RUTAS DE LA LANDING - Con Header/Footer */}
+            <Route
+              path="/*"
+              element={
+                <div className="flex flex-col min-h-screen">
+                  {/* Header Global */}
+                  <Header />
+                  {/* Main Content */}
+                  <div className="grow">
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/portfolio" element={<Portfolio />} />
+                      <Route path="/quotation" element={<Quotation />} />
+                      <Route path="/community" element={<Community />} />
+                      <Route path="/services" element={<Services />} />
+                    </Routes>
+                  </div>
+                  {/* Footer Global */}
+                  <Footer />
+                  {/* Toast Container */}
+                  <ToastContainer />
                 </div>
-                {/* Footer Global */}
-                <Footer />
-                {/* Toast Container */}
-                <ToastContainer />
-              </div>
-            }
-          />
-        </Routes>
-      </Router>
-    </ToastProvider>
+              }
+            />
+          </Routes>
+        </Router>
+      </ToastProvider>
+    </AdminAuthProvider>
   );
 }
