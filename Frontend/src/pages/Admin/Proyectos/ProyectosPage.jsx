@@ -7,7 +7,13 @@ import RowActions from "../../../components/common/Admin/RowActions";
 import useIsDesktop from "../../../hooks/useIsDesktop";
 import Toolbar from "../../../components/common/Admin/Toolbar";
 import StatsRow from "../../../components/common/Admin/StatsRow";
-import { PlusIcon, SquaresPlusIcon, CheckBadgeIcon, EyeSlashIcon, PhotoIcon } from "@heroicons/react/24/outline";
+import {
+  PlusIcon,
+  SquaresPlusIcon,
+  CheckBadgeIcon,
+  EyeSlashIcon,
+  PhotoIcon,
+} from "@heroicons/react/24/outline";
 
 export default function ProyectosPage() {
   const navigate = useNavigate();
@@ -48,7 +54,7 @@ export default function ProyectosPage() {
     const publicados = projects.filter((p) => p.visible !== false).length;
     const fotos = projects.reduce(
       (total, p) => total + (p.images?.length || 0),
-      0
+      0,
     );
 
     return {
@@ -60,19 +66,26 @@ export default function ProyectosPage() {
   }, [projects]);
 
   const categories = useMemo(
-    () => ["Todas", ...new Set(projects.map((p) => p.category).filter(Boolean))],
-    [projects]
+    () => [
+      "Todas",
+      ...new Set(projects.map((p) => p.category).filter(Boolean)),
+    ],
+    [projects],
   );
 
   const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const q = search
+      .trim()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
     return projects.filter((p) => {
       const matchCategory = category === "Todas" || p.category === category;
       const titleNormalized = p.title
         ? p.title
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
         : "";
       const matchSearch = !q || titleNormalized.includes(q);
       return matchCategory && matchSearch;
@@ -90,47 +103,68 @@ export default function ProyectosPage() {
   };
 
   const statCards = [
-    { label: "Proyectos totales", value: stats.total, tone: "bg-slate-100 text-slate-600", icon: SquaresPlusIcon },
-    { label: "Publicados", value: stats.publicados, tone: "bg-emerald-100 text-emerald-600", icon: CheckBadgeIcon },
-    { label: "Ocultos", value: stats.ocultos, tone: "bg-amber-100 text-amber-600", icon: EyeSlashIcon },
-    { label: "Fotos en galería", value: stats.fotos, tone: "bg-violet-100 text-violet-600", icon: PhotoIcon },
+    {
+      label: "Proyectos totales",
+      value: stats.total,
+      tone: "bg-slate-100 text-slate-600",
+      icon: SquaresPlusIcon,
+    },
+    {
+      label: "Publicados",
+      value: stats.publicados,
+      tone: "bg-emerald-100 text-emerald-600",
+      icon: CheckBadgeIcon,
+    },
+    {
+      label: "Ocultos",
+      value: stats.ocultos,
+      tone: "bg-amber-100 text-amber-600",
+      icon: EyeSlashIcon,
+    },
+    {
+      label: "Fotos en galería",
+      value: stats.fotos,
+      tone: "bg-violet-100 text-violet-600",
+      icon: PhotoIcon,
+    },
   ];
 
   return (
     <div>
       {/* Cabecera */}
       <div className="bg-[#FAF9F6] bg-[linear-gradient(to_right,#f0eee9_1px,transparent_1px),linear-gradient(to_bottom,#f0eee9_1px,transparent_1px)] bg-size-[2.5rem_2.5rem] py-5 md:py-10 text-slate-900 border-b border-gray-200">
-              <div className="mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-8 h-0.5 bg-amber-500"></div>
-                  <span className="text-xs font-semibold tracking-widest text-amber-800 uppercase">
-                    Portafolio
-                  </span>
-                </div>
-      
-                <div className="mt-3 flex items-start justify-between gap-4">
-                  <div>
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold bg-clip-text text-transparent bg-[linear-gradient(135deg,#0c184a_3%,#007a86_100%)] leading-tight">
-                      Proyectos
-                    </h2>
-                    <p className="mt-1 text-sm text-slate-500">
-                      Gestiona los proyectos que se muestran en el portafolio público. Puedes crear, editar, eliminar y cambiar su visibilidad.
-                    </p>
-                  </div>
-      
-                  <button
-                    onClick={() => navigate("/admin/proyectos/new")}
-                    className="flex shrink-0 items-center gap-2 rounded-full bg-blue-950 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-900"
-                  >
-                    <PlusIcon className="h-4 w-4" strokeWidth={4} />
-                    Nuevo proyecto
-                  </button>
-                </div>
-      
-                {/* Métricas */}
-                <StatsRow items={statCards} />
-              </div>
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-0.5 bg-amber-500"></div>
+            <span className="text-xs font-semibold tracking-widest text-amber-800 uppercase">
+              Portafolio
+            </span>
+          </div>
+
+          <div className="mt-3 flex flex-col md:flex-row items-start justify-between gap-4">
+            <div>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold bg-clip-text text-transparent bg-[linear-gradient(135deg,#0c184a_3%,#007a86_100%)] leading-tight">
+                Proyectos
+              </h2>
+              <p className="mt-1 text-sm text-slate-500">
+                Gestiona los proyectos que se muestran en el portafolio público.
+                Puedes crear, editar, eliminar y cambiar su visibilidad.
+              </p>
             </div>
+
+            <button
+              onClick={() => navigate("/admin/proyectos/new")}
+              className="flex shrink-0 items-center gap-2 rounded-full bg-blue-950 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-900"
+            >
+              <PlusIcon className="h-4 w-4" strokeWidth={4} />
+              Nuevo proyecto
+            </button>
+          </div>
+
+          {/* Métricas */}
+          <StatsRow items={statCards} />
+        </div>
+      </div>
 
       <div className="px-8 pt-6">
         {error && (
@@ -195,7 +229,10 @@ export default function ProyectosPage() {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filtered.map((project) => (
-                  <tr key={project.id} className="transition-colors hover:bg-slate-50/60">
+                  <tr
+                    key={project.id}
+                    className="transition-colors hover:bg-slate-50/60"
+                  >
                     <td className="px-6 py-4">
                       <Cover project={project} />
                     </td>
@@ -226,7 +263,9 @@ export default function ProyectosPage() {
 
                     <td className="px-6 py-4">
                       <RowActions
-                        onEdit={() => navigate(`/admin/proyectos/${project.id}/edit`)}
+                        onEdit={() =>
+                          navigate(`/admin/proyectos/${project.id}/edit`)
+                        }
                         onDelete={() => setDeleteConfirm(project)}
                       />
                     </td>
@@ -238,7 +277,10 @@ export default function ProyectosPage() {
         ) : (
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
             {filtered.map((project) => (
-              <article key={project.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+              <article
+                key={project.id}
+                className="overflow-hidden rounded-2xl border border-slate-200 bg-white"
+              >
                 <div className="relative h-44 bg-slate-100">
                   {project.images?.[0] && (
                     <img
@@ -276,7 +318,9 @@ export default function ProyectosPage() {
                   <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
                     <StatusBadge visible={project.visible} />
                     <RowActions
-                      onEdit={() => navigate(`/admin/proyectos/${project.id}/edit`)}
+                      onEdit={() =>
+                        navigate(`/admin/proyectos/${project.id}/edit`)
+                      }
                       onDelete={() => setDeleteConfirm(project)}
                     />
                   </div>
@@ -301,7 +345,6 @@ export default function ProyectosPage() {
     </div>
   );
 }
-
 
 function Cover({ project }) {
   return (
@@ -351,7 +394,10 @@ function MetaTags({ meta = [] }) {
   return (
     <div className="mt-2 flex flex-wrap gap-1">
       {tags.map((tag) => (
-        <span key={tag} className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] text-slate-500">
+        <span
+          key={tag}
+          className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] text-slate-500"
+        >
           {tag}
         </span>
       ))}
@@ -363,9 +409,13 @@ function StatusBadge({ visible }) {
   const isVisible = visible !== false;
 
   return (
-    <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold ${
-      isVisible ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-500"
-    }`}>
+    <span
+      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold ${
+        isVisible
+          ? "bg-emerald-100 text-emerald-700"
+          : "bg-slate-100 text-slate-500"
+      }`}
+    >
       {isVisible ? "Visible" : "Oculto"}
     </span>
   );

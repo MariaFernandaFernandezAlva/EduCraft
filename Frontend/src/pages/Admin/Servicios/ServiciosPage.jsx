@@ -138,7 +138,7 @@ export default function ServiciosPage() {
             </span>
           </div>
 
-          <div className="mt-3 flex items-start justify-between gap-4">
+          <div className="mt-3 flex items-start flex-col md:flex-row justify-between gap-4">
             <div>
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold bg-clip-text text-transparent bg-[linear-gradient(135deg,#0c184a_3%,#007a86_100%)] leading-tight">
                 Servicios
